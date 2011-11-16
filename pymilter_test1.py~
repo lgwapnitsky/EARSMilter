@@ -1,0 +1,20 @@
+import Milter
+import StringIO
+import time
+import email
+import sys
+from socket import AF_INET, AF_INET6
+from Milter.utils import parse_addr
+if True:
+    from multiprocessing import Process as Thread, Queue
+else:
+    from threading import Thread
+    from Queue import Queue
+
+logq = Queue(maxsize=4)
+
+class mltr_SaveAttachments(Milter.Base):
+
+    def __init__(self):
+        self.id = Milter.uniqueID()
+
