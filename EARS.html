@@ -5,7 +5,7 @@
   <meta http-equiv="content-type content=" text="" html;="" charset="ISO-8859-1&quot;" />
 
   
-  <link media="screen" rel="stylesheet" href="css/EARS.css" type="text/css" /><title>EARS</title></head><body>
+  <link media="screen" rel="stylesheet" href="http://it-web-external.wrtdesign.com/EARS/EARS.css" type="text/css" /><title>EARS</title></head><body>
 <div id="logo">
 <h1><span id="WRT">WRT</span>
 <span id="EARS"> EARS</span>
@@ -27,7 +27,7 @@ To retrieve the attachments, right-click on the filename listed below and choose
 <ul>
 % for attachment in attachments:
     <li>\
-    <a href="ftp://dropped:files@ftp.wrtdesign.com$%7Battachment%5B1%5D%7D">${attachment[0]}</a>
+    <a href="ftp://dropped:files@ftp.wrtdesign.com${attachment[1]}">${attachment[0]}</a>
 % endfor
 </li></ul>
 </div>
