@@ -1,8 +1,13 @@
+## == Imports
+
 import Milter
 import StringIO
 import time
 import email
 import sys
+
+## --
+
 from socket import AF_INET, AF_INET6
 from Milter.utils import parse_addr
 if True:

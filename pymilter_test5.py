@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 import Milter
-import StringIO
+#import StringIO
 import email
 import email.Message
 import hashlib
@@ -11,6 +11,13 @@ import sys
 import tempfile
 import time
 import rfc822
+import re
+
+from mako.template import Template
+from mako.runtime import Context
+from mako import exceptions
+
+from StringIO import StringIO
 
 from Milter.utils import parse_addr
 
@@ -100,7 +107,8 @@ class mltr_SaveAttachments(Milter.Base):
         self.fromparms = Milter.dictfromlist(str)
         self.user = self.getsymval('{auth_authen}')
         self.log("mail from:", mailfrom, *str)
-        self.fp = StringIO.StringIO()
+#        self.fp = StringIO.StringIO()
+        self.fp = StringIO()
         self.canon_from = '@'.join(parse_addr(mailfrom))
         self.fp.write('From %s %s\n' % (self.canon_from,time.ctime()))
         return Milter.CONTINUE
@@ -119,7 +127,7 @@ class mltr_SaveAttachments(Milter.Base):
         attachDir = attach_dir(msg)
         removedParts = []
         payload = []
-        
+        fnames = []
       
         for part in msg.walk():
             fname = ""
@@ -131,12 +139,8 @@ class mltr_SaveAttachments(Milter.Base):
             
             dtypes = part.get_params(None, 'Content-Disposition')
             
-            self.log(part.get_content_type())
-            self.log(part.get_params())
-
             if not dtypes:
                 if part.get_content_type() == 'text/plain':
-#                   payload.append(part)
                    continue
                 ctypes = part.getparams()
                 if not ctypes:
@@ -150,22 +154,46 @@ class mltr_SaveAttachments(Milter.Base):
                         fname = val
                         
             if fname:
-                removedParts.append(fname)
+                fnames.append(fname)
                 data = part.get_payload(decode=1)
-                extract_attachment(data, attachDir, fname)
-                part = self.delete_attachments(part, fname)
-                payload.append(part)
+                lrg_attach = extract_attachment(data, attachDir, fname)
+                if lrg_attach > min_attach_size:
+                    # removedParts.append([part, fname])
+                    removedParts.append(part)
+                else:
+                    fnames.remove(fname)
 
-#        msg.set_payload(payload)
+                # part = self.delete_attachments(part, fname)
+                # payload.append(part)
+                
 
-#        msg.attach(payload)
-        
-#        self.log("rewriting???")
+        if len(removedParts) > 0:
+            notice = mako_notice(fnames, attachDir)
+            notice_added = False
+            for rp in removedParts:
+                part = self.delete_attachments(rp, notice)
+                if notice_added == False:
+                    payload.append(part)
+                    notice_added = True
+                    
+
+#            self.log(notice)
+#            for rp in removedParts:
+#                part = self.delete_attachments(rp[0], rp[1], notice)
+                #payload.append(part)
+#                part = self.delete_attachments(rp)
+            # part['content-type'] = 'text/html'
+            # part["content-disposition"] = "attachment; filename=RemovedAttachments.html"
+            # part.set_payload(notice)
+            # payload.append(part)
+        else:
+            os.rmdir(attachDir)
+
+
         self._msg = msg
 
         out = tempfile.TemporaryFile()
         try:
-            self.log("dumping")
             msg.dump(out)
             out.seek(0)
             msg = rfc822.Message(out)
@@ -176,21 +204,21 @@ class mltr_SaveAttachments(Milter.Base):
                 self.replacebody(buf)
         finally:
             out.close()
-
-        self._msg.attach(payload)
+            
+        if payload: self._msg.attach(payload)
 
         return Milter.CONTINUE
 
-    def delete_attachments(self, part,fname):
+    def delete_attachments(self, part, notice):#, fname, notice):
         for key,value in part.get_params():
             part.del_param(key)
-            
-        part.set_payload('[DELETED]\n')
+
         del part["content-type"]
         del part["content-disposition"]
         del part["content-transfer-encoding"]
-#        part["Content-Type"] = "text/html, name="+fname+".html"
-        part["content-disposition"] = "attachment; filename="+fname+".html"
+#        part["content-disposition"] = "attachment; filename="+fname+".html"
+        part["content-disposition"] = "attachment; filename=RemovedAttachments.html"
+        part.set_payload(notice)
         return part
 
 
@@ -200,18 +228,28 @@ class mltr_SaveAttachments(Milter.Base):
         self._msg = msg
         
         self.attachment()
-        
-                
-
-#        self.log("### MESSAGE ###")
-#        self.log(self._msg)
-
         return Milter.ACCEPT
 #        return Milter.TEMPFAIL
 ## ===
 
 
-
+def mako_notice(fnames, attachDir):
+    attach = []
+    for fname in fnames:
+        regex = re.compile("dropdir(.*)")
+        r = regex.search(attachDir)
+        dirs = r.groups()
+        attach.append([fname, "%s/%s" % (dirs[0],fname)])
+        
+    EARStemplate = Template(filename='EARS.html')
+    buf = StringIO()
+    ctx = Context(buf,attachments=attach)
+    
+    try:
+        EARStemplate.render_context(ctx)
+        return buf.getvalue()
+    except:
+        return exceptions.html_error_template().render()
 
 
 def attach_dir(msg):
@@ -223,7 +261,7 @@ def attach_dir(msg):
     hashDir = hashit(buf)
     attachDir = dropDir + hashDir
     
-    if not os.path.isdir(hashDir):
+    if not os.path.isdir(attachDir):
         os.mkdir(attachDir)
 
     return attachDir
@@ -234,7 +272,10 @@ def extract_attachment(data, attachDir, fname):
     extracted = open(exdir_file, "wb")
     extracted.write(data)
     extracted.close()
-    
+    exdir_file_size = os.path.getsize(exdir_file)
+    if  exdir_file_size <= min_attach_size:
+        os.remove(exdir_file)
+    return exdir_file_size
 
 
 def hashit(data):
@@ -244,6 +285,7 @@ def hashit(data):
     return sha1.hexdigest()
 
 dropDir = "/dropdir/"
+min_attach_size = 163840
 
 def main():
     bt = Thread(target=background)

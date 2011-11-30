@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 import Milter
-import StringIO
+#import StringIO
 import email
 import email.Message
 import hashlib
@@ -11,6 +11,12 @@ import sys
 import tempfile
 import time
 import rfc822
+
+from mako.template import Template
+from mako.runtime import Context
+from mako import exceptions
+
+from StringIO import StringIO
 
 from Milter.utils import parse_addr
 
@@ -100,7 +106,8 @@ class mltr_SaveAttachments(Milter.Base):
         self.fromparms = Milter.dictfromlist(str)
         self.user = self.getsymval('{auth_authen}')
         self.log("mail from:", mailfrom, *str)
-        self.fp = StringIO.StringIO()
+#        self.fp = StringIO.StringIO()
+        self.fp = StringIO()
         self.canon_from = '@'.join(parse_addr(mailfrom))
         self.fp.write('From %s %s\n' % (self.canon_from,time.ctime()))
         return Milter.CONTINUE
@@ -119,7 +126,7 @@ class mltr_SaveAttachments(Milter.Base):
         attachDir = attach_dir(msg)
         removedParts = []
         payload = []
-        
+        fnames = []
       
         for part in msg.walk():
             fname = ""
@@ -131,12 +138,8 @@ class mltr_SaveAttachments(Milter.Base):
             
             dtypes = part.get_params(None, 'Content-Disposition')
             
-            self.log(part.get_content_type())
-            self.log(part.get_params())
-
             if not dtypes:
                 if part.get_content_type() == 'text/plain':
-#                   payload.append(part)
                    continue
                 ctypes = part.getparams()
                 if not ctypes:
@@ -150,22 +153,25 @@ class mltr_SaveAttachments(Milter.Base):
                         fname = val
                         
             if fname:
-                removedParts.append(fname)
+                fnames.append(fname)
                 data = part.get_payload(decode=1)
                 extract_attachment(data, attachDir, fname)
-                part = self.delete_attachments(part, fname)
+                removedParts.append([part, fname])
+#                part = self.delete_attachments(part, fname)
+#                payload.append(part)
+
+        if len(removedParts) > 0:
+            notice = mako_notice(fnames, attachDir)
+#            self.log(notice)
+            for rp in removedParts:
+                part = self.delete_attachments(rp[0], rp[1], notice)
                 payload.append(part)
 
-#        msg.set_payload(payload)
 
-#        msg.attach(payload)
-        
-#        self.log("rewriting???")
         self._msg = msg
 
         out = tempfile.TemporaryFile()
         try:
-            self.log("dumping")
             msg.dump(out)
             out.seek(0)
             msg = rfc822.Message(out)
@@ -181,16 +187,17 @@ class mltr_SaveAttachments(Milter.Base):
 
         return Milter.CONTINUE
 
-    def delete_attachments(self, part,fname):
+    def delete_attachments(self, part, fname, notice):
         for key,value in part.get_params():
             part.del_param(key)
             
-        part.set_payload('[DELETED]\n')
+
+#        part.set_payload('[DELETED]\n')
         del part["content-type"]
         del part["content-disposition"]
         del part["content-transfer-encoding"]
-#        part["Content-Type"] = "text/html, name="+fname+".html"
         part["content-disposition"] = "attachment; filename="+fname+".html"
+        part.set_payload(notice)
         return part
 
 
@@ -200,18 +207,25 @@ class mltr_SaveAttachments(Milter.Base):
         self._msg = msg
         
         self.attachment()
-        
-                
-
-#        self.log("### MESSAGE ###")
-#        self.log(self._msg)
-
         return Milter.ACCEPT
 #        return Milter.TEMPFAIL
 ## ===
 
 
-
+def mako_notice(fnames, attachDir):
+    attach = []
+    for fname in fnames:
+        attach.append([fname, "%s/%s" % (attachDir,fname)])
+        
+    EARStemplate = Template(filename='EARS.html')
+    buf = StringIO()
+    ctx = Context(buf,attachments=attach)
+    
+    try:
+        EARStemplate.render_context(ctx)
+        return buf.getvalue()
+    except:
+        return exceptions.html_error_template().render()
 
 
 def attach_dir(msg):
