@@ -175,17 +175,6 @@ class mltr_SaveAttachments(Milter.Base):
                 if notice_added == False:
                     payload.append(part)
                     notice_added = True
-                    
-
-#            self.log(notice)
-#            for rp in removedParts:
-#                part = self.delete_attachments(rp[0], rp[1], notice)
-                #payload.append(part)
-#                part = self.delete_attachments(rp)
-            # part['content-type'] = 'text/html'
-            # part["content-disposition"] = "attachment; filename=RemovedAttachments.html"
-            # part.set_payload(notice)
-            # payload.append(part)
         else:
             os.rmdir(attachDir)
 
@@ -216,7 +205,7 @@ class mltr_SaveAttachments(Milter.Base):
         del part["content-type"]
         del part["content-disposition"]
         del part["content-transfer-encoding"]
-#        part["content-disposition"] = "attachment; filename="+fname+".html"
+
         part["content-disposition"] = "attachment; filename=RemovedAttachments.html"
         part.set_payload(notice)
         return part
