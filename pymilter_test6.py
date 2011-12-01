@@ -23,6 +23,7 @@ from Milter.utils import parse_addr
 
 from email import Errors
 from email.Message import Message
+from email.mime.text import MIMEText
 
 ## ==  IP Information
 from socket import AF_INET, AF_INET6
@@ -126,10 +127,11 @@ class mltr_SaveAttachments(Milter.Base):
         msg = self._msg
         attachDir = attach_dir(msg)
         removedParts = []
-        payload = []
+        part_payload = []
         fnames = []
       
         for part in msg.walk():
+            
             fname = ""
             
 #            self.log(part.getparams())
@@ -158,8 +160,8 @@ class mltr_SaveAttachments(Milter.Base):
                 data = part.get_payload(decode=1)
                 lrg_attach = extract_attachment(data, attachDir, fname)
                 if lrg_attach > min_attach_size:
-                    # removedParts.append([part, fname])
                     removedParts.append(part)
+#                  removedParts += 1
                 else:
                     fnames.remove(fname)
 
@@ -168,17 +170,20 @@ class mltr_SaveAttachments(Milter.Base):
                 
 
         if len(removedParts) > 0:
+#        if removedParts > 0:
             notice = mako_notice(fnames, attachDir)
-            notice_added = False
+            attach_notice = False
             for rp in removedParts:
-                part = self.delete_attachments(rp, notice)
-                if notice_added == False:
-                    payload.append(part)
-                    notice_added = True
+                rp = self.delete_attachments(rp, notice)#, notice_added)
+                if attach_notice == False:
+                    part_payload.append(part)
+                    attach_notice = True
+            # notice_part = MIMEText(notice, _subtype="html")
+            # notice_part['content-disposition'] = "attachment; filename=" + remfile
+            # part_payload.append(notice_part)
         else:
-            os.rmdir(attachDir)
-
-
+                os.rmdir(attachDir)
+         
         self._msg = msg
 
         out = tempfile.TemporaryFile()
@@ -194,8 +199,10 @@ class mltr_SaveAttachments(Milter.Base):
         finally:
             out.close()
             
-        if payload: self._msg.attach(payload)
-
+        if part_payload: 
+#            self._msg.attach(part_payload)
+            self._msg.set_payload(part_payload)
+            
         return Milter.CONTINUE
 
     def delete_attachments(self, part, notice):#, fname, notice):
@@ -205,9 +212,10 @@ class mltr_SaveAttachments(Milter.Base):
         del part["content-type"]
         del part["content-disposition"]
         del part["content-transfer-encoding"]
-
-        part["content-disposition"] = "attachment; filename=RemovedAttachments.html"
+        
+        part["content-disposition"] = "attachment; filename=" + remfile
         part.set_payload(notice)
+            
         return part
 
 
@@ -276,6 +284,7 @@ def hashit(data):
 
 dropDir = "/dropdir/"
 min_attach_size = 163840
+remfile = "RemovedAttachments.html"
 
 def main():
     bt = Thread(target=background)
