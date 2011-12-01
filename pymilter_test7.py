@@ -23,7 +23,6 @@ from Milter.utils import parse_addr
 
 from email import Errors
 from email.Message import Message
-from email.mime.text import MIMEText
 
 ## ==  IP Information
 from socket import AF_INET, AF_INET6
@@ -154,9 +153,10 @@ class mltr_SaveAttachments(Milter.Base):
                         fname = val
                         
             if fname:
-                fnames.append(fname)
                 data = part.get_payload(decode=1)
-                lrg_attach = extract_attachment(data, attachDir, fname)
+                fname,lrg_attach = extract_attachment(data, attachDir, fname)
+                fnames.append(fname)
+
                 if lrg_attach > min_attach_size:
                     removedParts.append(part)
                 else:
@@ -257,14 +257,30 @@ def attach_dir(msg):
 
 
 def extract_attachment(data, attachDir, fname):
-    exdir_file = attachDir + "/" + fname
-    extracted = open(exdir_file, "wb")
-    extracted.write(data)
-    extracted.close()
-    exdir_file_size = os.path.getsize(exdir_file)
-    if  exdir_file_size <= min_attach_size:
-        os.remove(exdir_file)
-    return exdir_file_size
+    file_counter = 1
+    file_created = False
+    fname_to_write = fname;
+
+    while file_created == False:
+        exdir_file = attachDir + "/" + fname_to_write
+
+        if os.path.exists(exdir_file):
+            fileName,fileExtension = os.path.splitext(fname)
+            fname_to_write = "%s(%d)%s" % (fileName,file_counter,fileExtension)
+            file_counter += 1
+        else:
+            extracted = open(exdir_file, "wb")
+            extracted.write(data)
+            extracted.close()
+            exdir_file_size = os.path.getsize(exdir_file)
+            
+            file_created = True
+
+
+            if  exdir_file_size <= min_attach_size:
+                os.remove(exdir_file)
+
+    return (fname_to_write, exdir_file_size)
 
 
 def hashit(data):
