@@ -24,7 +24,7 @@
   height: 100%;
 }
 #logo h1 #EARS {
-  background: transparent url(../images/WRTgreendot.jpg) no-repeat scroll left top;
+  background: transparent url(../images/WRTgreendot.gif) no-repeat scroll left top;
   width: 100px;
   text-indent: -1000em;
   height: 100px;
@@ -33,10 +33,10 @@
   font-size: 100px;
 }
 #logo h1 #WRT {
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   text-indent: -1000em;
-  font-size: 100px;
+  font-size: 50px;
   text-transform: uppercase;
   color: #cc0000;
 }
