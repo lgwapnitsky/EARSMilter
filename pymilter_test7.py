@@ -160,16 +160,25 @@ class mltr_SaveAttachments(Milter.Base):
                 if lrg_attach > min_attach_size:
                     removedParts.append(part)
                 else:
+                    part_payload.append(part)
                     fnames.remove(fname)
 
 
         if len(removedParts) > 0:
             notice = mako_notice(fnames, attachDir)
+            notice_added = False
             for rp in removedParts:
                 rp = self.delete_attachments(rp, notice)#, notice_added)
+                if notice_added == False:
+                    part_payload.append(rp)
+                    notice_added = True
         else:
                 os.rmdir(attachDir)
          
+        
+        msg.set_payload(part_payload)
+        
+
         self._msg = msg
 
         out = tempfile.TemporaryFile()
@@ -184,14 +193,8 @@ class mltr_SaveAttachments(Milter.Base):
                 self.replacebody(buf)
         finally:
             out.close()
-
-            self.log(self._msg)
             
-        if part_payload: 
-#            self._msg.attach(part_payload)
-            self._msg.set_payload(part_payload)
-
-           
+            
         return Milter.CONTINUE
 
     def delete_attachments(self, part, notice):#, fname, notice):
@@ -204,7 +207,6 @@ class mltr_SaveAttachments(Milter.Base):
         
         part["content-disposition"] = "attachment; filename=" + remfile
         part.set_payload(notice)
-            
         return part
 
 
@@ -214,8 +216,8 @@ class mltr_SaveAttachments(Milter.Base):
         self._msg = msg
         
         self.attachment()
-#        return Milter.ACCEPT
-        return Milter.TEMPFAIL
+        return Milter.ACCEPT
+#        return Milter.TEMPFAIL
 ## ===
 
 
