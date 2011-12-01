@@ -134,8 +134,6 @@ class mltr_SaveAttachments(Milter.Base):
             
             fname = ""
             
-#            self.log(part.getparams())
-
             if part.is_multipart():
                 continue
             
@@ -161,26 +159,14 @@ class mltr_SaveAttachments(Milter.Base):
                 lrg_attach = extract_attachment(data, attachDir, fname)
                 if lrg_attach > min_attach_size:
                     removedParts.append(part)
-#                  removedParts += 1
                 else:
                     fnames.remove(fname)
 
-                # part = self.delete_attachments(part, fname)
-                # payload.append(part)
-                
 
         if len(removedParts) > 0:
-#        if removedParts > 0:
             notice = mako_notice(fnames, attachDir)
-#            attach_notice = False
             for rp in removedParts:
                 rp = self.delete_attachments(rp, notice)#, notice_added)
-#                if attach_notice == False:
-#                    part_payload.append(part)
-#                    attach_notice = True
-            # notice_part = MIMEText(notice, _subtype="html")
-            # notice_part['content-disposition'] = "attachment; filename=" + remfile
-            # part_payload.append(notice_part)
         else:
                 os.rmdir(attachDir)
          
