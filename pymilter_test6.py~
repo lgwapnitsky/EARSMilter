@@ -225,11 +225,10 @@ class mltr_SaveAttachments(Milter.Base):
 def mako_notice(fnames, attachDir):
     attach = []
     for fname in fnames:
-        regex = re.compile("dropdir/(.*)")
+        regex = re.compile("dropdir(.*)")
         r = regex.search(attachDir)
         dirs = r.groups()
-#        attach.append([fname, "%s/%s" % (dirs[0],fname)])
-        attach.append([fname, dirs[0]])
+        attach.append([fname, "%s/%s" % (dirs[0],fname)])
         
     EARStemplate = Template(filename='EARS.html')
     buf = StringIO()

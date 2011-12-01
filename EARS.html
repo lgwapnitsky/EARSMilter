@@ -5,7 +5,7 @@
   <meta http-equiv="content-type content=" text="" html;="" charset="ISO-8859-1&quot;" />
 
   
-  <link media="screen" rel="stylesheet" href="http://it-web-external.wrtdesign.com/EARS/EARS.css" type="text/css" /><title>EARS</title></head><body>
+  <link media="screen" rel="stylesheet" href="http://ears.wrtdesign.com/css/EARS.css" type="text/css" /><title>EARS</title></head><body>
 <div id="logo">
 <h1><span id="WRT">WRT</span>
 <span id="EARS"> EARS</span>
@@ -26,8 +26,7 @@ To retrieve the attachments, right-click on the filename listed below and choose
 <div id="EARS_files">
 <ul>
 % for attachment in attachments:
-    <li>\
-    <a href="ftp://dropped:files@ftp.wrtdesign.com${attachment[1]}">${attachment[0]}</a>
+    <li>      <a href="http://ears.wrtdesign.com/download.php?p=${attachment[1]}&f=${attachment[0]}">${attachment[0]}</a>
 % endfor
 </li></ul>
 </div>
