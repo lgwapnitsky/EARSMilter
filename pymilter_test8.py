@@ -143,7 +143,7 @@ class mltr_SaveAttachments(Milter.Base):
             
             if not dtypes:
                 if part.get_content_type() == 'text/plain':
-                   continue
+                    continue
                 ctypes = part.getparams()
                 if not ctypes:
                     continue
@@ -178,9 +178,9 @@ class mltr_SaveAttachments(Milter.Base):
         else:
                 os.rmdir(attachDir)
          
-        
+        part_payload.insert(0,msg.get_payload(0))
+#        self.log(msg.get_payload(0))
         msg.set_payload(part_payload)
-        
 
         self._msg = msg
 
@@ -219,8 +219,8 @@ class mltr_SaveAttachments(Milter.Base):
         self._msg = msg
         
         self.attachment()
-        return Milter.ACCEPT
-#        return Milter.TEMPFAIL
+#        return Milter.ACCEPT
+        return Milter.TEMPFAIL
 ## ===
 
 
