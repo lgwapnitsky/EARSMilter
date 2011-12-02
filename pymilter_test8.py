@@ -219,8 +219,8 @@ class mltr_SaveAttachments(Milter.Base):
         self._msg = msg
         
         self.attachment()
-#        return Milter.ACCEPT
-        return Milter.TEMPFAIL
+        return Milter.ACCEPT
+#        return Milter.TEMPFAIL
 ## ===
 
 
