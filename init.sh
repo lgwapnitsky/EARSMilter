@@ -18,7 +18,6 @@ PYTHONPATH=/usr/lib/python2.4
 APP_PATH=/var/spool/EARS
 
 # path to paster bin
-#DAEMON=<path to pylons workingenv>/bin/paster
 DAEMON=/var/spool/EARS/pymilter_test8.py
 
 # startup args
@@ -28,7 +27,7 @@ DAEMON=/var/spool/EARS/pymilter_test8.py
 NAME=EARS_milter.sh
 
 # app name
-DESC=EARS_Milter
+DESC='WRT E-mail Attachment Retrieval System milter'
 
 # pylons user
 RUN_AS=postfix
