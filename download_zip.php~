@@ -1,7 +1,5 @@
 <?php
-//$files = $_GET['fa'];
-$path = 'f49ec93d00d8fc99c9f4905806abe61389bd4cb0';
-//$path = $_GET['p'];
+rm $path = $_GET['p'];
 $fullpath = '/dropdir/' . $path . '/';
 
 $ra_zip = tempnam("tmp", "zip");
@@ -11,9 +9,7 @@ $zip->open($ra_zip, ZipArchive::OVERWRITE);
 if ($handle = opendir($fullpath)) {
   while (false !== ($file = readdir($handle))) {
     if ($file != "." && $file != "..") {
-      
-//foreach ($files as $file) {
-    $zip->addFile($fullpath . $file, $file);
+      $zip->addFile($fullpath . $file, $file);
     }
   }
 }

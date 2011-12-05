@@ -1,5 +1,5 @@
 <?php
-rm $path = $_GET['p'];
+$path = $_GET['p'];
 $fullpath = '/dropdir/' . $path . '/';
 
 $ra_zip = tempnam("tmp", "zip");
