@@ -12,7 +12,7 @@
 
 ############### EDIT ME ##################
 # path to workingenv install if any
-PYTHONPATH=/usr/lib/python2.4
+#PYTHONPATH=/usr/lib/python2.7
 
 # path to app
 APP_PATH=/var/spool/EARS

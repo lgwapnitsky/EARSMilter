@@ -12,23 +12,22 @@
 
 ############### EDIT ME ##################
 # path to workingenv install if any
-PYTHONPATH=/usr/lib/python2.4
+#PYTHONPATH=/usr/lib/python2.7
 
 # path to app
 APP_PATH=/var/spool/EARS
 
 # path to paster bin
-#DAEMON=<path to pylons workingenv>/bin/paster
 DAEMON=/var/spool/EARS/pymilter_test8.py
 
 # startup args
 #DAEMON_OPTS=" serve --log-file <my logfile> --server-name=main production.ini"
 
 # script name
-NAME=<my_rc_script.sh>
+NAME=EARS_milter.sh
 
 # app name
-DESC=<my_app>
+DESC='WRT E-mail Attachment Retrieval System milter'
 
 # pylons user
 RUN_AS=postfix
@@ -43,9 +42,14 @@ set -e
 
 case "$1" in
   start)
-        echo -n "Starting $DESC: "
-        start-stop-daemon -d $APP_PATH -c $RUN_AS --start --background --pidfile $PID_FILE  --make-pidfile --exec $DAEMON -- $DAEMON_OPTS
-        echo "$NAME."
+	if ps ax | grep -v grep | grep $DAEMON > /dev/null
+	then
+	    echo "$DESC is already running..."
+	else
+            echo -n "Starting $DESC: "
+	    start-stop-daemon -d $APP_PATH -c $RUN_AS --start --background --pidfile $PID_FILE  --make-pidfile --exec $DAEMON -- $DAEMON_OPTS
+            echo "$NAME."
+	fi
         ;;
   stop)
         echo -n "Stopping $DESC: "
