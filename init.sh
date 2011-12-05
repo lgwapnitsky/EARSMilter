@@ -42,9 +42,14 @@ set -e
 
 case "$1" in
   start)
-        echo -n "Starting $DESC: "
-        start-stop-daemon -d $APP_PATH -c $RUN_AS --start --background --pidfile $PID_FILE  --make-pidfile --exec $DAEMON -- $DAEMON_OPTS
-        echo "$NAME."
+	if ps ax | grep -v grep | grep $DAEMON > /dev/null
+	then
+	    echo "$DESC is already running..."
+	else
+            echo -n "Starting $DESC: "
+	    start-stop-daemon -d $APP_PATH -c $RUN_AS --start --background --pidfile $PID_FILE  --make-pidfile --exec $DAEMON -- $DAEMON_OPTS
+            echo "$NAME."
+	fi
         ;;
   stop)
         echo -n "Stopping $DESC: "
