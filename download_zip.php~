@@ -1,0 +1,7 @@
+<?php
+$files = array($_GET['fa']);
+
+foreach ($files as $file)
+  print $file;
+
+?>

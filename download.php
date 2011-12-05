@@ -1,14 +1,15 @@
 <?php
 
-$username = "dropped";
-$password = "files";
-$server = "ftp.wrtdesign.com";
+//$username = "dropped";
+//$password = "files";
+//$server = "ftp.wrtdesign.com";
 $path = $_GET['p'];
 $filename = $_GET['f'];
 
-$file_full = $path."/".$filename;
+$file_full = '/dropdir/'.$path."/".$filename;
 
-$file_path = "ftp://".$username.":".$password."@".$server."/".$file_full;
+//$file_path = "ftp://".$username.":".$password."@".$server."/".$file_full;
+
 $fsize = filesize($file_path); 
 
 header("Pragma: public");
