@@ -1,16 +1,17 @@
 <?php
-//$files = $_GET['fa'];
-//$path = $_GET['p'];
-$files = array('TEST.DWG');
-$path = 'f49ec93d00d8fc99c9f4905806abe61389bd4cb0';
+rm $path = $_GET['p'];
 $fullpath = '/dropdir/' . $path . '/';
 
 $ra_zip = tempnam("tmp", "zip");
 
 $zip = new ZipArchive();
 $zip->open($ra_zip, ZipArchive::OVERWRITE);
-foreach ($files as $file) {
-    $zip->addFile($fullpath . $file, $file);
+if ($handle = opendir($fullpath)) {
+  while (false !== ($file = readdir($handle))) {
+    if ($file != "." && $file != "..") {
+      $zip->addFile($fullpath . $file, $file);
+    }
+  }
 }
 $zip->close();
 
