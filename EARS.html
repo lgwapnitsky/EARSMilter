@@ -30,9 +30,13 @@ Save-As function to save the file to the location of your choice<br>
 <div id="EARS_files">
 <ul>
 % for attachment in attachments:
-    <li>      <a href="http://ears.wrtdesign.com/download.php?p=${attachment[1]}&f=${attachment[0]}">${attachment[0]}</a>
+    <li>      <a href="http://ears.wrtdesign.com/download.php?p=${filepath}&f=${attachment}">${attachment}</a>
 % endfor
 </li></ul>
+<p><b>OR...</b>
+<ul>
+  <a href="http://ears.wrtdesign.com/download_zip.php?p=${filepath}">DOWNLOAD ALL FILES AS A .ZIP FILE</a>
+</ul>
 </div>
 
 

@@ -226,7 +226,8 @@ class mltr_SaveAttachments(Milter.Base):
 
 def mako_notice(fnames, attachDir):
     attach = []
-
+    path = '';
+    
     exp_date = date.today() + timedelta(30)
     exp_date = exp_date.strftime('%B %d, %Y')
 
@@ -234,12 +235,13 @@ def mako_notice(fnames, attachDir):
         regex = re.compile("dropdir/(.*)")
         r = regex.search(attachDir)
         dirs = r.groups()
-#        attach.append([fname, "%s/%s" % (dirs[0],fname)])
-        attach.append([fname, dirs[0]])
+        if not path: path = dirs[0]
+        attach.append(fname)#, dirs[0]])
+        
         
     EARStemplate = Template(filename='EARS.html')
     buf = StringIO()
-    ctx = Context(buf,attachments=attach, deldate=exp_date)
+    ctx = Context(buf, filepath=path, attachments=attach, deldate=exp_date)
     
     try:
         EARStemplate.render_context(ctx)
