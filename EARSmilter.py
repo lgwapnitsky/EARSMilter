@@ -305,7 +305,7 @@ remfile = "RemovedAttachments.html"
 def main():
     bt = Thread(target=background)
     bt.start()
-    socketname = "/tmp/py_testmilter.sock"
+    socketname = "/var/spool/EARS/EARSmilter.sock"
     timeout = 600
     Milter.factory = mltr_SaveAttachments
     flags = Milter.CHGBODY + Milter.CHGHDRS + Milter.ADDHDRS
@@ -315,7 +315,7 @@ def main():
     print "%s milter startup" % time.strftime('%Y%b%d %H:%M:%S')
     
     sys.stdout.flush()
-    Milter.runmilter("py_testmilter",socketname,timeout)
+    Milter.runmilter("EARSmilter",socketname,timeout)
     logq.put(None)
     bt.join()
     print "%s milter shutdown" % time.strftime('%Y%b%d %H:%M:%S')
