@@ -209,6 +209,7 @@ class mltr_SaveAttachments(Milter.Base):
         del part["content-transfer-encoding"]
         
         part["content-disposition"] = "attachment; filename=" + remfile
+        part["content-type"] = "text/html"
         part.set_payload(notice)
         return part
 
