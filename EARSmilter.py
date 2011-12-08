@@ -301,7 +301,7 @@ def hashit(data):
 
 dropDir = "/dropdir/"
 min_attach_size = 163840
-remfile = "RemovedAttachments.html"
+remfile = "Recover_Attachments.html"
 
 def main():
     bt = Thread(target=background)
