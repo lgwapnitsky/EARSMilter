@@ -158,13 +158,13 @@ class mltr_SaveAttachments(Milter.Base):
             if fname:
                 data = part.get_payload(decode=1)
                 fname,lrg_attach = extract_attachment(data, attachDir, fname)
-                fnames.append(fname)
+                fnames([fname, lrg_attach])
 
                 if lrg_attach > min_attach_size:
                     removedParts.append(part)
                 else:
                     part_payload.append(part)
-                    fnames.remove(fname)
+                    fnames.remove([fname, lrg_attach],'')
 
 
         if len(removedParts) > 0:
@@ -224,6 +224,19 @@ class mltr_SaveAttachments(Milter.Base):
 #        return Milter.TEMPFAIL
 ## ===
 
+def filesize_notation(filesize):
+    f_num = float(filesize)
+    notation = ['', 'K', 'M', 'G']
+    magnitude = 0
+    while f_num > 1024:
+        f_num = f_num / 1024
+        magnitude += 1
+    
+    return '{0:.2f}{1}B'.format(f_num, notation[magnitude])
+
+
+
+
 
 def mako_notice(fnames, attachDir):
     attach = []
@@ -237,6 +250,9 @@ def mako_notice(fnames, attachDir):
         r = regex.search(attachDir)
         dirs = r.groups()
         if not path: path = dirs[0]
+
+        fname[2] = filesize_notation(fname[1])
+
         attach.append(fname)#, dirs[0]])
         
         

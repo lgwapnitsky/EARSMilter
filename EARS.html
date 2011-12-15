@@ -30,7 +30,7 @@
     <div id="EARS_files">
       <ul>
 	% for attachment in attachments:
-	<li><a href="http://ears.wrtdesign.com/download.php?p=${filepath}&amp;f=${attachment}">${attachment}</a></li>
+	<li><a href="http://ears.wrtdesign.com/download.php?p=${filepath}&amp;f=${attachment[0]}">${attachment[0]} ${attachment[2]}</a></li>
 % endfor
       </ul>
       <p><strong>OR...</strong></p>
