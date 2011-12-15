@@ -233,7 +233,7 @@ def filesize_notation(filesize):
         f_num = f_num / 1024
         magnitude += 1
     
-    return '{0:.2f}{1} B'.format(f_num, notation[magnitude])
+    return '{0:.2f}{1}B'.format(f_num, notation[magnitude])
 
 
 
