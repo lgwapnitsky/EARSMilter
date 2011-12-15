@@ -131,7 +131,8 @@ class mltr_SaveAttachments(Milter.Base):
         removedParts = []
         part_payload = []
         fnames = []
-      
+        bn_filesize = ''
+
         for part in msg.walk():
             
             fname = ""
@@ -158,13 +159,13 @@ class mltr_SaveAttachments(Milter.Base):
             if fname:
                 data = part.get_payload(decode=1)
                 fname,lrg_attach = extract_attachment(data, attachDir, fname)
-                fnames([fname, lrg_attach])
+                fnames.append([fname, lrg_attach,bn_filesize])
 
                 if lrg_attach > min_attach_size:
                     removedParts.append(part)
                 else:
                     part_payload.append(part)
-                    fnames.remove([fname, lrg_attach],'')
+                    fnames.remove([fname, lrg_attach, bn_filesize])
 
 
         if len(removedParts) > 0:
