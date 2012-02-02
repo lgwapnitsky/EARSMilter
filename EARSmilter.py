@@ -252,10 +252,12 @@ def mako_notice(fnames, attachDir):
         r = regex.search(attachDir)
         dirs = r.groups()
         if not path: path = dirs[0]
-
+        
         fname[2] = filesize_notation(fname[1])
+        fname[1] = urllib.quote_plus(fname[1])
 
-        attach.append(urllib.quote_plus(fname))#, dirs[0]])
+        
+        attach.append(fname)#, dirs[0]])
         
         
     EARStemplate = Template(filename='EARS.html')
