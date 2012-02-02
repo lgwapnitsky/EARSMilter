@@ -254,18 +254,22 @@ def mako_notice(fnames, attachDir):
     exp_date = exp_date.strftime('%B %d, %Y')
 
     for fname in fnames:
-        regex = re.compile("dropdir/(.*)")
-        r = regex.search(attachDir)
-        dirs = r.groups()
+        regex_dropdir = re.compile("dropdir/(.*)")
+        r1 = regex_dropdir.search(attachDir)
+        dirs = r1.groups()
         if not path: path = dirs[0]
         
         fname[2] = filesize_notation(fname[1])
-        fname[3] = urllib.quote_plus(fname[0])
+        regex_percent = re.compile("(\%)")
+        fname[3] = re.sub(regex_percent, "&#37;", urllib.quote_plus(fname[0]))
+        
+
+        print fname[3]
 
         attach.append(fname)#, dirs[0]])
         
         
-    EARStemplate = Template(filename='EARS.html')
+    EARStemplate = Template(filename='EARS.html', output_encoding='utf-8', encoding_errors='replace')
     buf = StringIO()
     ctx = Context(buf, filepath=path, attachments=attach, deldate=exp_date)
     
