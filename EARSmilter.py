@@ -172,7 +172,7 @@ class mltr_SaveAttachments(Milter.Base):
                 else:
                     removedParts.append(part)
                     fname,lrg_attach = extract_attachment(data, attachDir, fname)
-                    fnames.append([fname, lrg_attach,bn_filesize, enc_fname)])
+                    fnames.append([fname, lrg_attach,bn_filesize, enc_fname])
 
 
 
