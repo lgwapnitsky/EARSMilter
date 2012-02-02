@@ -133,6 +133,7 @@ class mltr_SaveAttachments(Milter.Base):
         part_payload = []
         fnames = []
         bn_filesize = ''
+        enc_fname = ''
 
         for part in msg.walk():
             
@@ -171,7 +172,7 @@ class mltr_SaveAttachments(Milter.Base):
                 else:
                     removedParts.append(part)
                     fname,lrg_attach = extract_attachment(data, attachDir, fname)
-                    fnames.append([fname, lrg_attach,bn_filesize, urllib.quote_plus(fname)])
+                    fnames.append([fname, lrg_attach,bn_filesize, enc_fname)])
 
 
 
@@ -260,7 +261,8 @@ def mako_notice(fnames, attachDir):
         if not path: path = dirs[0]
         
         fname[2] = filesize_notation(fname[1])
-        
+        fname[3] = urllib.quote_plus(fname[0])
+
         attach.append(fname)#, dirs[0]])
         
         
