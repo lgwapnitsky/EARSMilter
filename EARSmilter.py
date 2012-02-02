@@ -12,6 +12,7 @@ import tempfile
 import time
 import rfc822
 import re
+import urllib
 
 from mako.template import Template
 from mako.runtime import Context
@@ -254,7 +255,7 @@ def mako_notice(fnames, attachDir):
 
         fname[2] = filesize_notation(fname[1])
 
-        attach.append(fname)#, dirs[0]])
+        attach.append(urllib.quote_plus(fname))#, dirs[0]])
         
         
     EARStemplate = Template(filename='EARS.html')
