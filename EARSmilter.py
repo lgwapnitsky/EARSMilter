@@ -260,8 +260,7 @@ def mako_notice(fnames, attachDir):
         if not path: path = dirs[0]
         
         fname[2] = filesize_notation(fname[1])
-        regex_percent = re.compile("(\%)")
-        fname[3] = re.sub(regex_percent, "&#37;", urllib.quote_plus(fname[0]))
+        fname[3] = urllib.quote(fname[0])
         
 
         print fname[3]
