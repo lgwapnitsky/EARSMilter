@@ -56,28 +56,15 @@ def background():
 
 ## === End Define Multiprocesing === ##
 
-class LogOutput():
-    def __init__(self, logfile):
-        self.stdout = sys.stdout
-        d = os.path.dirname(logfile)
-        if not os.path.exists(d):
-            os.makedirs(d)
-        self.log = open(logfile, 'w')
- 
-    def write(self, text):
-        self.stdout.write(text)
-        self.log.write(text)
-        self.log.flush()
- 
-    def close(self):
-        self.stdout.close()
-        self.log.close()
-
-
 class mltr_SaveAttachments(Milter.Base):
     
     def __init__(self):
         self.id = Milter.uniqueID()
+        logfile="/var/log/EARS.log"
+        d = os.path.dirname(logfile)
+        if not os.path.exists(d):
+            os.makedirs(d)
+        self.logfp = open(logfile, 'a')
 
     def close(self):
         # always called, even when abort is called.  Clean up
@@ -89,7 +76,9 @@ class mltr_SaveAttachments(Milter.Base):
         return Milter.CONTINUE
 
     def log(self,*msg):
-        logq.put((msg,self.id,time.time()))
+#        logq.put((msg,self.id,time.time()))
+        for i in msg: print >>self.logfp, i,
+        print >>self.logfp
     
     @Milter.noreply
     def connect(self, IPname, family, hostaddr):
@@ -105,7 +94,7 @@ class mltr_SaveAttachments(Milter.Base):
         self.H = None
         self.fp = None
         self.receiver = self.getsymval('j')
-        self.log("connect from %s at %s" % (IPname, hostaddr) )
+        self.log("---------\nconnect from %s at %s" % (IPname, hostaddr) )
         return Milter.CONTINUE
 
     @Milter.noreply
@@ -129,11 +118,12 @@ class mltr_SaveAttachments(Milter.Base):
         self.R = []
         self.fromparms = Milter.dictfromlist(str)
         self.user = self.getsymval('{auth_authen}')
-        self.log("mail from:", mailfrom, *str)
+#        self.log("mail from:", mailfrom, *str)
 #        self.fp = StringIO.StringIO()
         self.fp = StringIO()
         self.canon_from = '@'.join(parse_addr(mailfrom))
         self.fp.write('From %s %s\n' % (self.canon_from,time.ctime()))
+        self.log('From %s %s' % (self.canon_from,time.ctime()))
         return Milter.CONTINUE
 
   ##  def envrcpt(self, to, *str):
@@ -141,7 +131,7 @@ class mltr_SaveAttachments(Milter.Base):
     def envrcpt(self, recipient, *str):
         rcptinfo = recipient,Milter.dictfromlist(str)
         self.R.append(rcptinfo)
-        
+        self.log('To %s %s' % (rcptinfo, time.ctime()))
         return Milter.CONTINUE
 
 
@@ -153,6 +143,8 @@ class mltr_SaveAttachments(Milter.Base):
         fnames = []
         bn_filesize = ''
         enc_fname = ''
+
+        self.log(attachDir)
 
         for part in msg.walk():
             
@@ -180,6 +172,7 @@ class mltr_SaveAttachments(Milter.Base):
             if fname:
                 data = part.get_payload(decode=1)
                 fname,lrg_attach = extract_attachment(data, attachDir, fname)
+
 #                fnames.append([fname, lrg_attach,bn_filesize])
 
 #                if lrg_attach > min_attach_size:
@@ -190,6 +183,7 @@ class mltr_SaveAttachments(Milter.Base):
                     #fnames.remove([fname, lrg_attach, bn_filesize])
                 else:
                     removedParts.append(part)
+                    self.log("%s: %f" %(fname, lrg_attach))
                     fnames.append([fname, lrg_attach,bn_filesize, enc_fname])
 
 
@@ -351,8 +345,6 @@ min_attach_size = 163840
 remfile = "Retrieve_Attachments.html"
 
 def main():
-    sys.stdout = LogOutput("/var/log/EARS.log")
-
     bt = Thread(target=background)
     bt.start()
     socketname = "/var/spool/EARS/EARSmilter.sock"
@@ -364,7 +356,6 @@ def main():
     Milter.set_flags(flags)     # tell Sendmail/Postfix which features we use
     print "%s milter startup" % time.strftime('%Y%b%d %H:%M:%S')
     
-    sys.stdout.flush()
     Milter.runmilter("EARSmilter",socketname,timeout)
     logq.put(None)
     bt.join()
