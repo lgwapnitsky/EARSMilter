@@ -14,6 +14,7 @@ import rfc822
 import re
 import urllib
 
+
 from mako.template import Template
 from mako.runtime import Context
 from mako import exceptions
@@ -54,6 +55,24 @@ def background():
         print
 
 ## === End Define Multiprocesing === ##
+
+class LogOutput():
+    def __init__(self, logfile):
+        self.stdout = sys.stdout
+        d = os.path.dirname(logfile)
+        if not os.path.exists(d):
+            os.makedirs(d)
+        self.log = open(logfile, 'w')
+ 
+    def write(self, text):
+        self.stdout.write(text)
+        self.log.write(text)
+        self.log.flush()
+ 
+    def close(self):
+        self.stdout.close()
+        self.log.close()
+
 
 class mltr_SaveAttachments(Milter.Base):
     
@@ -324,7 +343,7 @@ def extract_attachment(data, attachDir, fname):
 def hashit(data):
     sha1 = hashlib.sha1()
     sha1.update(data)
-       
+      
     return sha1.hexdigest()
 
 dropDir = "/dropdir/"
@@ -332,6 +351,8 @@ min_attach_size = 163840
 remfile = "Retrieve_Attachments.html"
 
 def main():
+    sys.stdout = LogOutput("/var/log/EARS.log")
+
     bt = Thread(target=background)
     bt.start()
     socketname = "/var/spool/EARS/EARSmilter.sock"
