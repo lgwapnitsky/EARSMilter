@@ -97,13 +97,9 @@ class mltr_SaveAttachments(Milter.Base):
 #        self.log("---------\nconnect from %s at %s" % (IPname, hostaddr) )
         return Milter.CONTINUE
 
-#    @Milter.noreply
+    @Milter.noreply
     def header(self, name, hval):
-        # stop if Blacklisted                                                                      subjectMarker = "[Please Blacklist Me]"
-        if subjectMarker in hval:
-            return Milter.DISCARD
-        else:
-            self.fp.write("%s: %s\n" % (name,hval))     # add header to buffer                         return Milter.CONTINUE
+        self.fp.write("%s: %s\n" % (name,hval))     # add header to buffer                         return Milter.CONTINUE
         
     
     @Milter.noreply
