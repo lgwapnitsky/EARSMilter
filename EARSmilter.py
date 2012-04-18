@@ -94,13 +94,17 @@ class mltr_SaveAttachments(Milter.Base):
         self.H = None
         self.fp = None
         self.receiver = self.getsymval('j')
-        self.log("---------\nconnect from %s at %s" % (IPname, hostaddr) )
+#        self.log("---------\nconnect from %s at %s" % (IPname, hostaddr) )
         return Milter.CONTINUE
 
-    @Milter.noreply
+#    @Milter.noreply
     def header(self, name, hval):
-        self.fp.write("%s: %s\n" % (name,hval))	# add header to buffer
-        return Milter.CONTINUE
+        # stop if Blacklisted                                                                      subjectMarker = "[Please Blacklist Me]"
+        if subjectMarker in hval:
+            return Milter.DISCARD
+        else:
+            self.fp.write("%s: %s\n" % (name,hval))     # add header to buffer                         return Milter.CONTINUE
+        
     
     @Milter.noreply
     def body(self, chunk):

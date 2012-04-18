@@ -36,6 +36,25 @@ PID_FILE=/var/run/milter.pid
 
 ############### END EDIT ME ##################
 
+do_start()
+{
+    echo -n "Starting $DESC: "
+    until [ -e $PID_FILE ]
+    do
+	start-stop-daemon -d $APP_PATH -c $RUN_AS --start --background --pidfile $PID_FILE  --make-pidfile --exec $DAEMON -- $DAEMON_OPTS
+    done
+    echo "$NAME."
+}
+
+do_stop()
+{
+    until [ ! -e $PID_FILE ]
+    do
+	start-stop-daemon --stop --pidfile $PID_FILE
+    done
+}
+
+
 test -x $DAEMON || exit 0
 
 set -e
@@ -46,20 +65,24 @@ case "$1" in
 	then
 	    echo "$DESC is already running..."
 	else
-            echo -n "Starting $DESC: "
-	    until [ -e $PID_FILE]
-	    do
-		start-stop-daemon -d $APP_PATH -c $RUN_AS --start --background --pidfile $PID_FILE  --make-pidfile --exec $DAEMON -- $DAEMON_OPTS
-	    done
-            echo "$NAME."
+	    do_start
+            # echo -n "Starting $DESC: "
+	    # until [ -e $PID_FILE]
+	    # do
+	    # 	start-stop-daemon -d $APP_PATH -c $RUN_AS --start --background --pidfile $PID_FILE  --make-pidfile --exec $DAEMON -- $DAEMON_OPTS
+	    # done
+            # echo "$NAME."
 	fi
         ;;
   stop)
         echo -n "Stopping $DESC: "
 	until [ ! ps ax | grep -v grep | grep $DAEMON > /dev/null ]
 	do
-            start-stop-daemon --stop --pidfile $PID_FILE
+	    do_stop
 	done
+	# do
+        #     start-stop-daemon --stop --pidfile $PID_FILE
+	# done
         echo "$NAME."
         ;;
 
@@ -79,5 +102,6 @@ case "$1" in
         exit 1
         ;;
 esac
+
 
 exit 0
