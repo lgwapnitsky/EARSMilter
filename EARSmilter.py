@@ -150,6 +150,7 @@ class mltr_SaveAttachments(Milter.Base):
         enc_fname = ''
 
         self.log('From %s' % self.canon_from)
+        print self.R
         for recipient in self.R:
             self.log('To %s' % recipient)
         self.log('Folder: %s' % attachDir)
