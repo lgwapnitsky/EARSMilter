@@ -187,7 +187,7 @@ class mltr_SaveAttachments(Milter.Base):
                 else:
                     removedParts.append(part)
                     #self.log("%s: %f" %(fname, lrg_attach))
-                    self.log('%s: %f' % (fname, bn_filesize))
+                    self.log('%s: %f' % (fname, filesize_notation(lrg_attach)))
                     fnames.append([fname, lrg_attach,bn_filesize, enc_fname])
 
 
