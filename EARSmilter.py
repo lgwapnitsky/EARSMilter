@@ -14,6 +14,7 @@ import rfc822
 import re
 import urllib
 
+import logger
 
 from mako.template import Template
 from mako.runtime import Context
@@ -57,14 +58,17 @@ def background():
 ## === End Define Multiprocesing === ##
 
 class mltr_SaveAttachments(Milter.Base):
+
+    EARSlog = logger.logger('EARSmilter')
     
     def __init__(self):
         self.id = Milter.uniqueID()
-        logfile="/var/log/EARS.log"
-        d = os.path.dirname(logfile)
-        if not os.path.exists(d):
-            os.makedirs(d)
-        self.logfp = open(logfile, 'a')
+        #logfile="/var/log/EARS.log"
+        #d = os.path.dirname(logfile)
+        #if not os.path.exists(d):
+            #os.makedirs(d)
+        #self.logfp = open(logfile, 'a')
+        self.EARSlog.start()
 
     def close(self):
         # always called, even when abort is called.  Clean up
@@ -73,12 +77,14 @@ class mltr_SaveAttachments(Milter.Base):
 
     def abort(self):
         # client disconnected prematurely
+        self.EARSlog.warning('client discconected prematurely')
         return Milter.CONTINUE
 
     def log(self,*msg):
 #        logq.put((msg,self.id,time.time()))
-        for i in msg: print >>self.logfp, i,
-        print >>self.logfp
+        #for i in msg: print >>self.logfp, i,
+        #print >>self.logfp
+        for i in msg: self.EARSlog.info(i)
     
     @Milter.noreply
     def connect(self, IPname, family, hostaddr):
@@ -119,11 +125,10 @@ class mltr_SaveAttachments(Milter.Base):
         self.fromparms = Milter.dictfromlist(str)
         self.user = self.getsymval('{auth_authen}')
 #        self.log("mail from:", mailfrom, *str)
-#        self.fp = StringIO.StringIO()
         self.fp = StringIO()
         self.canon_from = '@'.join(parse_addr(mailfrom))
         self.fp.write('From %s %s\n' % (self.canon_from,time.ctime()))
-        self.log('From %s %s' % (self.canon_from,time.ctime()))
+#        self.log('From %s %s' % (self.canon_from,time.ctime()))
         return Milter.CONTINUE
 
   ##  def envrcpt(self, to, *str):
@@ -131,7 +136,7 @@ class mltr_SaveAttachments(Milter.Base):
     def envrcpt(self, recipient, *str):
         rcptinfo = recipient,Milter.dictfromlist(str)
         self.R.append(rcptinfo)
-        self.log('To %s %s' % (rcptinfo, time.ctime()))
+#        self.log('To %s %s' % (rcptinfo, time.ctime()))
         return Milter.CONTINUE
 
 
@@ -173,11 +178,6 @@ class mltr_SaveAttachments(Milter.Base):
                 data = part.get_payload(decode=1)
                 fname,lrg_attach = extract_attachment(data, attachDir, fname)
 
-#                fnames.append([fname, lrg_attach,bn_filesize])
-
-#                if lrg_attach > min_attach_size:
-#                    removedParts.append(part)
-#                else:
                 if lrg_attach <= min_attach_size:
                     part_payload.append(part)
                     #fnames.remove([fname, lrg_attach, bn_filesize])
@@ -221,7 +221,7 @@ class mltr_SaveAttachments(Milter.Base):
             
         return Milter.CONTINUE
 
-    def delete_attachments(self, part, notice):#, fname, notice):
+    def delete_attachments(self, part, notice):
         for key,value in part.get_params():
             part.del_param(key)
 
@@ -242,7 +242,6 @@ class mltr_SaveAttachments(Milter.Base):
         
         self.attachment()
         return Milter.ACCEPT
-#        return Milter.TEMPFAIL
 ## ===
 
 def filesize_notation(filesize):
@@ -276,9 +275,8 @@ def mako_notice(fnames, attachDir):
         fname[3] = urllib.quote(fname[0])
         
 
-        print fname[3]
 
-        attach.append(fname)#, dirs[0]])
+        attach.append(fname)
         
         
     EARStemplate = Template(filename='EARS.html', output_encoding='utf-8', encoding_errors='replace')
