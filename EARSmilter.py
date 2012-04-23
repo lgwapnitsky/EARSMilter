@@ -149,7 +149,10 @@ class mltr_SaveAttachments(Milter.Base):
         bn_filesize = ''
         enc_fname = ''
 
-        self.log(attachDir)
+        self.log('From %s' % self.canon_from)
+        for recipient in self.R:
+            self.log('To %s' % recipient)
+        self.log('Folder: %s' % attachDir)
 
         for part in msg.walk():
             
@@ -183,7 +186,8 @@ class mltr_SaveAttachments(Milter.Base):
                     #fnames.remove([fname, lrg_attach, bn_filesize])
                 else:
                     removedParts.append(part)
-                    self.log("%s: %f" %(fname, lrg_attach))
+                    #self.log("%s: %f" %(fname, lrg_attach))
+                    self.log('%s: %f' % (fname, bn_filesize))
                     fnames.append([fname, lrg_attach,bn_filesize, enc_fname])
 
 
