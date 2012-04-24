@@ -153,7 +153,7 @@ class mltr_SaveAttachments(Milter.Base):
         print self.R
         for R in self.R:
             for recipient in R:
-                if not recipient == '': self.log('To %s' % recipient)
+                if len(recipient) < 1: self.log('To %s' % recipient)
         self.log('Folder: %s' % attachDir)
 
         for part in msg.walk():
