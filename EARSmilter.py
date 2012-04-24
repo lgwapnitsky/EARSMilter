@@ -153,7 +153,7 @@ class mltr_SaveAttachments(Milter.Base):
         print self.R
         for R in self.R:
             for recipient in R:
-                self.log('To %s' % recipient)
+                if not recipient == '': self.log('To %s' % recipient)
         self.log('Folder: %s' % attachDir)
 
         for part in msg.walk():
@@ -185,7 +185,6 @@ class mltr_SaveAttachments(Milter.Base):
 
                 if lrg_attach <= min_attach_size:
                     part_payload.append(part)
-                    #fnames.remove([fname, lrg_attach, bn_filesize])
                 else:
                     removedParts.append(part)
                     #self.log("%s: %f" %(fname, lrg_attach))
