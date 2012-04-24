@@ -77,7 +77,7 @@ class mltr_SaveAttachments(Milter.Base):
 
     def abort(self):
         # client disconnected prematurely
-        self.EARSlog.warning('client discconected prematurely')
+        # self.EARSlog.warning('client discconected prematurely')
         return Milter.CONTINUE
 
     def log(self,*msg):
