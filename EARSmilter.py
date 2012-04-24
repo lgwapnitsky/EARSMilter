@@ -43,7 +43,7 @@ else:
     from Queue import Queue
 
 logq = Queue(maxsize=4)
-
+EARSlog = logger.logger('EARSmilter')
 
 def background():
     while True:
@@ -59,7 +59,7 @@ def background():
 
 class mltr_SaveAttachments(Milter.Base):
 
-    EARSlog = logger.logger('EARSmilter')
+    #EARSlog = logger.logger('EARSmilter')
     
     def __init__(self):
         self.id = Milter.uniqueID()
@@ -68,7 +68,8 @@ class mltr_SaveAttachments(Milter.Base):
         #if not os.path.exists(d):
             #os.makedirs(d)
         #self.logfp = open(logfile, 'a')
-        self.EARSlog.start()
+#        self.EARSlog.start()
+        self.EARSlog = EARSlog
 
     def close(self):
         # always called, even when abort is called.  Clean up
@@ -348,6 +349,7 @@ min_attach_size = 163840
 remfile = "Retrieve_Attachments.html"
 
 def main():
+    EARSlog.start()
     bt = Thread(target=background)
     bt.start()
     socketname = "/var/spool/EARS/EARSmilter.sock"
@@ -357,12 +359,13 @@ def main():
     flags += Milter.ADDRCPT
     flags += Milter.DELRCPT
     Milter.set_flags(flags)     # tell Sendmail/Postfix which features we use
-    print "%s milter startup" % time.strftime('%Y%b%d %H:%M:%S')
-    
+    #print "%s milter startup" % time.strftime('%Y%b%d %H:%M:%S')
+    EARSlog.info("milter startup")
     Milter.runmilter("EARSmilter",socketname,timeout)
     logq.put(None)
     bt.join()
-    print "%s milter shutdown" % time.strftime('%Y%b%d %H:%M:%S')
+    #print "%s milter shutdown" % time.strftime('%Y%b%d %H:%M:%S')
+    EARSlog.info("milter shutdown")
 
 if __name__ == "__main__":
     main()
