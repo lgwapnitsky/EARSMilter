@@ -107,7 +107,11 @@ class mltr_SaveAttachments(Milter.Base):
     @Milter.noreply
     def header(self, name, hval):
         self.fp.write("%s: %s\n" % (name,hval))     # add header to buffer                         return Milter.CONTINUE
-        
+
+    @Milter.noreply
+    def unknown(self, cmd):
+        self.EARSlog.warning('Invalid command sent: %s' % cmd)
+        return Milter.CONTINUE
     
     @Milter.noreply
     def body(self, chunk):
