@@ -120,6 +120,7 @@ class mltr_SaveAttachments(Milter.Base):
     @Milter.noreply
     def header(self, name, hval):
         self.fp.write("%s: %s\n" % (name,hval))     # add header to buffer
+        self.debug("%s: %s\n" % (name,hval))
         return Milter.CONTINUE
         
 
