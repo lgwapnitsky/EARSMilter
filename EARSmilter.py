@@ -225,7 +225,7 @@ class mltr_SaveAttachments(Milter.Base):
                 os.rmdir(attachDir)
          
         part_payload.insert(0,msg.get_payload(0))
-        self.debug(msg.get_payload(0))
+        #self.debug(msg.get_payload(0))
         msg.set_payload(part_payload)
 
         self._msg = msg
