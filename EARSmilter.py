@@ -49,7 +49,7 @@ from optparse import OptionParser
 parser = OptionParser()
 parser.add_option("-v", "--verbose",
                   action="store_true", dest="verbose", default=False,
-                  help="Enables debug logging to %s" % RBLlog.DEBUG_LOG_FILENAME)
+                  help="Enables debug logging to %s" % EARSlog.DEBUG_LOG_FILENAME)
 (opts, args) = parser.parse_args()
 
 
