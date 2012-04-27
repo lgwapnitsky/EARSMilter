@@ -131,7 +131,6 @@ class mltr_SaveAttachments(Milter.Base):
     @Milter.noreply
     def body(self, chunk):
         self.fp.write(chunk)
-        self.debug(chunk)
         return Milter.CONTINUE
 
     @Milter.noreply
