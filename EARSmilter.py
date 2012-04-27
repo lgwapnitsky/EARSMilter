@@ -45,6 +45,14 @@ else:
 logq = Queue(maxsize=4)
 EARSlog = logger.logger('EARSmilter')
 
+from optparse import OptionParser
+parser = OptionParser()
+parser.add_option("-v", "--verbose",
+                  action="store_true", dest="verbose", default=False,
+                  help="Enables debug logging to %s" % RBLlog.DEBUG_LOG_FILENAME)
+(opts, args) = parser.parse_args()
+
+
 def background():
     while True:
         t = logq.get()
@@ -70,7 +78,8 @@ class mltr_SaveAttachments(Milter.Base):
         #self.logfp = open(logfile, 'a')
 #        self.EARSlog.start()
         self.EARSlog = EARSlog
-
+        self.verbose = opts.verbose
+        
     def close(self):
         # always called, even when abort is called.  Clean up
         # any external resources here.
@@ -87,6 +96,10 @@ class mltr_SaveAttachments(Milter.Base):
         #print >>self.logfp
         for i in msg: self.EARSlog.info(i)
     
+    def debug(self, *msg):
+        if self.verbose == True:
+            for i in msg: self.EARSlog.debug(i)
+        
     @Milter.noreply
     def connect(self, IPname, family, hostaddr):
         self.IP = hostaddr[0]
@@ -106,7 +119,9 @@ class mltr_SaveAttachments(Milter.Base):
 
     @Milter.noreply
     def header(self, name, hval):
-        self.fp.write("%s: %s\n" % (name,hval))     # add header to buffer                         return Milter.CONTINUE
+        self.fp.write("%s: %s\n" % (name,hval))     # add header to buffer
+        return Milter.CONTINUE
+        
 
     @Milter.noreply
     def unknown(self, cmd):
@@ -116,6 +131,7 @@ class mltr_SaveAttachments(Milter.Base):
     @Milter.noreply
     def body(self, chunk):
         self.fp.write(chunk)
+        self.debug(chunk)
         return Milter.CONTINUE
 
     @Milter.noreply
@@ -136,7 +152,6 @@ class mltr_SaveAttachments(Milter.Base):
 #        self.log('From %s %s' % (self.canon_from,time.ctime()))
         return Milter.CONTINUE
 
-  ##  def envrcpt(self, to, *str):
     @Milter.noreply
     def envrcpt(self, recipient, *str):
         rcptinfo = recipient,Milter.dictfromlist(str)
@@ -210,7 +225,7 @@ class mltr_SaveAttachments(Milter.Base):
                 os.rmdir(attachDir)
          
         part_payload.insert(0,msg.get_payload(0))
-#        self.log(msg.get_payload(0))
+        self.debug(msg.get_payload(0))
         msg.set_payload(part_payload)
 
         self._msg = msg
