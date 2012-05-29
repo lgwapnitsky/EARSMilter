@@ -212,7 +212,7 @@ class mltr_SaveAttachments(Milter.Base):
                         self.log('Extracted from "%s":' % fname)
                         for wp in winmail_parts:    
                             fnames.append(wp)
-                            self.log('%s: %s' % (wp[0], filesize_notation(wp[1])))
+                            self.log('     %s: %s' % (wp[0], filesize_notation(wp[1])))
                     else:                   
                         self.log('%s: %s' % (fname, filesize_notation(lrg_attach)))
                         fnames.append([fname, lrg_attach, bn_filesize, enc_fname])
