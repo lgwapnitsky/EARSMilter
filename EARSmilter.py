@@ -339,7 +339,7 @@ def winmail_parse(fname, attachDir):
     body_types = ({'body':'txt', 'htmlbody':'html'})
     body = None
 
-    winmail_file = '%s\%s' % (attachDir, fname)
+    winmail_file = '%s/%s' % (attachDir, fname)
 
     winmail_file_open = open(winmail_file, 'r')
 
