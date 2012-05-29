@@ -217,8 +217,6 @@ class mltr_SaveAttachments(Milter.Base):
                         self.log('%s: %s' % (fname, filesize_notation(lrg_attach)))
                         fnames.append([fname, lrg_attach, bn_filesize, enc_fname])
 
-
-
         if len(removedParts) > 0:
             notice = mako_notice(fnames, attachDir)
             notice_added = False
@@ -231,7 +229,6 @@ class mltr_SaveAttachments(Milter.Base):
                 os.rmdir(attachDir)
          
         part_payload.insert(0, msg.get_payload(0))
-        #self.debug(msg.get_payload(0))
         msg.set_payload(part_payload)
 
         self._msg = msg
@@ -416,12 +413,10 @@ def main():
     flags += Milter.ADDRCPT
     flags += Milter.DELRCPT
     Milter.set_flags(flags)     # tell Sendmail/Postfix which features we use
-    #print "%s milter startup" % time.strftime('%Y%b%d %H:%M:%S')
     EARSlog.info("milter startup")
     Milter.runmilter("EARSmilter", socketname, timeout)
     logq.put(None)
     bt.join()
-    #print "%s milter shutdown" % time.strftime('%Y%b%d %H:%M:%S')
     EARSlog.info("milter shutdown")
 
 if __name__ == "__main__":
