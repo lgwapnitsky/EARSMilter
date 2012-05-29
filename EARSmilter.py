@@ -342,9 +342,9 @@ def winmail_parse(data, attachDir):
     body_types = ({'body':'txt', 'htmlbody':'html'})
     body = None
 
-    winmail_data = open(data)
+#    winmail_data = open(data)
 
-    tnef = tnefparse.parseFile(None, winmail_data)
+    tnef = tnefparse.parseFile(None, data)
     
     for btype, ext in body_types.iteritems():
         if btype in dir(tnef):
