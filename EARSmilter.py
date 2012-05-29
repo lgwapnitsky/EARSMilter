@@ -363,7 +363,7 @@ def winmail_parse(fname, attachDir):
             wdat_file.write(attachment.data)
         wparts.append([attachment.name, os.path.getsize(exdir_file), '', ''])
 
-    os.remove(winmail_file_open)
+    os.remove(winmail_file)
     return wparts
 
 def extract_attachment(data, attachDir, fname):
