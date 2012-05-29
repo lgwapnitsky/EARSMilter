@@ -12,6 +12,8 @@ import tempfile
 import time
 import rfc822
 import re
+import tnefparse
+import types
 import urllib
 
 import logger
@@ -57,8 +59,8 @@ def background():
     while True:
         t = logq.get()
         if not t: break
-        msg,id,ts = t
-        print "%s [%d]" % (time.strftime('%Y%b%d %H:%M:%S',time.localtime(ts)),id),
+        msg, id, ts = t
+        print "%s [%d]" % (time.strftime('%Y%b%d %H:%M:%S', time.localtime(ts)), id),
         # 2005Oct13 02:34:11 [1] msg1 msg2 msg3 ...
         for i in msg: print i,
         print
@@ -90,7 +92,7 @@ class mltr_SaveAttachments(Milter.Base):
         # self.EARSlog.warning('client disconnected prematurely')
         return Milter.CONTINUE
 
-    def log(self,*msg):
+    def log(self, *msg):
 #        logq.put((msg,self.id,time.time()))
         #for i in msg: print >>self.logfp, i,
         #print >>self.logfp
@@ -114,13 +116,12 @@ class mltr_SaveAttachments(Milter.Base):
         self.H = None
         self.fp = None
         self.receiver = self.getsymval('j')
-#        self.log("---------\nconnect from %s at %s" % (IPname, hostaddr) )
         return Milter.CONTINUE
 
     @Milter.noreply
     def header(self, name, hval):
-        self.fp.write("%s: %s\n" % (name,hval))     # add header to buffer
-        self.debug("%s: %s\n" % (name,hval))
+        self.fp.write("%s: %s\n" % (name, hval))     # add header to buffer
+        self.debug("%s: %s\n" % (name, hval))
         return Milter.CONTINUE
         
 
@@ -139,7 +140,7 @@ class mltr_SaveAttachments(Milter.Base):
         self.fp.write("\n")				# terminate headers
         return Milter.CONTINUE
     
-    def envfrom(self,mailfrom,*str):
+    def envfrom(self, mailfrom, *str):
 #        self.log("envfrom")
         self.F = mailfrom
         self.R = []
@@ -148,18 +149,17 @@ class mltr_SaveAttachments(Milter.Base):
 #        self.log("mail from:", mailfrom, *str)
         self.fp = StringIO()
         self.canon_from = '@'.join(parse_addr(mailfrom))
-        self.fp.write('From %s %s\n' % (self.canon_from,time.ctime()))
+        self.fp.write('From %s %s\n' % (self.canon_from, time.ctime()))
 #        self.log('From %s %s' % (self.canon_from,time.ctime()))
         return Milter.CONTINUE
 
     @Milter.noreply
     def envrcpt(self, recipient, *str):
-        rcptinfo = recipient,Milter.dictfromlist(str)
+        rcptinfo = recipient, Milter.dictfromlist(str)
         self.R.append(rcptinfo)
-#        self.log('To %s %s' % (rcptinfo, time.ctime()))
         return Milter.CONTINUE
 
-
+    
     def attachment(self):
         msg = self._msg
         attachDir = attach_dir(msg)
@@ -191,25 +191,31 @@ class mltr_SaveAttachments(Milter.Base):
                 ctypes = part.getparams()
                 if not ctypes:
                     continue
-                for key,val in ctypes:
+                for key, val in ctypes:
                     if key.lower() == 'name':
                         fname = val
             else:
-                for key,val in dtypes:
+                for key, val in dtypes:
                     if key.lower() == 'filename':
                         fname = val
                         
             if fname:
                 data = part.get_payload(decode=1)
-                fname,lrg_attach = extract_attachment(data, attachDir, fname)
-
-                if lrg_attach <= min_attach_size:
-                    part_payload.append(part)
-                else:
+                
+                if re.match('winmail.dat', fname, re.IGNORECASE):
                     removedParts.append(part)
-                    #self.log("%s: %f" %(fname, lrg_attach))
-                    self.log('%s: %s' % (fname, filesize_notation(lrg_attach)))
-                    fnames.append([fname, lrg_attach,bn_filesize, enc_fname])
+                    winmail_parts = winmail_parse(data, attachDir)
+                    for wp in winmail_parts:    
+                        fnames.append(wp)
+                else:
+                    fname, lrg_attach = extract_attachment(data, attachDir, fname)
+
+                    if lrg_attach <= min_attach_size:
+                        part_payload.append(part)
+                    else:
+                        removedParts.append(part)
+                        self.log('%s: %s' % (fname, filesize_notation(lrg_attach)))
+                        fnames.append([fname, lrg_attach, bn_filesize, enc_fname])
 
 
 
@@ -224,7 +230,7 @@ class mltr_SaveAttachments(Milter.Base):
         else:
                 os.rmdir(attachDir)
          
-        part_payload.insert(0,msg.get_payload(0))
+        part_payload.insert(0, msg.get_payload(0))
         #self.debug(msg.get_payload(0))
         msg.set_payload(part_payload)
 
@@ -247,7 +253,7 @@ class mltr_SaveAttachments(Milter.Base):
         return Milter.CONTINUE
 
     def delete_attachments(self, part, notice):
-        for key,value in part.get_params():
+        for key, value in part.get_params():
             part.del_param(key)
 
         del part["content-type"]
@@ -330,17 +336,42 @@ def attach_dir(msg):
     return attachDir
 
 
+def winmail_parse(data, attachDir):
+    wparts = []
+    body_types = ({'body':'txt', 'htmlbody':'html'})
+    body = None
+
+    tnef = tnefparse.parseFile(None, data)
+    
+    for btype, ext in body_types.iteritems():
+        if btype in dir(tnef):
+            bodydata = getattr(tnef, btype, None)
+            msgfname = 'Original_Message.%s' % ext
+            if isinstance(bodydata, types.ListType):
+                body = bodydata[0]
+            else: body = bodydata
+            with open('%s/%s' % (attachDir, msgfname)) as origMsg:
+                origMsg.write(body)
+                wparts.append([msgfname, os.path.getsize(origMsg), '', ''])
+    
+    for attachment in tnef.attachments:
+        with open('%s/%s' % (attachDir, attachment.name)) as exdir_file:
+            exdir_file.write(attachment.data)
+        wparts.append([attachment.name, os.path.getsize(exdir_file), '', ''])
+    
+    return wparts
+
 def extract_attachment(data, attachDir, fname):
     file_counter = 1
     file_created = False
-    fname_to_write = fname.replace("\n","").replace("\r","")
+    fname_to_write = fname.replace("\n", "").replace("\r", "")
 
     while file_created == False:
         exdir_file = attachDir + "/" + fname_to_write
 
         if os.path.exists(exdir_file):
-            fileName,fileExtension = os.path.splitext(fname)
-            fname_to_write = "%s(%d)%s" % (fileName,file_counter,fileExtension)
+            fileName, fileExtension = os.path.splitext(fname)
+            fname_to_write = "%s(%d)%s" % (fileName, file_counter, fileExtension)
             file_counter += 1
         else:
             extracted = open(exdir_file, "wb")
@@ -380,7 +411,7 @@ def main():
     Milter.set_flags(flags)     # tell Sendmail/Postfix which features we use
     #print "%s milter startup" % time.strftime('%Y%b%d %H:%M:%S')
     EARSlog.info("milter startup")
-    Milter.runmilter("EARSmilter",socketname,timeout)
+    Milter.runmilter("EARSmilter", socketname, timeout)
     logq.put(None)
     bt.join()
     #print "%s milter shutdown" % time.strftime('%Y%b%d %H:%M:%S')
