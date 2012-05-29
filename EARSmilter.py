@@ -203,17 +203,15 @@ class mltr_SaveAttachments(Milter.Base):
                 data = part.get_payload(decode=1)
                 fname, lrg_attach = extract_attachment(data, attachDir, fname)
 
-                if re.match('winmail.dat', fname, re.IGNORECASE):
+                if lrg_attach <= min_attach_size:
+                    part_payload.append(part)
+                else:
                     removedParts.append(part)
-                    winmail_parts = winmail_parse(data, attachDir)
+                    if re.match('winmail.dat', fname, re.IGNORECASE):
+                        winmail_parts = winmail_parse(fname, attachDir)
                     for wp in winmail_parts:    
                         fnames.append(wp)
-
-                else:                   
-                    if lrg_attach <= min_attach_size:
-                        part_payload.append(part)
-                    else:
-                        removedParts.append(part)
+                    else:                   
                         self.log('%s: %s' % (fname, filesize_notation(lrg_attach)))
                         fnames.append([fname, lrg_attach, bn_filesize, enc_fname])
 
@@ -336,12 +334,16 @@ def attach_dir(msg):
     return attachDir
 
 
-def winmail_parse(data, attachDir):
+def winmail_parse(fname, attachDir):
     wparts = []
     body_types = ({'body':'txt', 'htmlbody':'html'})
     body = None
 
-    tnef = tnefparse.parseFile(None, data)
+    winmail_file = '%s\%s' % (attachDir, fname)
+
+    winmail_file_open = open(winmail_file_open, 'r')
+
+    tnef = tnefparse.parseFile(None, winmail_file)
     
     for btype, ext in body_types.iteritems():
         if btype in dir(tnef):
@@ -358,7 +360,8 @@ def winmail_parse(data, attachDir):
         with open('%s/%s' % (attachDir, attachment.name)) as exdir_file:
             exdir_file.write(attachment.data)
         wparts.append([attachment.name, os.path.getsize(exdir_file), '', ''])
-    
+
+    os.remove(winmail_file_open)
     return wparts
 
 def extract_attachment(data, attachDir, fname):
