@@ -355,7 +355,7 @@ def winmail_parse(fname, attachDir):
             exdir_file = '%s/%s' % (attachDir, msgfname)
             with open(exdir_file, "wb") as origMsg:
                 origMsg.write(body)
-                wparts.append([msgfname, os.path.getsize(origMsg), '', ''])
+                wparts.append([msgfname, os.path.getsize(exdir_file), '', ''])
     
     for attachment in tnef.attachments:
         exdir_file = '%s/%s' % (attachDir, attachment.name)
