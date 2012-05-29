@@ -352,13 +352,15 @@ def winmail_parse(fname, attachDir):
             if isinstance(bodydata, types.ListType):
                 body = bodydata[0]
             else: body = bodydata
-            with open('%s/%s' % (attachDir, msgfname), "wb") as origMsg:
+            exdir_file = '%s/%s' % (attachDir, msgfname)
+            with open(exdir_file, "wb") as origMsg:
                 origMsg.write(body)
                 wparts.append([msgfname, os.path.getsize(origMsg), '', ''])
     
     for attachment in tnef.attachments:
-        with open('%s/%s' % (attachDir, attachment.name), "wb") as exdir_file:
-            exdir_file.write(attachment.data)
+        exdir_file = '%s/%s' % (attachDir, attachment.name)
+        with open(exdir_file, "wb") as wdat_file:
+            wdat_file.write(attachment.data)
         wparts.append([attachment.name, os.path.getsize(exdir_file), '', ''])
 
     os.remove(winmail_file_open)
