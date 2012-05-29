@@ -200,17 +200,16 @@ class mltr_SaveAttachments(Milter.Base):
                         fname = val
                         
             if fname:
-                
+                data = part.get_payload(decode=1)
+                fname, lrg_attach = extract_attachment(data, attachDir, fname)
+
                 if re.match('winmail.dat', fname, re.IGNORECASE):
                     removedParts.append(part)
-                    winmail_parts = winmail_parse(part, attachDir)
+                    winmail_parts = winmail_parse(data, attachDir)
                     for wp in winmail_parts:    
                         fnames.append(wp)
-                else:
-                    data = part.get_payload(decode=1)
 
-                    fname, lrg_attach = extract_attachment(data, attachDir, fname)
-
+                else:                   
                     if lrg_attach <= min_attach_size:
                         part_payload.append(part)
                     else:
@@ -341,8 +340,6 @@ def winmail_parse(data, attachDir):
     wparts = []
     body_types = ({'body':'txt', 'htmlbody':'html'})
     body = None
-
-#    winmail_data = open(data)
 
     tnef = tnefparse.parseFile(None, data)
     
