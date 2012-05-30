@@ -340,7 +340,7 @@ def winmail_parse(fname, attachDir):
 
     winmail_file = '%s/%s' % (attachDir, fname)
 
-    winmail_file_open = open(winmail_file, 'r')
+    winmail_file_open = open(winmail_file, 'rb')
 
     tnef = tnefparse.parseFile(None, winmail_file_open)
     
