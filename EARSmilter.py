@@ -100,7 +100,7 @@ class mltr_SaveAttachments(Milter.Base):
     
     def debug(self, *msg):
         if self.verbose == True:
-            for i in msg: self.EARSlog.debug(i)
+            for i in msg: self.EARSlog.debug(i.replace("\n", "").replace("\r", ""))
         
     @Milter.noreply
     def connect(self, IPname, family, hostaddr):
