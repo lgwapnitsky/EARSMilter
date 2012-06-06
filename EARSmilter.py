@@ -73,12 +73,6 @@ class mltr_SaveAttachments(Milter.Base):
     
     def __init__(self):
         self.id = Milter.uniqueID()
-        #logfile="/var/log/EARS.log"
-        #d = os.path.dirname(logfile)
-        #if not os.path.exists(d):
-            #os.makedirs(d)
-        #self.logfp = open(logfile, 'a')
-#        self.EARSlog.start()
         self.EARSlog = EARSlog
         self.verbose = opts.verbose
         
@@ -93,9 +87,6 @@ class mltr_SaveAttachments(Milter.Base):
         return Milter.CONTINUE
 
     def log(self, *msg):
-#        logq.put((msg,self.id,time.time()))
-        #for i in msg: print >>self.logfp, i,
-        #print >>self.logfp
         for i in msg: self.EARSlog.info(i)
     
     def debug(self, *msg):
@@ -146,11 +137,9 @@ class mltr_SaveAttachments(Milter.Base):
         self.R = []
         self.fromparms = Milter.dictfromlist(str)
         self.user = self.getsymval('{auth_authen}')
-#        self.log("mail from:", mailfrom, *str)
         self.fp = StringIO()
         self.canon_from = '@'.join(parse_addr(mailfrom))
         self.fp.write('From %s %s\n' % (self.canon_from, time.ctime()))
-#        self.log('From %s %s' % (self.canon_from,time.ctime()))
         return Milter.CONTINUE
 
     @Milter.noreply
@@ -203,17 +192,18 @@ class mltr_SaveAttachments(Milter.Base):
                 data = part.get_payload(decode=1)
                 fname, lrg_attach = extract_attachment(data, attachDir, fname)
 
-                if lrg_attach <= min_attach_size:
-                    part_payload.append(part)
-                else:
+                if re.match('winmail.dat', fname, re.IGNORECASE):
                     removedParts.append(part)
-                    if re.match('winmail.dat', fname, re.IGNORECASE):
-                        winmail_parts = winmail_parse(fname, attachDir)
-                        self.log('Extracted from "%s":' % fname)
-                        for wp in winmail_parts:    
-                            fnames.append(wp)
-                            self.log('     %s: %s' % (wp[0], filesize_notation(wp[1])))
-                    else:                   
+                    winmail_parts = winmail_parse(fname, attachDir)
+                    self.log('Extracted from "%s":' % fname)
+                    for wp in winmail_parts:    
+                        fnames.append(wp)
+                        self.log('     %s: %s' % (wp[0], filesize_notation(wp[1])))
+                else:
+                    if lrg_attach <= min_attach_size:
+                        part_payload.append(part)
+                    else:
+                        removedParts.append(part)
                         self.log('%s: %s' % (fname, filesize_notation(lrg_attach)))
                         fnames.append([fname, lrg_attach, bn_filesize, enc_fname])
 
