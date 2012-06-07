@@ -69,8 +69,6 @@ def background():
 
 class mltr_SaveAttachments(Milter.Base):
 
-    #EARSlog = logger.logger('EARSmilter')
-    
     def __init__(self):
         self.id = Milter.uniqueID()
         self.EARSlog = EARSlog
@@ -107,7 +105,6 @@ class mltr_SaveAttachments(Milter.Base):
         self.H = None
         self.fp = None
         self.receiver = self.getsymval('j')
-        self.log('------')
         return Milter.CONTINUE
 
     @Milter.noreply
