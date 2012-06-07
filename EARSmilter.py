@@ -112,14 +112,20 @@ class mltr_SaveAttachments(Milter.Base):
     @Milter.noreply
     def header(self, name, hval):
         self.fp.write("%s: %s\n" % (name, hval))     # add header to buffer
-        self.debug("%s: %s\n" % (name, hval))
+        rgxSubject = re.compile('^(subject)', re.IGNORECASE | re.DOTALL)
+        rgxMessageID = re.compile('^(message-id)', re.IGNORECASE | re.DOTALL)
+        
+        if (rgxSubject.search(name)) or (rgxMessageID.search(name)):
+            self.log("%s: %s\n" % (name, hval))
+        else:
+            self.debug("%s: %s\n" % (name, hval))
         return Milter.CONTINUE
         
 
-    @Milter.noreply
-    def unknown(self, cmd):
-        self.EARSlog.warning('Invalid command sent: %s' % cmd)
-        return Milter.CONTINUE
+#    @Milter.noreply
+#    def unknown(self, cmd):
+#        self.EARSlog.warning('Invalid command sent: %s' % cmd)
+#        return Milter.CONTINUE
     
     @Milter.noreply
     def body(self, chunk):
