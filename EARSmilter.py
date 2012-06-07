@@ -107,6 +107,7 @@ class mltr_SaveAttachments(Milter.Base):
         self.H = None
         self.fp = None
         self.receiver = self.getsymval('j')
+        self.log('------')
         return Milter.CONTINUE
 
     @Milter.noreply
@@ -116,7 +117,7 @@ class mltr_SaveAttachments(Milter.Base):
         rgxMessageID = re.compile('^(message-id)', re.IGNORECASE | re.DOTALL)
         
         if (rgxSubject.search(name)) or (rgxMessageID.search(name)):
-            self.log("%s: %s\n" % (name, hval))
+            self.log("%s: %s" % (name, hval))
         else:
             self.debug("%s: %s\n" % (name, hval))
         return Milter.CONTINUE
@@ -165,7 +166,6 @@ class mltr_SaveAttachments(Milter.Base):
         enc_fname = ''
 
         self.log('From %s' % self.canon_from)
-        print self.R
         for R in self.R:
             for recipient in R:
                 if not len(recipient) < 1: self.log('To %s' % recipient)
