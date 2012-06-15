@@ -312,7 +312,7 @@ def mako_notice(fnames, attachDir):
 
 
 def attach_dir(msg):
-    tempname = fname = tempfile.mktemp(".tmp")
+#    tempname = fname = tempfile.mktemp(".tmp")
     out = tempfile.TemporaryFile()
     msg.dump(out)
     out.seek(0)
@@ -361,7 +361,7 @@ def winmail_parse(fname, attachDir):
 def extract_attachment(data, attachDir, fname):
     file_counter = 1
     file_created = False
-    fname_to_write = fname.replace("\n", "").replace("\r", "")
+    fname_to_write = fname.replace("\n", "").replace("\r", "").replace("'", "-")
 
     while file_created == False:
         exdir_file = attachDir + "/" + fname_to_write

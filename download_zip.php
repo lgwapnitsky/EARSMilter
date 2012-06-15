@@ -8,7 +8,7 @@ $zip = new ZipArchive();
 $zip->open($ra_zip, ZipArchive::OVERWRITE);
 if ($handle = opendir($fullpath)) {
   while (false !== ($file = readdir($handle))) {
-    if ($file != "." && $file != "..") {
+    if ($file != "." && $file != ".." && file !="winmail.dat") {
       $zip->addFile($fullpath . $file, $file);
     }
   }
