@@ -361,7 +361,7 @@ def winmail_parse(fname, attachDir):
 def extract_attachment(data, attachDir, fname):
     file_counter = 1
     file_created = False
-    fname_to_write = fname.replace("\n", "").replace("\r", "").replace("'", "-")
+    fname_to_write = fname.replace("\n", "").replace("\r", "")
 
     while file_created == False:
         exdir_file = attachDir + "/" + fname_to_write
