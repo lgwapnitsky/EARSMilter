@@ -379,7 +379,7 @@ def extract_attachment(data, attachDir, fname):
             file_created = True
 
 
-            if  exdir_file_size <= min_attach_size:
+            if  (exdir_file_size <= min_attach_size) and (not(re.match('winmail.dat', fname, re.IGNORECASE))):
                 os.remove(exdir_file)
 
     return (fname_to_write, exdir_file_size)
