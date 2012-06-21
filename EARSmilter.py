@@ -269,6 +269,7 @@ class mltr_SaveAttachments(Milter.Base):
         if self.subjChange:
             regex_AP = re.compile("\[Attachments Processed\]", re.IGNORECASE | re.DOTALL)
             oldSubj = filter(rgxSubject.match, self.subjMsgId.keys())
+            print oldSubj
             newSubj = regex_AP.sub("", oldSubj[0])
             self.chgheader(oldSubj[0], 1, newSubj)
 
