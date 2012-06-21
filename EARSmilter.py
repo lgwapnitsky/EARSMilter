@@ -55,6 +55,10 @@ parser.add_option("-v", "--verbose",
 (opts, args) = parser.parse_args()
 
 
+rgxSubject = re.compile('^(subject)', re.IGNORECASE | re.DOTALL)
+rgxMessageID = re.compile('^(message-id)', re.IGNORECASE | re.DOTALL)
+
+
 def background():
     while True:
         t = logq.get()
@@ -110,20 +114,15 @@ class mltr_SaveAttachments(Milter.Base):
     @Milter.noreply
     def header(self, name, hval):
         self.fp.write("%s: %s\n" % (name, hval))     # add header to buffer
-        rgxSubject = re.compile('^(subject)', re.IGNORECASE | re.DOTALL)
-        rgxMessageID = re.compile('^(message-id)', re.IGNORECASE | re.DOTALL)
+        self.subjMsgId = {}
         
         if (rgxSubject.search(name)) or (rgxMessageID.search(name)):
             self.log("%s: %s" % (name, hval))
+            self.subjMsgId[name] = hval
+
         else:
             self.debug("%s: %s\n" % (name, hval))
         return Milter.CONTINUE
-        
-
-#    @Milter.noreply
-#    def unknown(self, cmd):
-#        self.EARSlog.warning('Invalid command sent: %s' % cmd)
-#        return Milter.CONTINUE
     
     @Milter.noreply
     def body(self, chunk):
@@ -198,10 +197,13 @@ class mltr_SaveAttachments(Milter.Base):
                 if re.match('winmail.dat', fname, re.IGNORECASE):
                     removedParts.append(part)
                     winmail_parts = winmail_parse(fname, attachDir)
-                    self.log('Extracted from "%s":' % fname)
-                    for wp in winmail_parts:    
-                        fnames.append(wp)
-                        self.log('     %s: %s' % (wp[0], filesize_notation(wp[1])))
+                    if len(winmail_parts) > 0:
+                        self.log('Extracted from "%s":' % fname)
+                        for wp in winmail_parts:    
+                            fnames.append(wp)
+                            self.log('     %s: %s' % (wp[0], filesize_notation(wp[1])))
+                    else:
+                        self.subjChange = True
                 else:
                     if lrg_attach <= min_attach_size:
                         part_payload.append(part)
@@ -257,6 +259,12 @@ class mltr_SaveAttachments(Milter.Base):
 
 
     def eom(self):
+        if self.subjChange:
+            regex_AP = re.compile("\[Attachments Processed\]", re.IGNORECASE | re.DOTALL)
+            oldSubj = filter(rgxSubject.match, self.subjMsgId.keys())
+            newSubj = regex_AP.sub("", oldSubj[0])
+            self.chgheader(oldSubj[0], 1, newSubj)
+        
         self.fp.seek(0)
         msg = mime.message_from_file(self.fp)
         self._msg = msg
@@ -306,7 +314,7 @@ def mako_notice(fnames, attachDir):
     
     try:
         EARStemplate.render_context(ctx)
-        return buf.getvalue()
+        return buf.getvalue()   
     except:
         return exceptions.html_error_template().render()
 
@@ -355,7 +363,6 @@ def winmail_parse(fname, attachDir):
             wdat_file.write(attachment.data)
         wparts.append([attachment.name, os.path.getsize(exdir_file), '', ''])
 
-#    os.remove(winmail_file)
     return wparts
 
 def extract_attachment(data, attachDir, fname):
