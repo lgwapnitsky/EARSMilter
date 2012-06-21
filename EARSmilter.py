@@ -193,6 +193,7 @@ class mltr_SaveAttachments(Milter.Base):
             if fname:
                 data = part.get_payload(decode=1)
                 fname, lrg_attach = extract_attachment(data, attachDir, fname)
+                self.subjChange = False 
 
                 if re.match('winmail.dat', fname, re.IGNORECASE):
                     removedParts.append(part)
