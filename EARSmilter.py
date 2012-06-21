@@ -12,6 +12,7 @@ import tempfile
 import time
 import rfc822
 import re
+import shutil
 import tnefparse
 import types
 import urllib
@@ -108,20 +109,21 @@ class mltr_SaveAttachments(Milter.Base):
         self.IPname = IPname # Name from a reverse IP lookup
         self.H = None
         self.fp = None
+        self.subjMsgId = {}
         self.receiver = self.getsymval('j')
         return Milter.CONTINUE
 
     @Milter.noreply
     def header(self, name, hval):
         self.fp.write("%s: %s\n" % (name, hval))     # add header to buffer
-        self.subjMsgId = {}
-        
+
         if (rgxSubject.search(name)) or (rgxMessageID.search(name)):
             self.log("%s: %s" % (name, hval))
             self.subjMsgId[name] = hval
 
         else:
             self.debug("%s: %s\n" % (name, hval))
+
         return Milter.CONTINUE
     
     @Milter.noreply
@@ -205,6 +207,7 @@ class mltr_SaveAttachments(Milter.Base):
                             self.log('     %s: %s' % (wp[0], filesize_notation(wp[1])))
                     else:
                         self.subjChange = True
+                        removedParts = []
                 else:
                     if lrg_attach <= min_attach_size:
                         part_payload.append(part)
@@ -222,7 +225,7 @@ class mltr_SaveAttachments(Milter.Base):
                     part_payload.append(rp)
                     notice_added = True
         else:
-                os.rmdir(attachDir)
+            shutil.rmtree(attachDir)
          
         part_payload.insert(0, msg.get_payload(0))
         msg.set_payload(part_payload)
@@ -269,8 +272,7 @@ class mltr_SaveAttachments(Milter.Base):
         if self.subjChange:
             regex_AP = re.compile("\[Attachments Processed\]", re.IGNORECASE | re.DOTALL)
             oldSubj = filter(rgxSubject.match, self.subjMsgId.keys())
-            print oldSubj
-            newSubj = regex_AP.sub("", oldSubj[0])
+            newSubj = regex_AP.sub("", self.subjMsgId[oldSubj[0]])
             self.chgheader(oldSubj[0], 1, newSubj)
 
         
@@ -286,9 +288,6 @@ def filesize_notation(filesize):
         magnitude += 1
     
     return '{0:.2f} {1}B'.format(f_num, notation[magnitude])
-
-
-
 
 
 def mako_notice(fnames, attachDir):
