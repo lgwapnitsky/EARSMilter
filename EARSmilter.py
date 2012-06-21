@@ -260,17 +260,19 @@ class mltr_SaveAttachments(Milter.Base):
 
 
     def eom(self):
-        if self.subjChange:
-            regex_AP = re.compile("\[Attachments Processed\]", re.IGNORECASE | re.DOTALL)
-            oldSubj = filter(rgxSubject.match, self.subjMsgId.keys())
-            newSubj = regex_AP.sub("", oldSubj[0])
-            self.chgheader(oldSubj[0], 1, newSubj)
-        
         self.fp.seek(0)
         msg = mime.message_from_file(self.fp)
         self._msg = msg
         
         self.attachment()
+        
+        if self.subjChange:
+            regex_AP = re.compile("\[Attachments Processed\]", re.IGNORECASE | re.DOTALL)
+            oldSubj = filter(rgxSubject.match, self.subjMsgId.keys())
+            newSubj = regex_AP.sub("", oldSubj[0])
+            self.chgheader(oldSubj[0], 1, newSubj)
+
+        
         return Milter.ACCEPT
 ## ===
 
