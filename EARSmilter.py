@@ -209,7 +209,6 @@ class mltr_SaveAttachments(Milter.Base):
                         self.subjChange = True
                         removedParts = []
                 else:
-                    self.log('Removed Attachments:')
                     if lrg_attach <= min_attach_size:
                         part_payload.append(part)
                     else:
