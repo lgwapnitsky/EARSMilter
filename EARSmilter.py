@@ -226,6 +226,8 @@ class mltr_SaveAttachments(Milter.Base):
                     notice_added = True
         else:
             shutil.rmtree(attachDir)
+            self.subjChange = True
+
          
         part_payload.insert(0, msg.get_payload(0))
         msg.set_payload(part_payload)
@@ -274,6 +276,7 @@ class mltr_SaveAttachments(Milter.Base):
             oldSubj = filter(rgxSubject.match, self.subjMsgId.keys())
             newSubj = regex_AP.sub("", self.subjMsgId[oldSubj[0]])
             self.chgheader(oldSubj[0], 1, newSubj)
+            self.log('No attachments to process')
 
         
         return Milter.ACCEPT
