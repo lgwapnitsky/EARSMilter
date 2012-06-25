@@ -226,7 +226,6 @@ class mltr_SaveAttachments(Milter.Base):
                     notice_added = True
         else:
             shutil.rmtree(attachDir)
-            self.subjChange = True
 
          
         part_payload.insert(0, msg.get_payload(0))
