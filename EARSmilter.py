@@ -284,12 +284,13 @@ class mltr_SaveAttachments(Milter.Base):
                 self.chgheader(oldSubj[0], 1, newSubj)
                 self.log('No attachments to process')
     
+                return Milter.ACCEPT
         
         except Exception, e:
             self.log("!!! Error Processing.  Please see EARSMilter.err !!!")
             self.EARSlog.error(e)
             
-        return Milter.ACCEPT
+            return Milter.TEMPFAIL
 
 
 ## ===
@@ -386,11 +387,11 @@ def winmail_parse(fname, attachDir):
 def extract_attachment(data, attachDir, fname):
     file_counter = 1
     file_created = False
-    fname_to_write = (fname.replace("\n", "").replace("\r", "")).encode('utf-8')
+    fname_to_write = fname.replace("\n", "").replace("\r", "")
     
 
     while file_created == False:
-        exdir_file = attachDir + "/" + fname_to_write
+        exdir_file = attachDir + "/" + fname_to_write.encode('utf-8')
 
         if os.path.exists(exdir_file):
             fileName, fileExtension = os.path.splitext(fname)
