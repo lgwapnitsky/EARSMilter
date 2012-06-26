@@ -195,9 +195,8 @@ class mltr_SaveAttachments(Milter.Base):
                         fname = val
                         
             if fname:
-                self.log(type(fname))
-                if type(fname) is unicode:
-                    fname = unicodedata.normalize('NFKD', fname).encode('ascii', 'ignore')
+                if type(fname) is tuple:
+                    fname = unicodedata.normalize('NFKD', fname[3]).encode('ascii', 'ignore')
 
                 data = part.get_payload(decode=1)
                 fname, lrg_attach = extract_attachment(data, attachDir, fname)
