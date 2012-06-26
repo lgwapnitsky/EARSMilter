@@ -385,6 +385,7 @@ def winmail_parse(fname, attachDir):
     return wparts
 
 def extract_attachment(data, attachDir, fname):
+    EARSlog.info(fname)
     file_counter = 1
     file_created = False
     fname_to_write = fname.replace("\n", "").replace("\r", "")
