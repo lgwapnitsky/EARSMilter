@@ -117,8 +117,8 @@ class mltr_SaveAttachments(Milter.Base):
     @Milter.noreply
     def header(self, name, hval):
         
-        self.fp.write("%s: %s\n" % (decode_header(name)[0][0], decode_header(hval)[0][0]))    # add header to buffer
-
+#        self.fp.write("%s: %s\n" % (decode_header(name)[0][0], decode_header(hval)[0][0]))    # add header to buffer
+        self.fp.write("%s: %s\n" % (name, hval))
         if (rgxSubject.search(name)) or (rgxMessageID.search(name)):
             self.log("%s: %s" % (name, hval))
             self.subjMsgId[name] = hval
