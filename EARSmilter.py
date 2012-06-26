@@ -10,7 +10,6 @@ import os
 import sys
 import tempfile
 import time
-import rfc822
 import re
 import shutil
 import tnefparse
@@ -29,6 +28,7 @@ from Milter.utils import parse_addr
 
 from email import Errors
 from email.Message import Message
+from email.header import decode_header
 
 from datetime import date
 from datetime import timedelta
@@ -115,7 +115,8 @@ class mltr_SaveAttachments(Milter.Base):
 
     @Milter.noreply
     def header(self, name, hval):
-        self.fp.write("%s: %s\n" % (name, hval))     # add header to buffer
+        
+        self.fp.write(email.header.decode_header(("%s: %s\n" % (name, hval))))     # add header to buffer
 
         if (rgxSubject.search(name)) or (rgxMessageID.search(name)):
             self.log("%s: %s" % (name, hval))
