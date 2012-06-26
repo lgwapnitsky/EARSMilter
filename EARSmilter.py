@@ -196,7 +196,7 @@ class mltr_SaveAttachments(Milter.Base):
                         
             if fname:
                 if type(fname) is tuple:
-                    fname = unicodedata.normalize('NFKD', fname[3]).encode('ascii', 'ignore')
+                    fname = unicodedata.normalize('NFKD', fname[2]).encode('ascii', 'ignore')
 
                 data = part.get_payload(decode=1)
                 fname, lrg_attach = extract_attachment(data, attachDir, fname)
