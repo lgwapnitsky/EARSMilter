@@ -269,7 +269,11 @@ class mltr_SaveAttachments(Milter.Base):
         msg = mime.message_from_file(self.fp)
         self._msg = msg
         
-        self.attachment()
+        try:
+            self.attachment()
+        except Exception, e:
+            self.log("!!! Error Processing.  Please see EARSMilter.err !!!")
+            self.EARSlog.error(e)
         
         if self.subjChange:
             regex_AP = re.compile("\[Attachments Processed\]", re.IGNORECASE | re.DOTALL)
