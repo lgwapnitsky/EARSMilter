@@ -284,7 +284,7 @@ class mltr_SaveAttachments(Milter.Base):
                 self.chgheader(oldSubj[0], 1, newSubj)
                 self.log('No attachments to process')
     
-                return Milter.ACCEPT
+            return Milter.ACCEPT
         
         except Exception, e:
             self.log("!!! Error Processing.  Please see EARSMilter.err !!!")
@@ -391,7 +391,7 @@ def extract_attachment(data, attachDir, fname):
     
 
     while file_created == False:
-        exdir_file = attachDir + "/" + fname_to_write.encode('utf-8')
+        exdir_file = attachDir + "/" + fname_to_write
 
         if os.path.exists(exdir_file):
             fileName, fileExtension = os.path.splitext(fname)
