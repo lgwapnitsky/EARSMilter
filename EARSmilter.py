@@ -195,6 +195,7 @@ class mltr_SaveAttachments(Milter.Base):
                         fname = val
                         
             if fname:
+                self.log(fname)
                 if type(fname) is unicode:
                     fname = unicodedata.normalize('NFKD', fname).encode('ascii', 'ignore')
 
