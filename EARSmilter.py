@@ -237,9 +237,12 @@ class mltr_SaveAttachments(Milter.Base):
         out = tempfile.TemporaryFile()
         try:
             msg.dump(out)
-            out.seek(0)
-            msg = rfc822.Message(out)
-            msg.rewindbody()
+#            out.seek(0)
+#            msg = rfc822.Message(out)
+#            msg.rewindbody()
+            msg = email.message_from_file(out)
+
+
             while 1:
                 buf = out.read(8192)
                 if len(buf) == 0: break
