@@ -10,12 +10,12 @@ import os
 import sys
 import tempfile
 import time
-import rfc822
 import re
 import shutil
 import tnefparse
 import types
 import urllib
+import unicodedata
 
 import logger
 
@@ -195,6 +195,9 @@ class mltr_SaveAttachments(Milter.Base):
                         fname = val
                         
             if fname:
+                if type(fname) is unicode:
+                    fname = unicodedata.normalize('NFKD', fname).encode('ascii', 'ignore')
+
                 data = part.get_payload(decode=1)
                 fname, lrg_attach = extract_attachment(data, attachDir, fname)
                 self.subjChange = False 
@@ -385,14 +388,14 @@ def winmail_parse(fname, attachDir):
     return wparts
 
 def extract_attachment(data, attachDir, fname):
-    EARSlog.info(fname)
+
     file_counter = 1
     file_created = False
     fname_to_write = fname.replace("\n", "").replace("\r", "")
     
 
     while file_created == False:
-        exdir_file = attachDir + "/" + fname_to_write.encode('utf-8')
+        exdir_file = attachDir + "/" + fname_to_write
 
         if os.path.exists(exdir_file):
             fileName, fileExtension = os.path.splitext(fname)
