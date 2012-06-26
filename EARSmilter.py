@@ -276,19 +276,22 @@ class mltr_SaveAttachments(Milter.Base):
         
         try:
             self.attachment()
+            
+            if self.subjChange:
+                regex_AP = re.compile("\[Attachments Processed\]", re.IGNORECASE | re.DOTALL)
+                oldSubj = filter(rgxSubject.match, self.subjMsgId.keys())
+                newSubj = regex_AP.sub("", self.subjMsgId[oldSubj[0]])
+                self.chgheader(oldSubj[0], 1, newSubj)
+                self.log('No attachments to process')
+    
+        
         except Exception, e:
             self.log("!!! Error Processing.  Please see EARSMilter.err !!!")
             self.EARSlog.error(e)
-        
-        if self.subjChange:
-            regex_AP = re.compile("\[Attachments Processed\]", re.IGNORECASE | re.DOTALL)
-            oldSubj = filter(rgxSubject.match, self.subjMsgId.keys())
-            newSubj = regex_AP.sub("", self.subjMsgId[oldSubj[0]])
-            self.chgheader(oldSubj[0], 1, newSubj)
-            self.log('No attachments to process')
-
-        
+            
         return Milter.ACCEPT
+
+
 ## ===
 
 def filesize_notation(filesize):
