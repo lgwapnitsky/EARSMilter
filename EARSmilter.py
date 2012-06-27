@@ -196,8 +196,6 @@ class mltr_SaveAttachments(Milter.Base):
                         fname = val
                         
             if fname:
-                self.log(type(fname))
-
                 if type(fname) is tuple:
                     fname = fname[2]
 
@@ -325,9 +323,8 @@ def mako_notice(fnames, attachDir):
         if not path: path = dirs[0]
         
         fname[2] = filesize_notation(fname[1])
-        fname[3] = urllib.quote(fname[0])
+        fname[0] = fname[3] = urllib.quote(fname[0])
         
-
 
         attach.append(fname)
         
@@ -335,6 +332,7 @@ def mako_notice(fnames, attachDir):
     EARStemplate = Template(filename='EARS.html', output_encoding='utf-8', encoding_errors='replace')
     buf = StringIO()
     ctx = Context(buf, filepath=path, attachments=attach, deldate=exp_date)
+    
     
     try:
         EARStemplate.render_context(ctx)
