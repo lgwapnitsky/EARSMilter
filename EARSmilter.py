@@ -292,6 +292,9 @@ class mltr_SaveAttachments(Milter.Base):
         except Exception, e:
             self.log("!!! Error Processing.  Please see EARSMilter.err !!!")
             self.EARSlog.error(e)
+#            exc_type, exc_obj, exc_tb = sys.exc_info()
+#            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]      
+#            self.EARSlog.error(exc_type, fname, exc_tb.tb_lineno)
             
             return Milter.TEMPFAIL
 
@@ -323,13 +326,12 @@ def mako_notice(fnames, attachDir):
         if not path: path = dirs[0]
         
         fname[2] = filesize_notation(fname[1])
-        fname[0] = fname[3] = urllib.quote(fname[0])
-        
-
+        fname[3] = urllib.quote(fname[0])
+        fname[0] = unicodedata.normalize('NFKD', unicode(fname[0], 'utf-8')).encode('ascii', 'ignore')
         attach.append(fname)
         
         
-    EARStemplate = Template(filename='EARS.html', output_encoding='utf-8', encoding_errors='replace')
+    EARStemplate = Template(filename='EARS.html', input_encoding='utf-8', output_encoding='utf-8', encoding_errors='replace')
     buf = StringIO()
     ctx = Context(buf, filepath=path, attachments=attach, deldate=exp_date)
     
