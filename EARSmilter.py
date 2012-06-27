@@ -11,6 +11,7 @@ import sys
 import tempfile
 import time
 import re
+import rfc822
 import shutil
 import tnefparse
 import types
@@ -223,7 +224,7 @@ class mltr_SaveAttachments(Milter.Base):
                         removedParts.append(part)
                         self.log('     %s: %s' % (fname, filesize_notation(lrg_attach)))
                         fnames.append([fname, lrg_attach, bn_filesize, enc_fname])
-
+        
         if len(removedParts) > 0:
             notice = mako_notice(fnames, attachDir)
             notice_added = False
@@ -244,10 +245,9 @@ class mltr_SaveAttachments(Milter.Base):
         out = tempfile.TemporaryFile()
         try:
             msg.dump(out)
-#            out.seek(0)
-#            msg = rfc822.Message(out)
-#            msg.rewindbody()
-            msg = email.message_from_file(out)
+            out.seek(0)
+            msg = rfc822.Message(out)
+            msg.rewindbody()
 
 
             while 1:
