@@ -195,10 +195,10 @@ class mltr_SaveAttachments(Milter.Base):
                         fname = val
                         
             if fname:
-                self.log(fname)
+                self.log(type(fname))
 
                 if type(fname) is tuple:
-                    fname = unicodedata.normalize('NFKD', fname[2]).encode('ascii', 'ignore')
+                    fname = fname[2]
 
                 data = part.get_payload(decode=1)
                 fname, lrg_attach = extract_attachment(data, attachDir, fname)
