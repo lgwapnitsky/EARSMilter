@@ -113,6 +113,8 @@ class mltr_SaveAttachments(Milter.Base):
         self.fp = None
         self.subjMsgId = {}
         self.receiver = self.getsymval('j')
+        self.subjChange = False 
+
         return Milter.CONTINUE
 
     @Milter.noreply
@@ -201,7 +203,6 @@ class mltr_SaveAttachments(Milter.Base):
 
                 data = part.get_payload(decode=1)
                 fname, lrg_attach = extract_attachment(data, attachDir, fname)
-                self.subjChange = False 
 
                 if re.match('winmail.dat', fname, re.IGNORECASE):
                     self.log('Processing "%s":' % fname)
