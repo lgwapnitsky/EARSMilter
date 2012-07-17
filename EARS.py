@@ -41,10 +41,11 @@ class EARS():
         for i in msg: self.log.error(i.replace("\n","").replace("\r",""))
 
 
-class milter(Milter.Base):
-    def __init__(self, log):
-#        self.log = logger('EARSmilter')
-        self.log = log
+class EARSmilter(Milter.Base):
+    def __init__(self):
+        self.EARS = EARS()
+        self.log = self.EARS.log
+        self.log.start()
         self.id = Milter.uniqueID()
 
     def close(self):
@@ -116,15 +117,30 @@ class milter(Milter.Base):
         return Milter.CONTINUE
                             
     def eom(self):
-        db.NewMessage(self.canon_from, self.headers)
+        self.db = toDB()
+        self.db.NewMessage(self.canon_from, self.headers)
         
         self.fp.seek(0)
         msg = mime.message_from_file(self.fp)
         self._msg = msg
 
         try:
-            pm = EARS.ProcessMessage(self.msgID, self._msg, self.R)
-
+           self._msg = EARS.ProcessMessage(self.msgID, self._msg, self.R, self.db)
+           out = tempfile.TemporaryFile()
+           try:
+               msg.dump(out)
+               out.seek(0)
+               msg = rfc822.Message(out)
+               msg.rewindbody()
+               
+               
+               while 1:
+                   buf = out.read(8192)
+                   if len(buf) == 0: break
+                   self.replacebody(buf)
+           finally:
+               out.close()
+                                           
         except Exception, e:
             self.log.warn(e)
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -134,9 +150,49 @@ class milter(Milter.Base):
         return Milter.ACCEPT
 
 class ProcessMessage():
-    def __init__(self, _msgID, _msg, _R):
-        self.msg = _msg
+    def __init__(self, _msgID, _msg, _R, _db):
+        self._msg = _msg
         self.msgID = _msgID
         self.recipients = _R
+        self.db = _db
 
-        
+        return ParseAttachments()
+
+    def ParseAttachments():
+        msg = self._msg
+        removedParts = []
+        part_payload = []
+        fnames = []
+        bn_filesize = ''
+        enc_fname = ''
+
+        for part in msg.walk():
+            fname = ""
+
+            if part.is_multipart():
+                continue
+
+            dtypes = part.get_params(None, 'Content-Disposition')
+
+            if not dtypes:
+                if part.get_content_type() == 'text/plain':
+                    continue
+                ctypes = part.getparams()
+                if not ctypes:
+                    continue
+                for key, val in ctypes:
+                    if key.lower() == 'name':
+                        fname = val
+                    else:
+                        for key, val in dtypes:
+                            if key.lower() == 'filename':
+                                fname = val
+                                
+                    if fname:
+                        if type(fname) is tuple:
+                            fname = fname[2]
+
+                        print fname
+                    
+                        data = part.get_payload(decode=1)
+

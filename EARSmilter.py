@@ -47,21 +47,20 @@ def background():
 
 def main():
     ears = EARS.EARS()
-    ears.log.start()
     bt = Thread(target=background)
     bt.start()
     socketname = "/var/spool/EARS/EARSmilter.sock"
     timeout = 600
-    Milter.factory = EARS.milter(ears.log)
+    Milter.factory = EARS.EARSmilter
     flags = Milter.CHGBODY + Milter.CHGHDRS + Milter.ADDHDRS
     flags += Milter.ADDRCPT
     flags += Milter.DELRCPT
     Milter.set_flags(flags)     # tell Sendmail/Postfix which features we use
-    ears.info("milter startup")
+#    ears.info("milter startup")
     Milter.runmilter("EARSmilter", socketname, timeout)
     logq.put(None)
     bt.join()
-    ears.info("milter shutdown")
+#    ears.info("milter shutdown")
 
 if __name__ == "__main__":
     main()
