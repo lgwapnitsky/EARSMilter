@@ -2,25 +2,27 @@ import Milter
 import datetime
 import email
 import email.Message
+import hashlib
 import mime
-import tempfile
+import os
 import re
 import rfc822
-import os
+import shutil
 import sys
+import tempfile
 import time
 
-from logger import logger
+from Milter.utils import parse_addr
 
 from StringIO import StringIO
 
-from Milter.utils import parse_addr
+from datetime import date
+from datetime import datetime
 
 from email import Errors
 from email.Message import Message
 
-from datetime import date
-from datetime import datetime
+from logger import logger
 
 from socket import AF_INET, AF_INET6
 
@@ -45,8 +47,7 @@ class EARS():
 
 class EARSmilter(Milter.Base):
     def __init__(self):
-        #self.EARS = EARS()
-        self.log = EARS() #self.EARS.log
+        self.log = EARS() 
         self.log.log.start()
         self.id = Milter.uniqueID()
 
@@ -155,13 +156,15 @@ class EARSmilter(Milter.Base):
 
 
 class ProcessMessage():
-    def __init__(self, _msgID, _msg, _R, _db):
+    def __init__(self, _id, _msg, _R, _db):
         self._msg = _msg
-        self.msgID = _msgID
+        self.id = _id
         self.recipients = _R
         self.db = _db
-
+        self.fhandling = FileSys(self._msg)
+        
         return self.ParseAttachments()
+
 
     def ParseAttachments(self):
         msg = self._msg
@@ -170,7 +173,8 @@ class ProcessMessage():
         fnames = []
         bn_filesize = ''
         enc_fname = ''
-
+        
+        attachDir = self.fhandling.attachDir
         
         for part in msg.walk():
             fname = ""
@@ -199,7 +203,39 @@ class ProcessMessage():
                 if type(fname) is tuple:
                     fname = fname[2]
                     
-            print fname
-                    
             data = part.get_payload(decode=1)
+            fname, lrg_attach = extract_attachment(data, attachDir, fname)
 
+    def extract_attachments(data, attachDir, fname):
+        file_counter = 1
+
+
+class FileSys():
+    def __init__(self, msg):
+        self.msg = msg
+        
+        self.dropDir = "/dropdir/"
+        self.min_attach_size = 163840
+        self.remfile = "Retrieve_Attachments.html"
+        
+        self.attachDir = self.Dir()
+
+    def Dir(self):
+        out = tempfile.TemporaryFile()
+        self.msg.dump(out)
+        out.seek(0)
+        buf = out.read()
+        hashDir = self.hashit(buf)
+        attachDir = self.dropDir + hashDir
+        
+        if not os.path.isdir(attachDir):
+            os.mkdir(attachDir)
+            
+        return attachDir
+
+    def hashit(self, data):
+        sha1 = hashlib.sha1()
+        sha1.update(data)
+
+        return sha1.hexdigest()
+    
