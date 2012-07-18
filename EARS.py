@@ -201,6 +201,13 @@ class ProcessMessage():
         bn_filesize = ''
         enc_fname = ''
         
+        self.log.info('From %s' % self.canon_from)
+        for R in self.R:
+            for recipient in R:
+                if not len(recipient) < 1: self.log('To %s' % recipient)
+        self.log('Folder: %s' % self.attachDir)
+                                                            
+
         for part in msg.walk():
             fname = ""
 
