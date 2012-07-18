@@ -6,6 +6,8 @@ import mime
 import tempfile
 import re
 import rfc822
+import os
+import sys
 import time
 
 from logger import logger
@@ -38,14 +40,14 @@ class EARS():
         for i in msg: self.log.debug(i.replace("\n","").replace("\r",""))
 
     def err(self, *msg):
-        for i in msg: self.log.error(i.replace("\n","").replace("\r",""))
+        for i in msg: self.log.error(i) #.replace("\n","").replace("\r",""))
 
 
 class EARSmilter(Milter.Base):
     def __init__(self):
-        self.EARS = EARS()
-        self.log = self.EARS.log
-        self.log.start()
+        #self.EARS = EARS()
+        self.log = EARS() #self.EARS.log
+        self.log.log.start()
         self.id = Milter.uniqueID()
 
     def close(self):
@@ -125,7 +127,7 @@ class EARSmilter(Milter.Base):
         self._msg = msg
 
         try:
-           self._msg = EARS.ProcessMessage(self.msgID, self._msg, self.R, self.db)
+           self._msg = ProcessMessage(self.id, self._msg, self.R, self.db)
            out = tempfile.TemporaryFile()
            try:
                msg.dump(out)
@@ -140,6 +142,8 @@ class EARSmilter(Milter.Base):
                    self.replacebody(buf)
            finally:
                out.close()
+           
+           return Milter.ACCEPT
                                            
         except Exception, e:
             self.log.warn(e)
@@ -147,7 +151,8 @@ class EARSmilter(Milter.Base):
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             self.log.err(exc_type, fname, exc_tb.tb_lineno)
             
-        return Milter.ACCEPT
+            return Milter.TEMPFAIL
+
 
 class ProcessMessage():
     def __init__(self, _msgID, _msg, _R, _db):
@@ -156,9 +161,9 @@ class ProcessMessage():
         self.recipients = _R
         self.db = _db
 
-        return ParseAttachments()
+        return self.ParseAttachments()
 
-    def ParseAttachments():
+    def ParseAttachments(self):
         msg = self._msg
         removedParts = []
         part_payload = []
@@ -166,6 +171,7 @@ class ProcessMessage():
         bn_filesize = ''
         enc_fname = ''
 
+        
         for part in msg.walk():
             fname = ""
 
@@ -177,22 +183,23 @@ class ProcessMessage():
             if not dtypes:
                 if part.get_content_type() == 'text/plain':
                     continue
+
                 ctypes = part.getparams()
                 if not ctypes:
                     continue
                 for key, val in ctypes:
                     if key.lower() == 'name':
                         fname = val
-                    else:
-                        for key, val in dtypes:
-                            if key.lower() == 'filename':
-                                fname = val
+            else:
+                for key, val in dtypes:
+                    if key.lower() == 'filename':
+                        fname = val
                                 
-                    if fname:
-                        if type(fname) is tuple:
-                            fname = fname[2]
-
-                        print fname
+            if fname:
+                if type(fname) is tuple:
+                    fname = fname[2]
                     
-                        data = part.get_payload(decode=1)
+            print fname
+                    
+            data = part.get_payload(decode=1)
 
