@@ -141,7 +141,7 @@ class milter(Milter.Base):
         self.db.RecipientsToDB(self.msgID, self.R)
 
         try:
-            parsed = ProcessMessage(self.msgID, self._msg, self.R, self.db, self.log)
+            parsed = ProcessMessage(self.msgID, self._msg, self.R, self.canon_from, self.db, self.log)
             self._msg, self.subjChange = parsed.ParseAttachments()
 
             self.db.BodyToDB(self.msgID, self._msg)
@@ -177,10 +177,11 @@ class milter(Milter.Base):
 ## === === ##
 
 class ProcessMessage():
-    def __init__(self, _msgID, _msg, _R, _db, _log):
+    def __init__(self, _msgID, _msg, _R, _from, _db, _log):
         self._msg = _msg
         self.msgID = _msgID
-        self.recipients = _R
+        self.R = _R
+        self.canon_from = _from
         self.db = _db
         self.log = _log
         
@@ -191,6 +192,7 @@ class ProcessMessage():
 
         self.remfile = "Retrieve_Attachments.html"
 
+        print self.R
 
     def ParseAttachments(self):
         msg = self._msg
@@ -204,8 +206,8 @@ class ProcessMessage():
         self.log.info('From %s' % self.canon_from)
         for R in self.R:
             for recipient in R:
-                if not len(recipient) < 1: self.log('To %s' % recipient)
-        self.log('Folder: %s' % self.attachDir)
+                if not len(recipient) < 1: self.log.info('To %s' % recipient)
+        self.log.info('Folder: %s' % self.attachDir)
                                                             
 
         for part in msg.walk():
