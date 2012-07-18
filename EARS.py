@@ -12,18 +12,24 @@ import sys
 import tempfile
 import time
 import tnefparse
+import urllib
+import unicodedata
+import types
 
 from Milter.utils import parse_addr
 
 from StringIO import StringIO
 
-from datetime import date
-from datetime import datetime
+from datetime import date, datetime, timedelta
 
 from email import Errors
 from email.Message import Message
 
 from logger import logger
+
+from mako.template import Template
+from mako.runtime import Context
+from mako import exceptions
 
 from socket import AF_INET, AF_INET6
 
@@ -45,11 +51,16 @@ class EARSlog():
     def err(self, *msg):
         for i in msg: self.log.error(i) #.replace("\n","").replace("\r",""))
 
+logfile = EARSlog()
+logfile.log.start()
+
+## === === ##
 
 class milter(Milter.Base):
     def __init__(self):
-        self.log = EARSlog()
-        self.log.log.start()
+#        self.log = EARSlog()
+#        self.log.log.start()
+        self.log = logfile
         self.id = Milter.uniqueID()
 
     def close(self):
@@ -148,8 +159,8 @@ class milter(Milter.Base):
             finally:
                 out.close()
                 
-#            return Milter.ACCEPT
-            return Milter.TEMPFAIL
+            return Milter.ACCEPT
+#            return Milter.TEMPFAIL
 
         except Exception, e:
             self.log.warn(e)
@@ -175,7 +186,7 @@ class ProcessMessage():
 
         self.subjChange = False
 
-#        return self.ParseAttachments()
+        self.remfile = "Retrieve_Attachments.html"
 
 
     def ParseAttachments(self):
@@ -242,15 +253,15 @@ class ProcessMessage():
                         fnames.append([fname, lrg_attach, bn_filesize, enc_fname])
 
         if len(removedParts) > 0:
-            #               notice = mako_notice(fnames, attachDir)
+            notice = self.mako_notice(fnames)
             notice_added = False
             for rp in removedParts:
-                #                   rp = self.delete_attachments(rp, notice)#, notice_added)
+                rp = self.delete_attachments(rp, notice)
                 if notice_added == False:
                     part_payload.append(rp)
                     notice_added = True
-#                else:
-#                    shutil.rmtree(self.attachDir)
+                else:
+                    shutil.rmtree(self.attachDir)
                     
                     
         part_payload.insert(0, msg.get_payload(0))
@@ -258,8 +269,6 @@ class ProcessMessage():
 
         return (msg, self.subjChange)
                                                                                                                     
-            
-
     def extract_attachment(self, data, fname):
         file_counter = 1
         file_created = False
@@ -317,7 +326,51 @@ class ProcessMessage():
             wparts.append([attachment.name, os.path.getsize(exdir_file), '', ''])
                 
         return wparts
-                                                                                                                                                                            
+
+    def delete_attachments(self, part, notice):
+        for key, value in part.get_params():
+            part.del_param(key)
+            
+        del part["content-type"]
+        del part["content-disposition"]
+        del part["content-transfer-encoding"]
+        
+        part["content-disposition"] = "attachment; filename=" + self.remfile
+        part["content-type"] = "text/html"
+        part.set_payload(notice)
+        
+        return part
+                
+    def mako_notice(self, fnames):
+        attach = []
+        path = '';
+
+        exp_date = date.today() + timedelta(30)
+        exp_date = exp_date.strftime('%B %d, %Y')
+        
+        for fname in fnames:
+            regex_dropdir = re.compile("dropdir/(.*)")
+            r1 = regex_dropdir.search(self.attachDir)
+            dirs = r1.groups()
+            if not path: path = dirs[0]
+            
+            fname[2] = self.fhandling.filesize_notation(fname[1])
+            fname[3] = urllib.quote(fname[0])
+            fname[0] = unicodedata.normalize('NFKD', unicode(fname[0], 'utf-8')).encode('ascii', 'ignore')
+            attach.append(fname)
+
+
+        EARStemplate = Template(filename='EARS.html', input_encoding='utf-8', output_encoding='utf-8', encoding_errors='replace')
+        buf = StringIO()
+        ctx = Context(buf, filepath=path, attachments=attach, deldate=exp_date)
+    
+
+        try:
+            EARStemplate.render_context(ctx)
+            return buf.getvalue()
+        except:
+            return exceptions.html_error_template().render()
+
 ## === === ##
 
 class FileSys():
@@ -341,8 +394,6 @@ class FileSys():
         if not os.path.isdir(attachDir):
             os.mkdir(attachDir)
 
-            
-            
         return attachDir
 
     def hashit(self, data):
