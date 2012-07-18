@@ -11,6 +11,7 @@ class toDB():
         self.sqlNMdb = "EARS"
         
 
+
     def NewMessage(self, sender="", headers="", raw_original=""):
         self.db = mysql.connect(self.sqlHost,
                               self.sqlUser,
@@ -40,7 +41,6 @@ class toDB():
         RTD_existingUserID = """SELECT id FROM recipient WHERE emailAddress LIKE %s"""
         RTD_newUser = """INSERT INTO recipient(emailAddress) VALUES(%s)"""
         
-        print recipients, msgID
         
         for r in recipients:
             emailAddress = r[0][1:-1]
@@ -62,3 +62,6 @@ class toDB():
         
         BTD_crsr.execute(BTD_SQL, (body, msgID))
         
+    def close(self):
+        self.db.commit()
+        self.db.close()

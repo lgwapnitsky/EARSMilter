@@ -138,11 +138,13 @@ class milter(Milter.Base):
 
         self.db = toDB()
         self.msgID = self.db.NewMessage(self.canon_from, self.headers, self._msg)
-
+        self.db.RecipientsToDB(self.msgID, self.R)
 
         try:
             parsed = ProcessMessage(self.msgID, self._msg, self.R, self.db, self.log)
             self._msg, self.subjChange = parsed.ParseAttachments()
+
+            self.db.BodyToDB(self.msgID, self._msg)
 
             out = tempfile.TemporaryFile()
             try:
@@ -158,6 +160,7 @@ class milter(Milter.Base):
                     self.replacebody(buf)
             finally:
                 out.close()
+                self.db.close()
                 
             return Milter.ACCEPT
 #            return Milter.TEMPFAIL
@@ -359,12 +362,10 @@ class ProcessMessage():
             fname[0] = unicodedata.normalize('NFKD', unicode(fname[0], 'utf-8')).encode('ascii', 'ignore')
             attach.append(fname)
 
-
         EARStemplate = Template(filename='EARS.html', input_encoding='utf-8', output_encoding='utf-8', encoding_errors='replace')
         buf = StringIO()
         ctx = Context(buf, filepath=path, attachments=attach, deldate=exp_date)
     
-
         try:
             EARStemplate.render_context(ctx)
             return buf.getvalue()
