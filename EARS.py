@@ -29,7 +29,7 @@ from socket import AF_INET, AF_INET6
 
 from toDB import toDB
 
-class EARS():
+class EARSlog():
     def __init__(self):
         self.log = logger('EARSmilter')
         
@@ -46,9 +46,9 @@ class EARS():
         for i in msg: self.log.error(i) #.replace("\n","").replace("\r",""))
 
 
-class EARSmilter(Milter.Base):
+class milter(Milter.Base):
     def __init__(self):
-        self.log = EARS() 
+        self.log = EARSlog()
         self.log.log.start()
         self.id = Milter.uniqueID()
 
@@ -121,15 +121,16 @@ class EARSmilter(Milter.Base):
         return Milter.CONTINUE
                             
     def eom(self):
-        self.db = toDB()
-        self.db.NewMessage(self.canon_from, self.headers)
-        
         self.fp.seek(0)
         msg = mime.message_from_file(self.fp)
         self._msg = msg
 
+        self.db = toDB()
+        self.msgID = self.db.NewMessage(self.canon_from, self.headers, self._msg)
+
+
         try:
-            parsed = ProcessMessage(self.id, self._msg, self.R, self.db, self.log)
+            parsed = ProcessMessage(self.msgID, self._msg, self.R, self.db, self.log)
             self._msg, self.subjChange = parsed.ParseAttachments()
 
             out = tempfile.TemporaryFile()
@@ -147,8 +148,9 @@ class EARSmilter(Milter.Base):
             finally:
                 out.close()
                 
-            return Milter.ACCEPT
-            
+#            return Milter.ACCEPT
+            return Milter.TEMPFAIL
+
         except Exception, e:
             self.log.warn(e)
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -161,9 +163,9 @@ class EARSmilter(Milter.Base):
 ## === === ##
 
 class ProcessMessage():
-    def __init__(self, _id, _msg, _R, _db, _log):
+    def __init__(self, _msgID, _msg, _R, _db, _log):
         self._msg = _msg
-        self.id = _id
+        self.msgID = _msgID
         self.recipients = _R
         self.db = _db
         self.log = _log
@@ -178,6 +180,7 @@ class ProcessMessage():
 
     def ParseAttachments(self):
         msg = self._msg
+
         removedParts = []
         part_payload = []
         fnames = []
@@ -211,46 +214,49 @@ class ProcessMessage():
                 if type(fname) is tuple:
                     fname = fname[2]
                     
-            data = part.get_payload(decode=1)
-            fname, lrg_attach = self.extract_attachment(data, fname)
 
-            if re.match('winmail.dat', fname, re.IGNORECASE):
-                self.log.info('Processing "%s":' % fname)
-                removedParts.append(part)
-                winmail_parts = self.winmail_parse(fname)
-                if len(winmail_parts) > 0:
-                    self.log.info('Extracted from "%s":' % fname)
-                    for wp in winmail_parts:
-                        fnames.append(wp)
-                        self.log.info('\t%s: %s' % (wp[0], self.fhandling.filesize_notation(wp[1])))
-                else:
-                    self.subjChange = True
-                    removedParts = []
+                data = part.get_payload(decode=1)
+                fname, lrg_attach = self.extract_attachment(data, fname)
 
-            else:
-                if lrg_attach <= self.fhandling.min_attach_size:
-                    part_payload.append(part)
-                else:
+                print fname
+
+                if re.match('winmail.dat', fname, re.IGNORECASE):
+                    self.log.info('Processing "%s":' % fname)
                     removedParts.append(part)
-                    self.log.info('\t%s: %s' % (fname, self.fhandling.filesize_notation(lrg_attach)))
-                    fnames.append([fname, lrg_attach, bn_filesize, enc_fname])
-
-            if len(removedParts) > 0:
-#                notice = mako_notice(fnames, attachDir)
-                notice_added = False
-                for rp in removedParts:
-                    rp = self.delete_attachments(rp, notice)#, notice_added)
-                    if notice_added == False:
-                        part_payload.append(rp)
-                        notice_added = True
+                    winmail_parts = self.winmail_parse(fname)
+                    if len(winmail_parts) > 0:
+                        self.log.info('Extracted from "%s":' % fname)
+                        for wp in winmail_parts:
+                            fnames.append(wp)
+                            self.log.info('\t%s: %s' % (wp[0], self.fhandling.filesize_notation(wp[1])))
                     else:
-                        shutil.rmtree(attachDir)
-                        
-                        
-            part_payload.insert(0, msg.get_payload(0))
-            msg.set_payload(part_payload)
+                        self.subjChange = True
+                        removedParts = []
 
-            return (msg, self.subjChange)
+                else:
+                    if lrg_attach <= self.fhandling.min_attach_size:
+                        part_payload.append(part)
+                    else:
+                        removedParts.append(part)
+                        self.log.info('\t%s: %s' % (fname, self.fhandling.filesize_notation(lrg_attach)))
+                        fnames.append([fname, lrg_attach, bn_filesize, enc_fname])
+
+        if len(removedParts) > 0:
+            #               notice = mako_notice(fnames, attachDir)
+            notice_added = False
+            for rp in removedParts:
+                #                   rp = self.delete_attachments(rp, notice)#, notice_added)
+                if notice_added == False:
+                    part_payload.append(rp)
+                    notice_added = True
+#                else:
+#                    shutil.rmtree(self.attachDir)
+                    
+                    
+        part_payload.insert(0, msg.get_payload(0))
+        msg.set_payload(part_payload)
+
+        return (msg, self.subjChange)
                                                                                                                     
             
 
@@ -271,6 +277,8 @@ class ProcessMessage():
                 extracted.write(data)
                 extracted.close()
                 exdir_file_size = os.path.getsize(exdir_file)
+
+                self.db.AttachmentsToDB(data, fname_to_write, self.msgID)
                 
                 file_created = True
                                 
@@ -297,13 +305,13 @@ class ProcessMessage():
                 if isinstance(bodydata, types.ListType):
                     body = bodydata[0]
                 else: body = bodydata
-                exdir_file = '%s/%s' % (attachDir, msgfname)
+                exdir_file = '%s/%s' % (self.attachDir, msgfname)
                 with open(exdir_file, "wb") as origMsg:
                     origMsg.write(body)
                     wparts.append([msgfname, os.path.getsize(exdir_file), '', ''])
                     
         for attachment in tnef.attachments:
-            exdir_file = '%s/%s' % (attachDir, attachment.name)
+            exdir_file = '%s/%s' % (self.attachDir, attachment.name)
             with open(exdir_file, "wb") as wdat_file:
                 wdat_file.write(attachment.data)
             wparts.append([attachment.name, os.path.getsize(exdir_file), '', ''])
@@ -332,6 +340,8 @@ class FileSys():
         
         if not os.path.isdir(attachDir):
             os.mkdir(attachDir)
+
+            
             
         return attachDir
 

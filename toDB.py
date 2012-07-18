@@ -11,7 +11,7 @@ class toDB():
         self.sqlNMdb = "EARS"
         
 
-    def NewMessage(self, sender="", headers=""):
+    def NewMessage(self, sender="", headers="", raw_original=""):
         self.db = mysql.connect(self.sqlHost,
                               self.sqlUser,
                               self.sqlPass,
@@ -19,12 +19,13 @@ class toDB():
         
         self.cursor = self.db.cursor()
         
-        NM_SQL = """INSERT INTO message(sender, headers, dateReceived, body)
-                VALUES(%s, %s, %s, "")"""
+        NM_SQL = """INSERT INTO message(sender, headers, dateReceived, body, raw_original)
+                VALUES(%s, %s, %s, "", %s)"""
         
-        self.cursor.execute(NM_SQL, (sender, "\n".join(headers), datetime.now()))
+        self.cursor.execute(NM_SQL, (sender, "\n".join(headers), datetime.now(), raw_original))
         
         #return(NM_db, NM_crsr.lastrowid, NM_crsr)
+        return self.cursor.lastrowid
     
     def AttachmentsToDB(self, data, fname, msgID):
         ATD_crsr = self.cursor

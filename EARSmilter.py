@@ -46,21 +46,18 @@ def background():
 ## === End Define Multiprocesing === ##
 
 def main():
-    ears = EARS.EARS()
     bt = Thread(target=background)
     bt.start()
     socketname = "/var/spool/EARS/EARSmilter.sock"
     timeout = 600
-    Milter.factory = EARS.EARSmilter
+    Milter.factory = EARS.milter
     flags = Milter.CHGBODY + Milter.CHGHDRS + Milter.ADDHDRS
     flags += Milter.ADDRCPT
     flags += Milter.DELRCPT
     Milter.set_flags(flags)     # tell Sendmail/Postfix which features we use
-#    ears.info("milter startup")
     Milter.runmilter("EARSmilter", socketname, timeout)
     logq.put(None)
     bt.join()
-#    ears.info("milter shutdown")
 
 if __name__ == "__main__":
     main()
