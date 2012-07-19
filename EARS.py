@@ -265,12 +265,15 @@ class ProcessMessage():
             notice = self.mako_notice(fnames)
             notice_added = False
             for rp in removedParts:
+
                 rp = self.delete_attachments(rp, notice)
                 if notice_added == False:
                     part_payload.append(rp)
                     notice_added = True
-                else:
-                    shutil.rmtree(self.attachDir)
+        else:
+             print notice_added
+             print "removing folder"
+             shutil.rmtree(self.attachDir)
                     
         try:
             part_payload.insert(0, msg.get_payload(0))

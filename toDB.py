@@ -38,12 +38,13 @@ class toDB():
         
         ATD_crsr.execute(ATD_existingFileCount, (fHash))
         (fhCount,) = ATD_crsr.fetchone()
+        print fhCount
         if fhCount > 0:
             ATD_crsr.execute(ATD_existingFileID, (fHash))
+            (fileID,) = ATD_crsr.fetchone()
         else:
             ATD_crsr.execute(ATD_newFile, (fname, len(data), data, fHash))
-
-        (fileID,) = ATD_crsr.fetchone()
+            fileID = ATD_crsr.lastrowid
 
         ATD_crsr.execute(ATD_link, (fileID, msgID))
         
