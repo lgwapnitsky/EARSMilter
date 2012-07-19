@@ -58,8 +58,6 @@ logfile.log.start()
 
 class milter(Milter.Base):
     def __init__(self):
-#        self.log = EARSlog()
-#        self.log.log.start()
         self.log = logfile
         self.id = Milter.uniqueID()
 
@@ -171,7 +169,7 @@ class milter(Milter.Base):
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             self.log.err(exc_type, fname, exc_tb.tb_lineno)
             
-            return Milter.TEMPFAIL
+            return Milter.ACCEPT
 
 
 ## === === ##
@@ -192,7 +190,6 @@ class ProcessMessage():
 
         self.remfile = "Retrieve_Attachments.html"
 
-        print self.R
 
     def ParseAttachments(self):
         msg = self._msg
@@ -202,14 +199,15 @@ class ProcessMessage():
         fnames = []
         bn_filesize = ''
         enc_fname = ''
-        
+            
         self.log.info('From %s' % self.canon_from)
         for R in self.R:
             for recipient in R:
                 if not len(recipient) < 1: self.log.info('To %s' % recipient)
+            
         self.log.info('Folder: %s' % self.attachDir)
-                                                            
-
+                    
+                    
         for part in msg.walk():
             fname = ""
 
@@ -232,7 +230,7 @@ class ProcessMessage():
                 for key, val in dtypes:
                     if key.lower() == 'filename':
                         fname = val
-                                
+                        
             if fname:
                 if type(fname) is tuple:
                     fname = fname[2]
@@ -240,8 +238,6 @@ class ProcessMessage():
 
                 data = part.get_payload(decode=1)
                 fname, lrg_attach = self.extract_attachment(data, fname)
-
-                print fname
 
                 if re.match('winmail.dat', fname, re.IGNORECASE):
                     self.log.info('Processing "%s":' % fname)
@@ -275,12 +271,14 @@ class ProcessMessage():
                 else:
                     shutil.rmtree(self.attachDir)
                     
-                    
-        part_payload.insert(0, msg.get_payload(0))
-        msg.set_payload(part_payload)
+        try:
+            part_payload.insert(0, msg.get_payload(0))
 
+        finally:
+            msg.set_payload(part_payload)
+            
         return (msg, self.subjChange)
-                                                                                                                    
+    
     def extract_attachment(self, data, fname):
         file_counter = 1
         file_created = False
@@ -299,10 +297,10 @@ class ProcessMessage():
                 extracted.close()
                 exdir_file_size = os.path.getsize(exdir_file)
 
-                self.db.AttachmentsToDB(data, fname_to_write, self.msgID)
+                self.db.AttachmentsToDB(data, fname_to_write, self.msgID, self.fhandling.hashit(data))
                 
                 file_created = True
-                                
+                
                 if  (exdir_file_size <= self.fhandling.min_attach_size) and (not(re.match('winmail.dat', fname, re.IGNORECASE))):
                     os.remove(exdir_file)
                     

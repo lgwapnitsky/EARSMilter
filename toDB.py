@@ -28,12 +28,12 @@ class toDB():
         #return(NM_db, NM_crsr.lastrowid, NM_crsr)
         return self.cursor.lastrowid
     
-    def AttachmentsToDB(self, data, fname, msgID):
+    def AttachmentsToDB(self, data, fname, msgID, fileHash):
         ATD_crsr = self.cursor
-        ATD_SQL = """INSERT INTO attachment(filename, filesize, file, msgID)
-                VALUES(%s, %s, %s, %s)"""
+        ATD_SQL = """INSERT INTO attachment(filename, filesize, file, msgID, fileHash)
+                VALUES(%s, %s, %s, %s, %s)"""
         
-        ATD_crsr.execute(ATD_SQL, (fname, len(data), data, msgID))
+        ATD_crsr.execute(ATD_SQL, (fname, len(data), data, msgID, fileHash))
         
     def RecipientsToDB(self, msgID, recipients):
         RTD_crsr = self.cursor
@@ -61,7 +61,7 @@ class toDB():
         BTD_SQL = """UPDATE message SET body=%s WHERE id=%s"""
         
         BTD_crsr.execute(BTD_SQL, (body, msgID))
-        
+
     def close(self):
         self.db.commit()
         self.db.close()
