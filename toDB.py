@@ -28,12 +28,26 @@ class toDB():
         #return(NM_db, NM_crsr.lastrowid, NM_crsr)
         return self.cursor.lastrowid
     
-    def AttachmentsToDB(self, data, fname, msgID, fileHash):
+    def AttachmentsToDB(self, data, fname, msgID, fHash):
         ATD_crsr = self.cursor
-        ATD_SQL = """INSERT INTO attachment(filename, filesize, file, msgID, fileHash)
-                VALUES(%s, %s, %s, %s, %s)"""
+        ATD_existingFileCount = """SELECT COUNT(fileHash) FROM attachment WHERE fileHash LIKE %s"""
+        ATD_existingFileID = """SELECT id FROM attachment WHERE fileHash LIKE %s"""
+        ATD_newFile = """INSERT INTO attachment(filename, filesize, file, fileHash)
+                VALUES(%s, %s, %s, %s)"""
+        ATD_link = """INSERT INTO att_link(fileID, msgID) VALUES(%s, %s)"""
         
-        ATD_crsr.execute(ATD_SQL, (fname, len(data), data, msgID, fileHash))
+        ATD_crsr.execute(ATD_existingFileCount, (fHash))
+        (fhCount,) = ATD_crsr.fetchone()
+        if fhCount > 0:
+            ATD_crsr.execute(ATD_existingFileID, (fHash))
+        else:
+            ATD_crsr.execute(ATD_newFile, (fname, len(data), data, fHash))
+
+        (fileID,) = ATD_crsr.fetchone()
+
+        ATD_crsr.execute(ATD_link, (fileID, msgID))
+        
+        
         
     def RecipientsToDB(self, msgID, recipients):
         RTD_crsr = self.cursor
@@ -52,8 +66,8 @@ class toDB():
             else:
                 RTD_crsr.execute(RTD_newUser, (emailAddress))
                 recipID = RTD_crsr.lastrowid
-                
-            RTD_link = """INSERT INTO link(recipID, msgID) VALUES(%s, %s)"""
+
+            RTD_link = """INSERT INTO mr_link(recipID, msgID) VALUES(%s, %s)"""
             RTD_crsr.execute(RTD_link, (recipID, msgID))
                     
     def BodyToDB(self, msgID, body):
