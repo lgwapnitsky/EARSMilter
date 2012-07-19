@@ -38,7 +38,6 @@ class toDB():
         
         ATD_crsr.execute(ATD_existingFileCount, (fHash))
         (fhCount,) = ATD_crsr.fetchone()
-        print fhCount
         if fhCount > 0:
             ATD_crsr.execute(ATD_existingFileID, (fHash))
             (fileID,) = ATD_crsr.fetchone()
