@@ -271,8 +271,6 @@ class ProcessMessage():
                     part_payload.append(rp)
                     notice_added = True
         else:
-             print notice_added
-             print "removing folder"
              shutil.rmtree(self.attachDir)
                     
         try:

@@ -9,7 +9,7 @@ class toDB():
         self.sqlUser = "root"
         self.sqlPass = "python"
         self.sqlNMdb = "EARS"
-        
+        self.now = datetime.now()
 
 
     def NewMessage(self, sender="", headers="", raw_original=""):
@@ -23,7 +23,7 @@ class toDB():
         NM_SQL = """INSERT INTO message(sender, headers, dateReceived, body, raw_original)
                 VALUES(%s, %s, %s, "", %s)"""
         
-        self.cursor.execute(NM_SQL, (sender, "\n".join(headers), datetime.now(), raw_original))
+        self.cursor.execute(NM_SQL, (sender, "\n".join(headers), self.now, raw_original))
         
         #return(NM_db, NM_crsr.lastrowid, NM_crsr)
         return self.cursor.lastrowid
@@ -32,8 +32,9 @@ class toDB():
         ATD_crsr = self.cursor
         ATD_existingFileCount = """SELECT COUNT(fileHash) FROM attachment WHERE fileHash LIKE %s"""
         ATD_existingFileID = """SELECT id FROM attachment WHERE fileHash LIKE %s"""
-        ATD_newFile = """INSERT INTO attachment(filename, filesize, file, fileHash)
-                VALUES(%s, %s, %s, %s)"""
+        ATD_existingFileUpdate = """UPDATE attachment SET dateReceived=%s WHERE id=%s"""
+        ATD_newFile = """INSERT INTO attachment(filename, filesize, file, fileHash, dateReceived)
+                VALUES(%s, %s, %s, %s, %s)"""
         ATD_link = """INSERT INTO att_link(fileID, msgID) VALUES(%s, %s)"""
         
         ATD_crsr.execute(ATD_existingFileCount, (fHash))
@@ -41,8 +42,9 @@ class toDB():
         if fhCount > 0:
             ATD_crsr.execute(ATD_existingFileID, (fHash))
             (fileID,) = ATD_crsr.fetchone()
+            ATD_crsr.execute(ATD_existingFileUpdate, (self.now, fileID))
         else:
-            ATD_crsr.execute(ATD_newFile, (fname, len(data), data, fHash))
+            ATD_crsr.execute(ATD_newFile, (fname, len(data), data, fHash, self.now))
             fileID = ATD_crsr.lastrowid
 
         ATD_crsr.execute(ATD_link, (fileID, msgID))
