@@ -25,11 +25,10 @@ class toDB():
         
         self.cursor.execute(NM_SQL, (sender, "\n".join(headers), self.now, raw_original))
         
-        #return(NM_db, NM_crsr.lastrowid, NM_crsr)
+        #return(NM_db, self.cursor.lastrowid, NM_cursor)
         return self.cursor.lastrowid
     
     def AttachmentsToDB(self, data, fname, msgID, fHash):
-        ATD_crsr = self.cursor
         ATD_existingFileCount = """SELECT COUNT(fileHash) FROM attachment WHERE fileHash LIKE %s"""
         ATD_existingFileID = """SELECT id FROM attachment WHERE fileHash LIKE %s"""
         ATD_existingFileUpdate = """UPDATE attachment SET dateReceived=%s WHERE id=%s"""
@@ -37,22 +36,21 @@ class toDB():
                 VALUES(%s, %s, %s, %s, %s)"""
         ATD_link = """INSERT INTO att_link(fileID, msgID) VALUES(%s, %s)"""
         
-        ATD_crsr.execute(ATD_existingFileCount, (fHash))
-        (fhCount,) = ATD_crsr.fetchone()
+        self.cursor.execute(ATD_existingFileCount, (fHash))
+        (fhCount,) = self.cursor.fetchone()
         if fhCount > 0:
-            ATD_crsr.execute(ATD_existingFileID, (fHash))
-            (fileID,) = ATD_crsr.fetchone()
-            ATD_crsr.execute(ATD_existingFileUpdate, (self.now, fileID))
+            self.cursor.execute(ATD_existingFileID, (fHash))
+            (fileID,) = self.cursor.fetchone()
+            self.cursor.execute(ATD_existingFileUpdate, (self.now, fileID))
         else:
-            ATD_crsr.execute(ATD_newFile, (fname, len(data), data, fHash, self.now))
-            fileID = ATD_crsr.lastrowid
+            self.cursor.execute(ATD_newFile, (fname, len(data), data, fHash, self.now))
+            fileID = self.cursor.lastrowid
 
-        ATD_crsr.execute(ATD_link, (fileID, msgID))
+            self.cursor.execute(ATD_link, (fileID, msgID))
         
         
         
     def RecipientsToDB(self, msgID, recipients):
-        RTD_crsr = self.cursor
         RTD_existingUser = """SELECT COUNT(emailAddress) FROM recipient WHERE emailAddress LIKE %s"""
         RTD_existingUserID = """SELECT id FROM recipient WHERE emailAddress LIKE %s"""
         RTD_newUser = """INSERT INTO recipient(emailAddress) VALUES(%s)"""
@@ -60,23 +58,22 @@ class toDB():
         
         for r in recipients:
             emailAddress = r[0][1:-1]
-            RTD_crsr.execute(RTD_existingUser, (emailAddress))
-            (euCount,) = RTD_crsr.fetchone()
+            self.cursor.execute(RTD_existingUser, (emailAddress))
+            (euCount,) = self.cursor.fetchone()
             if euCount > 0:
-                RTD_crsr.execute(RTD_existingUserID, (emailAddress))
-                (recipID,) = RTD_crsr.fetchone()
+                self.cursor.execute(RTD_existingUserID, (emailAddress))
+                (recipID,) = self.cursor.fetchone()
             else:
-                RTD_crsr.execute(RTD_newUser, (emailAddress))
-                recipID = RTD_crsr.lastrowid
+                self.cursor.execute(RTD_newUser, (emailAddress))
+                recipID = self.cursor.lastrowid
 
             RTD_link = """INSERT INTO mr_link(recipID, msgID) VALUES(%s, %s)"""
-            RTD_crsr.execute(RTD_link, (recipID, msgID))
+            self.cursor.execute(RTD_link, (recipID, msgID))
                     
     def BodyToDB(self, msgID, body):
-        BTD_crsr = self.cursor
         BTD_SQL = """UPDATE message SET body=%s WHERE id=%s"""
         
-        BTD_crsr.execute(BTD_SQL, (body, msgID))
+        self.cursor.execute(BTD_SQL, (body, msgID))
 
     def close(self):
         self.db.commit()
