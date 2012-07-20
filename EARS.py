@@ -1,4 +1,5 @@
 import Milter
+import codecs
 import datetime
 import email
 import email.Message
@@ -34,6 +35,8 @@ from mako import exceptions
 from socket import AF_INET, AF_INET6
 
 from toDB import toDB
+
+sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 
 class EARSlog():
     def __init__(self):
@@ -285,14 +288,21 @@ class ProcessMessage():
     def extract_attachment(self, data, fname):
         file_counter = 1
         file_created = False
-        fname_to_write = fname.replace("\n","").replace("\r","")
+        print "converting..."
+        fname_to_write = self.fhandling.unicodeConvert(fname)
+        print "replacing..."
+        fname_to_write = fname_to_write.replace("\n","").replace("\r","")
+
+        print fname_to_write
 
         while file_created == False:
-            exdir_file = "%s/%s" % (self.attachDir, fname_to_write)
+            #            exdir_file = "%s/%s" % (self.attachDir, fname_to_write)
+            exdir_file = os.path.join(self.attachDir, fname_to_write)
             
             if os.path.exists(exdir_file):
                 fileName, fileExtension = os.path.splitext(fname)
-                fname_to_write = "%s(%d)%s" % (fileName, file_counter, fileExtension)
+#                fname_to_write = "%s(%d)%s" % (fileName, file_counter, fileExtension)
+
                 file_counter += 1
             else:
                 extracted = open(exdir_file, "wb")
@@ -368,8 +378,17 @@ class ProcessMessage():
             if not path: path = dirs[0]
             
             fname[2] = self.fhandling.filesize_notation(fname[1])
+            print "unicoding"
+            fname[0] = self.fhandling.unicodeConvert(fname)
+            print fname[0]
+            print "urllib"
             fname[3] = urllib.quote(fname[0])
-            fname[0] = unicodedata.normalize('NFKD', unicode(fname[0], 'utf-8')).encode('ascii', 'ignore')
+            
+            # try:
+            #     fname[0] = unicodedata.normalize('NFKD', unicode(fname[0], 'utf-8')).encode('ascii', 'ignore')
+            # except:
+            #     continue
+
             attach.append(fname)
 
         EARStemplate = Template(filename='EARS.html', input_encoding='utf-8', output_encoding='utf-8', encoding_errors='replace')
@@ -423,3 +442,18 @@ class FileSys():
             
         return '{0:.2f} {1}B'.format(f_num, notation[magnitude])
                             
+
+    def unicodeConvert(self, fname):
+        normalized = False
+
+        while normalized == False:
+            try:
+                fname  = unicodedata.normalize('NFKD', unicode(fname, 'utf-8')).encode('ascii', 'ignore')
+                normalized = True
+            except:
+                fname = fname.decode('iso-8859-1')#.encode('utf-8')
+                normalized = True
+
+        return fname
+
+    
