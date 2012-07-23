@@ -11,15 +11,17 @@ class toDB():
         self.sqlNMdb = "EARS"
         self.now = datetime.now()
 
-
-    def NewMessage(self, sender="", headers="", raw_original=""):
         self.db = mysql.connect(self.sqlHost,
-                              self.sqlUser,
-                              self.sqlPass,
-                              self.sqlNMdb)
+                                self.sqlUser,
+                                self.sqlPass,
+                                self.sqlNMdb,
+                                compress=True)
         
         self.cursor = self.db.cursor()
         
+
+
+    def NewMessage(self, sender="", headers="", raw_original=""):
         NM_SQL = """INSERT INTO message(sender, headers, dateReceived, body, raw_original)
                 VALUES(%s, %s, %s, "", %s)"""
         

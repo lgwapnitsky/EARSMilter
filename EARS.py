@@ -182,6 +182,7 @@ class milter(Milter.Base):
 class ProcessMessage():
     def __init__(self, _msgID, _msg, _R, _from, _db, _log):
         self._msg = _msg
+
         self.msgID = _msgID
         self.R = _R
         self.canon_from = _from
@@ -198,6 +199,7 @@ class ProcessMessage():
 
     def ParseAttachments(self):
         msg = self._msg
+        exit
 
         removedParts = []
         part_payload = []
@@ -212,10 +214,10 @@ class ProcessMessage():
             
         self.log.info('Folder: %s' % self.attachDir)
                     
-                    
+
         for part in msg.walk():
             fname = ""
-
+            
             if part.is_multipart():
                 continue
 
@@ -294,9 +296,6 @@ class ProcessMessage():
             fname_to_write = self.fhandling.unicodeConvert(fname_to_write)
             fname_to_write = fname_to_write.replace("\n","").replace("\r","")
 
-            print fname_to_write, type(fname_to_write)
-
-            #            exdir_file = "%s/%s" % (self.attachDir, fname_to_write)
             exdir_file = os.path.join(self.attachDir, fname_to_write)
             
             if os.path.exists(exdir_file):
