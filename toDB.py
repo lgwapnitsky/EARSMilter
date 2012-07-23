@@ -21,11 +21,11 @@ class toDB():
         
 
 
-    def NewMessage(self, sender="", headers="", raw_original=""):
-        NM_SQL = """INSERT INTO message(sender, headers, dateReceived, body, raw_original)
-                VALUES(%s, %s, %s, "", %s)"""
+    def NewMessage(self, sender="", subject="", headers="", raw_original=""):
+        NM_SQL = """INSERT INTO message(sender, subject, headers, dateReceived, body, raw_original)
+                VALUES(%s, %s, %s, %s, "", %s)"""
         
-        self.cursor.execute(NM_SQL, (sender, "\n".join(headers), self.now, raw_original))
+        self.cursor.execute(NM_SQL, (sender, subject, "\n".join(headers), self.now, raw_original))
         
         #return(NM_db, self.cursor.lastrowid, NM_cursor)
         return self.cursor.lastrowid

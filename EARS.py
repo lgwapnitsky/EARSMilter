@@ -86,6 +86,7 @@ class milter(Milter.Base):
         self.subjMsgId = {}
         self.receiver = self.getsymval('j')
         self.subjChange = False 
+        self.Subject = None
         self.headers = []
 
         return Milter.CONTINUE
@@ -102,7 +103,8 @@ class milter(Milter.Base):
         if (rgxSubject.search(name)) or (rgxMessageID.search(name)):
             self.log.info("%s: %s" % (name, hval))
             self.subjMsgId[name] = hval
-        
+            if (rgxSubject.search(name)): self.Subject = hval
+
         return Milter.CONTINUE
 
 
@@ -138,7 +140,7 @@ class milter(Milter.Base):
         self._msg = msg
 
         self.db = toDB()
-        self.msgID = self.db.NewMessage(self.canon_from, self.headers, self._msg)
+        self.msgID = self.db.NewMessage(self.canon_from, self.Subject, self.headers, self._msg)
         self.db.RecipientsToDB(self.msgID, self.R)
 
         try:
@@ -199,7 +201,6 @@ class ProcessMessage():
 
     def ParseAttachments(self):
         msg = self._msg
-        exit
 
         removedParts = []
         part_payload = []
