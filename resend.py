@@ -1,5 +1,4 @@
 import MySQLdb as mysql
-import operator
 
 from datetime import date, datetime
 
@@ -19,13 +18,6 @@ class Resend():
         
         self.cursor = self.db.cursor(cursorclass=mysql.cursors.DictCursor)
 
-    def getMessage(self, id):
-        GM_SQL = """SELECT id, sender, subject, dateReceived, raw_original FROM message WHERE id=%s"""
-
-        self.cursor.execute(GM_SQL, (id))
-        row = self.cursor.fetchone()
-        return row
-
     def recipMessages(self, recipient):
         RM_SQL="""SELECT *
         FROM message
@@ -44,14 +36,29 @@ class Resend():
         assoc_SQL="""SELECT emailAddress FROM recipient WHERE recipient.id IN (SELECT recipID FROM mr_link WHERE msgID=%s)"""
         
 
-        self.cursor.execute(RM_SQL, (recipient + '%'))
+        self.cursor.execute(RM_SQL, ('%' + recipient + '%'))
         RM = self.cursor.fetchall()
         for row in RM:
             self.cursor.execute(assoc_SQL, (row['id']))
             assoc = self.cursor.fetchone()
-            print"To: %s\nSubject:%s\nDate:%s\n" % (assoc['emailAddress'], row['subject'], row['dateReceived'])
+
+        return (RM, assoc)
+
+    def sendMessage(self, recipient, data):
+        from smtplib import SMTP
+        server = SMTP('localhost')
+
+        from_addr = '<root@mailproc-test.wrtdesign.com>'
+        to_addr=[]
+        to_addr.append(recipient)
+
+        server.sendmail(from_addr, to_addr, data)
+        server.quit()
 
 if __name__ == '__main__':
     resend = Resend()
-    resend.recipMessages('lcla')
-    
+    RM,assoc = resend.recipMessages('wap')
+    for row in RM:
+        print"To:\t%s\nSubj:\t%s\nDate:\t%s\n" % (assoc['emailAddress'], row['subject'], row['dateReceived'])
+#        resend.sendMessage(assoc['emailAddress'], row['raw_original'])
+
