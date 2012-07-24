@@ -27,6 +27,16 @@ class Resend():
 
     def recipMessages(self, recipient):
         recipAddr_SQL="""SELECT id FROM recipient WHERE emailAddress LIKE %s"""
+#         RM_SQL="""SELECT * FROM mr_link l
+# LEFT JOIN message ON l.msgID=message.id
+# LEFT JOIN recipient ON l.recipID=%s"""
+        
+#         self.cursor.execute(recipAddr_SQL, (recipient + '%'))
+#         ra = self.cursor.fetchall()
+#         for a in ra:
+#             print a
+#             #self.cursor.execute(RM_SQL, (a['id']))
+
         RM_SQL="""SELECT *
         FROM message
         WHERE message.id
@@ -49,8 +59,7 @@ class Resend():
         for row in RM:
             self.cursor.execute(assoc_SQL, (row['id']))
             assoc = self.cursor.fetchone()
-#            print("To: %s\nSubject:%s", (assoc['emailAddress'], row['subject']))
-            print assoc['emailAddress'], row['subject']
+            print"To: %s\nSubject:%s\n" % (assoc['emailAddress'], row['subject'])
 
 if __name__ == '__main__':
     resend = Resend()
