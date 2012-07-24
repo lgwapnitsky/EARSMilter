@@ -1,5 +1,4 @@
 import MySQLdb as mysql
-from pprint import pprint
 
 from datetime import date, datetime
 
@@ -27,18 +26,33 @@ class Resend():
         return row
 
     def recipMessages(self, recipient):
-        RecipID_SQL = """SELECT id FROM recipient WHERE emailAddress LIKE %s"""
-        RM_SQL="""SELECT * FROM message WHERE message.id IN (select msgID FROM mr_link WHERE recipID=%s)"""
+        recipAddr_SQL="""SELECT id FROM recipient WHERE emailAddress LIKE %s"""
+        RM_SQL="""SELECT *
+        FROM message
+        WHERE message.id
+        IN (
+        SELECT msgID
+        FROM mr_link
+        WHERE recipID
+        IN(
+        SELECT id
+        FROM recipient
+        WHERE emailAddress
+        LIKE %s
+        )
+        )"""
+        assoc_SQL="""SELECT emailAddress FROM recipient WHERE recipient.id IN (SELECT recipID FROM mr_link WHERE msgID=%s)"""
+        
 
-        self.cursor.execute(RecipID_SQL, (recipient + '%'))
-        recipID = self.cursor.fetchall()
-        for row in recipID:
-            self.cursor.execute(RM_SQL, (row['id']))
-            for x in self.cursor.fetchall():
-                pprint(x['subject'])
-
+        self.cursor.execute(RM_SQL, (recipient + '%'))
+        RM = self.cursor.fetchall()
+        for row in RM:
+            self.cursor.execute(assoc_SQL, (row['id']))
+            assoc = self.cursor.fetchone()
+#            print("To: %s\nSubject:%s", (assoc['emailAddress'], row['subject']))
+            print assoc['emailAddress'], row['subject']
 
 if __name__ == '__main__':
     resend = Resend()
-    resend.recipMessages('svargas')
+    resend.recipMessages('cwar')
     
