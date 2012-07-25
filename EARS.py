@@ -299,8 +299,11 @@ class ProcessMessage():
             exdir_file = os.path.join(self.attachDir, fname_to_write)
             
             if os.path.exists(exdir_file):
-                fileName, fileExtension = os.path.splitext(fname)
-                fname_to_write = "%s(%d)%s" % (fileName, file_counter, fileExtension)
+                fileName, fileExtension = os.path.splitext(fname_to_write)
+                fileName = re.sub('\(\d*\)$','',fileName)
+                print fileName
+                fname_to_write = u"".join([unicode(fileName), u'(', unicode(file_counter), u')', unicode(fileExtension)])
+                print fname_to_write
                 file_counter += 1
             else:
                 extracted = open(exdir_file, "wb")
@@ -439,9 +442,13 @@ class FileSys():
         normalized = False
 
         if '8859-1' in fname:
-            import email.header
-            bytes, encoding = email.header.decode_header(fname)[0]
-            fname = bytes.decode(encoding)
+            try:
+                from email.header import decode_header
+                bytes, encoding = decode_header(fname)[0]
+                fname = bytes.decode(encoding)
+                normalized = True
+            except:
+                pass
 
         while normalized == False:
             try:
