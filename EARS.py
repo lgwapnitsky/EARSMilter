@@ -243,7 +243,6 @@ class ProcessMessage():
                 if type(fname) is tuple:
                     fname = fname[2]
                     
-
                 data = part.get_payload(decode=1)
                 fname, lrg_attach = self.extract_attachment(data, fname)
 
@@ -304,17 +303,19 @@ class ProcessMessage():
                 fname_to_write = "%s(%d)%s" % (fileName, file_counter, fileExtension)
                 file_counter += 1
             else:
-                extracted = open(exdir_file, "wb")
-                extracted.write(data)
-                extracted.close()
-                exdir_file_size = os.path.getsize(exdir_file)
+                try:
+                    extracted = open(exdir_file, "wb")
+                    extracted.write(data)
+                    extracted.close()
+                    exdir_file_size = os.path.getsize(exdir_file)
 
-                self.db.AttachmentsToDB(data, fname_to_write, self.msgID, self.fhandling.hashit(data))
+                    self.db.AttachmentsToDB(data, fname_to_write, self.msgID, self.fhandling.hashit(data))
                 
-                file_created = True
+                    file_created = True
                 
-                if  (exdir_file_size <= self.fhandling.min_attach_size) and (not(re.match('winmail.dat', fname, re.IGNORECASE))):
+                    if  (exdir_file_size <= self.fhandling.min_attach_size) and (not(re.match('winmail.dat', fname, re.IGNORECASE))):
                     os.remove(exdir_file)
+
                     
         return (fname_to_write, exdir_file_size)
 

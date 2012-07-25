@@ -52,12 +52,14 @@ class Resend():
         to_addr=[]
         to_addr.append(recipient)
 
+        
+
         server.sendmail(from_addr, to_addr, data)
         server.quit()
 
 if __name__ == '__main__':
     resend = Resend()
-    RM,assoc = resend.recipMessages('wap')
+    RM,assoc = resend.recipMessages('ibu')
     for row in RM:
         print"To:\t%s\nSubj:\t%s\nDate:\t%s\n" % (assoc['emailAddress'], row['subject'], row['dateReceived'])
 #        resend.sendMessage(assoc['emailAddress'], row['raw_original'])
