@@ -303,19 +303,18 @@ class ProcessMessage():
                 fname_to_write = "%s(%d)%s" % (fileName, file_counter, fileExtension)
                 file_counter += 1
             else:
-                try:
-                    extracted = open(exdir_file, "wb")
-                    extracted.write(data)
-                    extracted.close()
-                    exdir_file_size = os.path.getsize(exdir_file)
-
-                    self.db.AttachmentsToDB(data, fname_to_write, self.msgID, self.fhandling.hashit(data))
+                extracted = open(exdir_file, "wb")
+                extracted.write(data)
+                extracted.close()
+                exdir_file_size = os.path.getsize(exdir_file)
                 
-                    file_created = True
+                self.db.AttachmentsToDB(data, fname_to_write, self.msgID, self.fhandling.hashit(data))
                 
-                    if  (exdir_file_size <= self.fhandling.min_attach_size) and (not(re.match('winmail.dat', fname, re.IGNORECASE))):
+                file_created = True
+                
+                if  (exdir_file_size <= self.fhandling.min_attach_size) and (not(re.match('winmail.dat', fname, re.IGNORECASE))):
                     os.remove(exdir_file)
-
+                    
                     
         return (fname_to_write, exdir_file_size)
 
@@ -438,6 +437,11 @@ class FileSys():
 
     def unicodeConvert(self, fname):
         normalized = False
+
+        if '8859-1' in fname:
+            import email.header
+            bytes, encoding = email.header.decode_header(fname)[0]
+            fname = bytes.decode(encoding)
 
         while normalized == False:
             try:
