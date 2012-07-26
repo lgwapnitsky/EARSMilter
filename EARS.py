@@ -441,7 +441,8 @@ class FileSys():
     def unicodeConvert(self, fname):
         normalized = False
 
-        if '8859-1' in fname:
+#        if '8859-1' in fname:
+        if fname.startswith('=?'):
             try:
                 from email.header import decode_header
                 bytes, encoding = decode_header(fname)[0]
