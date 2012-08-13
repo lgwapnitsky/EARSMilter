@@ -22,12 +22,30 @@ class toDB():
 
 
     def NewMessage(self, sender="", subject="", headers="", raw_original=""):
-        NM_SQL = """INSERT INTO message(sender, subject, headers, dateReceived, body, raw_original)
-                VALUES(%s, %s, %s, %s, "", %s)"""
+        NM_SQL = """INSERT INTO message(subject, headers, dateReceived, body, raw_original)
+                VALUES(%s, %s, %s, "", %s)"""
         
-        self.cursor.execute(NM_SQL, (sender, subject, "\n".join(headers), self.now, raw_original))
+        NM_existingSender = """SELECT COUNT(emailAddress) FROM sender WHERE emailAddress LIKE %s"""
+        NM_existingSenderID = """SELECT id FROM sender WHERE emailAddress LIKE %s"""
+        NM_newSender = """INSERT INTO sender(emailAddress) VALUES(%s)"""
+
+
+        self.cursor.execute(NM_SQL, (subject, "\n".join(headers), self.now, raw_original))
+        msgID = self.cursor.lastrowid
+        print "msgID = %s" % msgID
         
-        #return(NM_db, self.cursor.lastrowid, NM_cursor)
+        self.cursor.execute(NM_existingSender,(sender))
+        (euCount,) = self.cursor.fetchone()
+        if euCount > 0:
+            self.cursor.execute(NM_existingSenderID, (sender))
+            (senderID,) = self.cursor.fetchone()
+        else:
+            self.cursor.execute(NM_newSender, (sender))
+            senderID = self.cursor.lastrowid
+
+        sender_link = """INSERT INTO ms_link(senderID, msgID) VALUES(%s, %s)"""
+        self.cursor.execute(sender_link, (senderID, msgID))
+        
         return self.cursor.lastrowid
     
     def AttachmentsToDB(self, data, fname, msgID, fHash):
