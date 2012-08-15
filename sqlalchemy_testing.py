@@ -13,6 +13,7 @@ from EARS_db import Message, Recipient, Sender, Attachment
 
 daysago = date.today() - timedelta( days = 30 )
 now = datetime.now()
+minsago = now - timedelta( minutes = 5 )
 
 class testing():
     def __init__( self ):
@@ -30,8 +31,6 @@ def main():
     session = items.session
 
 
-#    query = items.session.query(Attachment).filter(Attachment.dateReceived < daysago)
-#    query.all()
 
     message = Message( 'subject', 'headers', 'body', now, 'raw' )
 #    message2 = Message( 'subject2', 'headers2', 'body2', now, 'raw2' )
@@ -73,16 +72,48 @@ def main():
     #---------------------------------------------------------- session.commit()
     #----------------------------------------------------------- session.flush()
 
-    query = session.query( Message ).filter( Message.sender.has( email_address = 'test@test.com' ) ).all()
-    for q in query:
-        r = q.recipients
-        for i in r:
-            print i.email_address
+#===============================================================================
+#    query = session.query( Message ).filter( Message.sender.has( email_address = 'test@test.com' ) ).all()
+#    for q in query:
+#        r = q.recipients
+#        for i in r:
+#            print i.email_address
+# 
+#    query = session.query( Recipient ).filter( Recipient.email_address.contains( 'bob@one.com' ) ).all()
+#    for q in query:
+#        for m in q.message:
+#            print m.subject
+#===============================================================================
 
-    query = session.query( Recipient ).filter( Recipient.email_address.contains( 'bob@one.com' ) ).all()
-    for q in query:
-        for m in q.message:
-            print m.subject
+#===============================================================================
+#     testtime = datetime.strptime( '2012-08-15 12:34:35' , '%Y-%m-%d %H:%M:%S' )
+# 
+#    query = items.session.query( Attachment ).filter( Attachment.received >= testtime ).all()
+#    for q in query:
+#        print q.received
+#        for message in q.message:
+#            if message.dateReceived >= testtime:
+#                session.delete( message )
+#        if len( q.message ) == 0:
+#            session.delete( q )
+#===============================================================================
+
+    messages = session.query( Message ).filter( Message.sender.has( email_address = 'root@mailproc-test' ) ).all()
+    for message in messages:
+        session.delete( message )
+
+    attachments = session.query( Attachment ).filter( Attachment.message == None ).all()
+    for attachment in attachments:
+        session.delete( attachment )
+
+
+    session.commit()
+
+#    for attachment in query:
+#        print attachment.filename
+#        for message in attachment.message:
+#                print message.subject
+
 
 def hashit( data ):
     sha1 = hashlib.sha1()
