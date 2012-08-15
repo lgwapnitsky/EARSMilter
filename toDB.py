@@ -23,7 +23,7 @@ class toDB():
     def newMessage( self, sender, subject, headers, raw_original , recipients ):
         session = self.session
 
-        message = Message( subject, '\n'.join(map(str,headers)), None, self.now, raw_original)
+        message = Message( subject, '\n'.join( map( str, headers ) ), None, self.now, raw_original )
 
         q_sender = session.query( Sender ).filter_by( email_address = sender ).first()
         if not q_sender:
@@ -41,21 +41,21 @@ class toDB():
 
         self.message = message
 
-    def addAttachment(self, filename, filehash, data):
+    def addAttachment( self, filename, filehash, data ):
         session = self.session
 
-        attachment = Attachment(filename, self.now, filehash, data)
+        attachment = Attachment( filename, self.now, filehash, data )
 
-        q_attach = session.query(Attachment).filter_by(hash = filehash).first()
+        q_attach = session.query( Attachment ).filter_by( hash = filehash ).first()
         if not q_attach:
-            self.message.attachments.append(attachment)
+            self.message.attachments.append( attachment )
         else:
             q_attach.received = self.now
-            q_attach.message.append(self.message)
+            q_attach.message.append( self.message )
 
 
     def close( self ):
         self.session.add( self.message )
         self.session.commit()
-#        self.session.close()
+        self.session.close()
 
