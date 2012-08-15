@@ -139,8 +139,14 @@ class milter( Milter.Base ):
         msg = mime.message_from_file( self.fp )
         self._msg = msg
 
-        self.db = toDB()
+        db = toDB()
+        db.newMessage( self.canon_from, self.Subject, self.headers, self._msg, self.R )
+
+#        parsed = ProcessMessage( db.message, self.log )
+
 #===============================================================================
+#        self.db = toDB()
+#
 #        self.msgID = self.db.NewMessage(self.canon_from, self.Subject, self.headers, self._msg)
 #        self.db.RecipientsToDB(self.msgID, self.R)
 # 
@@ -177,7 +183,8 @@ class milter( Milter.Base ):
 #            
 # #            return Milter.TEMPFAIL
 #===============================================================================
-            return Milter.ACCEPT
+#            return Milter.ACCEPT
+        return Milter.TEMPFAIL
 
 
 
