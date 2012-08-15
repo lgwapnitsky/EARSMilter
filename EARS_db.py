@@ -14,18 +14,38 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 mr_link = Table( 'mr_link', Base.metadata,
-                Column( 'msg_id', Integer, ForeignKey( 'message.id' ) ),
-                Column( 'recipient_id', Integer, ForeignKey( 'recipient.id' ) )
+                Column( 'recipient_id', Integer, ForeignKey( 'recipient.id' ) ),
+                Column( 'msg_id', Integer, ForeignKey( 'message.id' ) )
                 )
+
+ma_link = Table( 'att_link', Base.metadata,
+                 Column( 'file_id', Integer, ForeignKey( 'attachment.id' ) ),
+                 Column( 'msg_id', Integer, ForeignKey( 'message.id' ) )
+                 )
+
+class Attachment( Base ):
+    __tablename__ = "attachment"
+
+    id = Column( Integer, primary_key = True )
+    filename = Column( VARCHAR( 255 ) )
+    received = Column( DATETIME )
+    hash = Column( VARCHAR( 255 ) , unique = True )
+    data = Column( LONGBLOB )
+
+    def __init__( self, filename, received, hash, data ):
+        self.filename = filename
+        self.received = received
+        self.hash = hash
+        self.data = data
 
 
 class Message( Base ):
     __tablename__ = "message"
 
     id = Column( Integer, primary_key = True )
-    subject = Column( VARCHAR( 100 ) )
-    headers = Column( VARCHAR( 100 ) )
-    body = Column( VARCHAR( 100 ) )
+    subject = Column( TEXT )
+    headers = Column( TEXT )
+    body = Column( LONGTEXT )
     dateReceived = Column( DateTime )
     raw_original = Column( LONGTEXT )
 
@@ -35,6 +55,11 @@ class Message( Base ):
                               secondary = mr_link,
                               backref = 'message',
                               lazy = 'dynamic' )
+
+    attachments = relationship( 'Attachment',
+                               secondary = ma_link,
+                               backref = 'message',
+                               lazy = 'dynamic' )
 
     def __init__( self, subject, headers, body, dateReceived, raw_original ):
         self.subject = subject
