@@ -141,67 +141,57 @@ class milter( Milter.Base ):
 
         db = toDB()
         db.newMessage( self.canon_from, self.Subject, self.headers, self._msg, self.R )
+        
+        try:
+            parsed = ProcessMessage( db, self.log , self.F )
+            self._msg, self.subjChange = parsed.ParseAttachments()
+            db.message.body = self._msg
+        
+            out = tempfile.TemporaryFile()
+            try:
+                msg.dump(out)
+                out.seek(0)
+                msg = rfc822.Message(out)
+                msg.rewindbody()
 
-#        parsed = ProcessMessage( db.message, self.log )
+                while 1:
+                    buf = out.read(8192)
+                    if len(buf) == 0: break
+                    self.replacebody(buf)
 
-#===============================================================================
-#        self.db = toDB()
-#
-#        self.msgID = self.db.NewMessage(self.canon_from, self.Subject, self.headers, self._msg)
-#        self.db.RecipientsToDB(self.msgID, self.R)
-# 
-#        try:
-#            parsed = ProcessMessage(self.msgID, self._msg, self.R, self.canon_from, self.db, self.log)
-#            self._msg, self.subjChange = parsed.ParseAttachments()
-# 
-#            self.db.BodyToDB(self.msgID, self._msg)
-# 
-#            out = tempfile.TemporaryFile()
-#            try:
-#                msg.dump(out)
-#                out.seek(0)
-#                msg = rfc822.Message(out)
-#                msg.rewindbody()
-#                
-#                
-#                while 1:
-#                    buf = out.read(8192)
-#                    if len(buf) == 0: break
-#                    self.replacebody(buf)
-#            finally:
-#                out.close()
-#                self.db.close()
-#                
+            finally:
+                out.close()
+                db.close()
+
+            return Milter.TEMPFAIL
+
+        except Exception, e:
+            self.log.warn(e)
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            self.log.err(exc_type, fname, exc_tb.tb_lineno)
+            
+            return Milter.TEMPFAIL
+            
 #            return Milter.ACCEPT
-# #            return Milter.TEMPFAIL
-# 
-#        except Exception, e:
-#            self.log.warn(e)
-#            exc_type, exc_obj, exc_tb = sys.exc_info()
-#            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-#            self.log.err(exc_type, fname, exc_tb.tb_lineno)
-#            
-# #            return Milter.TEMPFAIL
-#===============================================================================
-#            return Milter.ACCEPT
-        return Milter.TEMPFAIL
+        
 
 
 
 ## === === ##
 
 class ProcessMessage():
-    def __init__( self, _msgID, _msg, _R, _from, _db, _log ):
-        self._msg = _msg
+#    def __init__( self, _msgID, _msg, _R, _from, _db, _log ):
+    def __init__(self, _db, _log, _from):
 
-        self.msgID = _msgID
-        self.R = _R
-        self.canon_from = _from
         self.db = _db
+        self.message = self.db.message
         self.log = _log
+        self._from = _from
 
-        self.fhandling = FileSys( self._msg )
+        self.fhandling = FileSys( self.message.raw_original )
         self.attachDir = self.fhandling.attachDir
+        print self.attachDir
 
         self.subjChange = False
 
@@ -209,7 +199,9 @@ class ProcessMessage():
 
 
     def ParseAttachments( self ):
-        msg = self._msg
+        msg = self.message.raw_original
+        sender = self.message.sender
+        recipients = self.message.recipients
 
         removedParts = []
         part_payload = []
@@ -217,10 +209,10 @@ class ProcessMessage():
         bn_filesize = ''
         enc_fname = ''
 
-        self.log.info( 'From %s' % self.canon_from )
-        for R in self.R:
-            for recipient in R:
-                if not len( recipient ) < 1: self.log.info( 'To %s' % recipient )
+        self.log.info( 'From %s' % self._from)
+
+        for recipient in recipients:
+            if not len( recipient.email_address ) < 1: self.log.info( 'To %s' % recipient.email_address )
 
         self.log.info( 'Folder: %s' % self.attachDir )
 
@@ -320,7 +312,7 @@ class ProcessMessage():
                 extracted.close()
                 exdir_file_size = os.path.getsize( exdir_file )
 
-                self.db.AttachmentsToDB( data, fname_to_write, self.msgID, self.fhandling.hashit( data ) )
+                self.db.addAttachment(fname_to_write, self.fhandling.hashit(data), data)
 
                 file_created = True
 
