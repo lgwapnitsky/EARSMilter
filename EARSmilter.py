@@ -24,13 +24,6 @@ from Milter.utils import parse_addr
 from StringIO import StringIO
 
 from datetime import date, datetime, timedelta
->>>>>>> Stashed changes
-
-import Milter
-import EARS
-
-from datetime import date
-from datetime import timedelta
 
 
 ## ==  IP Information
