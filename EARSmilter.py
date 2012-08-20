@@ -1,4 +1,30 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
+
+import Milter
+import codecs
+import datetime
+import email
+import email.Message
+import hashlib
+import mime
+import os
+import re
+import rfc822
+import shutil
+import sys
+import tempfile
+import time
+import tnefparse
+import urllib2
+import unicodedata
+import types
+
+from Milter.utils import parse_addr
+
+from StringIO import StringIO
+
+from datetime import date, datetime, timedelta
+>>>>>>> Stashed changes
 
 import Milter
 import EARS
