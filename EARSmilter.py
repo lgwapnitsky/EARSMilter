@@ -18,6 +18,7 @@ import tnefparse
 import urllib2
 import unicodedata
 import types
+import EARS
 
 from Milter.utils import parse_addr
 
