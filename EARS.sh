@@ -18,7 +18,7 @@
 APP_PATH=/var/spool/EARS
 
 # path to paster bin
-DAEMON=/var/spool/EARS/EARSmilter.py
+DAEMON=/var/spool/EARS/EARS.py
 
 # startup args
 #DAEMON_OPTS=" serve --log-file <my logfile> --server-name=main production.ini"

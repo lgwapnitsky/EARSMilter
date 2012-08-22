@@ -1,12 +1,13 @@
 import MySQLdb as mysql
-import EARS_db as db
+#import EARS_db as db
+from database import SQLAlchemy as db
 
 from datetime import date, datetime, timedelta
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from EARS_db import Message, Recipient, Sender, Attachment
+#from EARS_db import Message, Recipient, Sender, Attachment
 
 class toDB():
     def __init__( self ):
