@@ -19,7 +19,7 @@ import urllib2
 import unicodedata
 import types
 
-from milter import EARSmilter as EARS
+from EARSmilter import EARSmilter as EARS
 
 from Milter.utils import parse_addr
 
