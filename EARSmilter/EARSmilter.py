@@ -163,7 +163,8 @@ class milter( Milter.Base ):
                 out.close()
                 db.close()
 
-            return Milter.TEMPFAIL
+#            return Milter.TEMPFAIL
+            return milter.ACCEPT
 
         except Exception, e:
             self.log.warn( e )
@@ -171,9 +172,9 @@ class milter( Milter.Base ):
             fname = os.path.split( exc_tb.tb_frame.f_code.co_filename )[1]
             self.log.err( exc_type, fname, exc_tb.tb_lineno )
 
-            return Milter.TEMPFAIL
+#            return Milter.TEMPFAIL
 
-#            return Milter.ACCEPT
+            return Milter.ACCEPT
 
 
 
