@@ -164,7 +164,7 @@ class milter( Milter.Base ):
                 db.close()
 
 #            return Milter.TEMPFAIL
-            return milter.ACCEPT
+            return Milter.ACCEPT
 
         except Exception, e:
             self.log.warn( e )
