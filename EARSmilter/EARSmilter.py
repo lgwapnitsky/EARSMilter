@@ -387,7 +387,7 @@ class ProcessMessage():
 
             attach.append( fname )
 
-        EARStemplate = Template( filename = 'EARS.html', input_encoding = 'utf-8', output_encoding = 'utf-8', encoding_errors = 'replace' )
+        EARStemplate = Template( filename = 'www/EARS.html', input_encoding = 'utf-8', output_encoding = 'utf-8', encoding_errors = 'replace' )
         buf = StringIO()
         ctx = Context( buf, filepath = path, attachments = attach, deldate = exp_date )
 
