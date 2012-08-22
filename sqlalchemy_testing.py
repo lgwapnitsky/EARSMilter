@@ -1,5 +1,6 @@
 #/usr/bin/env python
-import EARS_db
+#import EARS_db
+import database.SQLAlchemy as EARS_db
 import os, hashlib
 
 from datetime import date, timedelta, datetime
@@ -7,13 +8,12 @@ from datetime import date, timedelta, datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-
-from EARS_db import Message, Recipient, Sender, Attachment
+from database.SQLAlchemy import *
 
 
 daysago = date.today() - timedelta( days = 30 )
 now = datetime.now()
-testtime = now - timedelta( days = 1 )
+testtime = now - timedelta( days = 1, minutes = 42, seconds = 19 )
 
 class testing():
     def __init__( self ):

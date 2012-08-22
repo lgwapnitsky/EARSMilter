@@ -34,7 +34,7 @@ from mako import exceptions
 
 from socket import AF_INET, AF_INET6
 
-from database import toDB
+from database.toDB import *
 
 sys.stdout = codecs.getwriter( 'utf-8' )( sys.stdout )
 
