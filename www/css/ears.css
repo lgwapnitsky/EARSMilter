@@ -14,7 +14,7 @@ body{
 /* THIS DIV ID IS USED TO PLACE AND THE EARS LOGO */
 
 #earslogo {
-	background: transparent url(../images/earslogo.png);
+	background: transparent url(http://ears.wrtdesign.com/images/earslogo.png);
 	background-position: top center;
 	background-repeat: no-repeat;
 	background-attachment: scroll;
