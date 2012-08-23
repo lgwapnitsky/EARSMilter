@@ -10,7 +10,7 @@ class toDB():
     def __init__( self, username, password, server, database ):
         Session = sessionmaker()
 
-        engine = create_engine( 'mysql+mysqlconnector://%s:%s@%s/%s' % ( username,
+        engine = create_engine( 'mysql+mysqldb://%s:%s@%s/%s' % ( username,
                                                                   password,
                                                                   server,
                                                                   database ) )
