@@ -279,7 +279,7 @@ class ProcessMessage():
                     part_payload.append( rp )
                     notice_added = True
         else:
-             shutil.rmtree( self.attachDir )
+            shutil.rmtree( self.attachDir )
 
         try:
             part_payload.insert( 0, msg.get_payload( 0 ) )
