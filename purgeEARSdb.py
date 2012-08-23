@@ -43,6 +43,12 @@ class Options:
                              dest = 'minutes', type = int, default = 0 ,
                              help = 'Remove message older than x minutes (default = 0)' )
 
+        sender_opts = parser.add_argument_group( 'Sender Options' )
+
+        sender_opts.add_argument( '-x', '--purge-senders',
+                                 action = 'store_true',
+                                 dest = 'purge_senders',
+                                 help = 'Purge senders from database that are no longer associated with messages/attachments' )
 
 
         database_opts = parser.add_argument_group( 'Database Options (required)' )
@@ -97,7 +103,9 @@ class Purge:
 
     def purge( self ):
         self.purgeAttachmentsMessages()
-        self.purgeSenders()
+
+        if self.args.purge_senders:
+            self.purgeSenders()
 
     def purgeAttachmentsMessages( self ):
         session = self.session
@@ -116,7 +124,7 @@ class Purge:
                 msg_count = sum( len( q.message ) for q in query )
 
                 count_query = ( "%s attachments and the associated %s messages" % ( att_count, msg_count ) )
-                delete = self.query_yes_no( "Are you sure you want to delete %s" % count_query, "no" )
+                delete = self.query_yes_no( "Are you sure you want to delete %s?" % count_query, "no" )
             else:
                 if verbose:
                     print "No attachments to delete."
@@ -126,7 +134,11 @@ class Purge:
                 for message in q.message:
                     if message.dateReceived <= delta:
                         if verbose:
-                            print ( "deleting %s\nreceived on:%s" % ( message.subject, message.dateReceived ) )
+                            print ( "----------\ndeleting\t%s\nreceived on:\t%s\nFrom:\t\t%s" %
+                                    ( message.subject, message.dateReceived, message.sender.email_address )
+                                    )
+                            for recipient in message.recipients:
+                                print ( 'To:\t\t%s' % recipient.email_address )
                         session.delete( message )
                 session.commit()
 
@@ -139,13 +151,23 @@ class Purge:
     def purgeSenders( self ):
         session = self.session
         verbose = self.args.verbose
+        quiet = self.args.quiet
+
+        delete = False
 
         delSenders = session.query( Sender ).filter( ~exists().where( Message.sender_id == Sender.id ) ).all()
-        for sender in delSenders:
-            if verbose:
-                print ( '%s removed from list of Senders' % ( sender.email_address ) )
-            session.delete( sender )
-        session.commit()
+
+        if not quiet:
+            sender_count = len( delSenders )
+            if not sender_count == 0:
+                delete = self.query_yes_no( 'Are you sure you want to remove %s senders from the database?' % sender_count, 'no' )
+
+        if delete:
+            for sender in delSenders:
+                if verbose:
+                    print ( '%s removed from list of Senders' % ( sender.email_address ) )
+                session.delete( sender )
+            session.commit()
 
     def done( self ):
         self.session.commit()
