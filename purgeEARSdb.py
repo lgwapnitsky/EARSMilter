@@ -105,11 +105,15 @@ class Purge:
 
         if not quiet:
             att_count = len( query )
-            msg_count = sum( len( q.message ) for q in query )
 
-            count_query = ( "%s attachments associated with %s messages" % ( att_count, msg_count ) )
-            delete = self.query_yes_no( "Are you sure you want to delete %s" % count_query, "no" )
-            if not delete: exit()
+            if not att_count == 0:
+                msg_count = sum( len( q.message ) for q in query )
+
+                count_query = ( "%s attachments and the associated %s messages" % ( att_count, msg_count ) )
+                delete = self.query_yes_no( "Are you sure you want to delete %s" % count_query, "no" )
+                if not delete: exit()
+            else:
+                print "No attachments to delete."
 
         for q in query:
             for message in q.message:
