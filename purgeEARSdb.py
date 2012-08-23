@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
 import database.SQLAlchemy as EARS_db
-import os, hashlib
 
-from datetime import date, timedelta, datetime
+from datetime import timedelta, datetime
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql import exists
 
 from database.SQLAlchemy import *
 
@@ -95,11 +95,18 @@ class Purge:
         self.delta = self.now - timedelta( days = args.days, hours = args.hours, minutes = args.minutes )
         self.args = args
 
-    def dbQuery( self ):
+    def purge( self ):
+        self.purgeAttachmentsMessages()
+        self.purgeSenders()
+        self.done()
+
+    def purgeAttachmentsMessages( self ):
         session = self.session
         delta = self.delta
         verbose = self.args.verbose
         quiet = self.args.quiet
+
+        delete = False
 
         query = session.query( Attachment ).filter( Attachment.received <= delta ).all()
 
@@ -111,20 +118,34 @@ class Purge:
 
                 count_query = ( "%s attachments and the associated %s messages" % ( att_count, msg_count ) )
                 delete = self.query_yes_no( "Are you sure you want to delete %s" % count_query, "no" )
-                if not delete: exit()
             else:
-                print "No attachments to delete."
-
-        for q in query:
-            for message in q.message:
-                if message.dateReceived <= delta:
-                    if verbose:
-                        print ( "deleting %s\nreceived on:%s" % ( message.subject, message.dateReceived ) )
-                    session.delete( message )
-            if len( q.message ) == 0:
-                session.delete( q )
                 if verbose:
-                    print ( "deleting %s" % q.filename )
+                    print "No attachments to delete."
+
+        if delete:
+            for q in query:
+                for message in q.message:
+                    if message.dateReceived <= delta:
+                        if verbose:
+                            print ( "deleting %s\nreceived on:%s" % ( message.subject, message.dateReceived ) )
+                        session.delete( message )
+                if len( q.message ) == 0:
+                    session.delete( q )
+                    if verbose:
+                        print ( "deleting %s" % q.filename )
+
+    def purgeSenders( self ):
+        session = self.session
+        verbose = self.args.verbose
+
+        delSenders = session.query( Sender ).filter( ~exists().where( Message.sender_id == Sender.id ) ).all()
+        for sender in delSenders:
+            if verbose:
+                print ( '%s removed from list of Senders' % ( sender.email_address ) )
+            session.delete( sender )
+
+    def done( self ):
+        self.session.commit()
 
     def query_yes_no( self, question, default = "yes" ):
         """Ask a yes/no question via raw_input() and return their answer.
@@ -162,7 +183,7 @@ class Purge:
 
 def main():
     purge = Purge( Options() )
-    purge.dbQuery()
+    purge.purge()
 
 if __name__ == '__main__':
     main()

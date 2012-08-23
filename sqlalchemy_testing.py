@@ -7,6 +7,7 @@ from datetime import date, timedelta, datetime
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql import exists
 
 from database.SQLAlchemy import *
 
@@ -87,16 +88,31 @@ def main():
 # #===============================================================================
 #===============================================================================
 
-#    testtime = datetime.strptime( '2012-08-15 12:34:35' , '%Y-%m-%d %H:%M:%S' )
-    query = items.session.query( Attachment ).filter( Attachment.received <= testtime ).all()
-    for q in query:
-        for message in q.message:
-            if message.dateReceived <= testtime:
-                print  ( datetime.now() - message.dateReceived )
-#                session.delete( message )
-        if len( q.message ) == 0:
-            print "null message"
- #           session.delete( q )
+#===============================================================================
+# #    testtime = datetime.strptime( '2012-08-15 12:34:35' , '%Y-%m-%d %H:%M:%S' )
+#    query = items.session.query( Attachment ).filter( Attachment.received <= testtime ).all()
+#    for q in query:
+#        print '---'
+#        for message in q.message:
+#            if message.dateReceived <= testtime:
+# #                print  ( datetime.now() - message.dateReceived )
+#                for recipient in message.recipients: print recipient.email_address
+# #                session.delete( message )
+#        if len( q.message ) == 0:
+#            print "null message"
+# #           session.delete( q )
+#===============================================================================
+
+    #===========================================================================
+    # q2 = items.session.query( Message ).filter( Message.sender_id == 1 ).all()
+    # for message in q2:
+    #    print q2.subject
+    #    session.delete( message )
+    #===========================================================================
+    q4 = items.session.query( Sender ).filter( ~exists().where( Message.sender_id == Sender.id ) ).all()
+    for sender in q4:
+        print sender.email_address
+
 
 #===============================================================================
 #    messages = session.query( Message ).filter( Message.sender.has( email_address = 'root@mailproc-test' ) ).all()
