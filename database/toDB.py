@@ -7,10 +7,15 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 class toDB():
-    def __init__( self ):
+    def __init__( self, username, password, server, database ):
         Session = sessionmaker()
 
-        engine = create_engine( 'mysql+mysqldb://root:python@python.dev.wrtdesign.com/EARS' )
+#        engine = create_engine( 'mysql+mysqldb://root:python@python.dev.wrtdesign.com/EARS' )
+        engine = create_engine( 'mysql+mysqldb://%s:%s@%s/%s' % ( username,
+                                                                  password,
+                                                                  server,
+                                                                  database ) )
+
         Session.configure( bind = engine )
         self.session = Session()
 

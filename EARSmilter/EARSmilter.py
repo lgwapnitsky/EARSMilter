@@ -139,7 +139,7 @@ class milter( Milter.Base ):
         msg = mime.message_from_file( self.fp )
         self._msg = msg
 
-        db = toDB()
+        db = toDB( 'root', 'python', 'python.dev.wrtdesign.com', 'EARS' )
         db.newMessage( self.canon_from, self.Subject, self.headers, self._msg, self.R )
 
         try:
