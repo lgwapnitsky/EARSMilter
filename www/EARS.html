@@ -1,43 +1,72 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link media="screen" rel="stylesheet" href="http://ears.wrtdesign.com/css/EARS.css" type="text/css" /><title>EARS</title>
-  </head>
-  <body>
-    <div id="logo">
-      <h1>
-	<span id="WRT">WRT</span>
-	<span id="EARS"> EARS</span>
-      </h1>
-      <h2>E-mail Attachment Retrieval System</h2>
-    </div>
-    <hr />
-    <div id="EARS_desc">
-      Because this message exceeded WRT's email size limit, the following<br />
-      attachments have been removed and saved to a <strong>temporary</strong> storage location.<br />
-      <p />
-      <strong>
-	They will be permanently removed on ${deldate}<br />
-	so be sure to retrieve them before that date!<br />
-      </strong>
-      <p>
-	To retrieve the attachments, click on each link below and use your browser's<br />
-	Save-As function to save the file to the location of your choice<br />
-    </p>
-    </div>
-    <hr />
-    <div id="EARS_files">
-      <ul>
-	% for attachment in attachments:
-	<li><a href="http://ears.wrtdesign.com/download.php?p=${filepath}&amp;f=${attachment[3]}">${attachment[0]}</a> (${attachment[2]})</li>
-% endfor
-      </ul>
-      <p><strong>OR...</strong></p>
-      <ul>
-	<a href="http://ears.wrtdesign.com/download_zip.php?p=${filepath}">DOWNLOAD ALL FILES AS A .ZIP FILE</a>
-      </ul>
-    </div>
-    WRT
-  </body>
+<head>
+<title>WRT | EARS</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link media="screen" rel="stylesheet" href="css/EARS.css" type="text/css" /><title>EARS</title>
+<link rel="shortcut icon" href="images/favicon.ico">
+</head>
+
+<body>
+
+<div id="earslogo"></div>
+
+<!-- BEGIN MAIN CONTENT //-->
+
+<div id="content" class="shadow">
+
+	<div id="title">WRT E-mail Attachment Retrieval System</div>
+
+	<div class="note">
+			Because this message exceeded WRT's email file size limitation, the following attachments have been removed and saved to a temporary storage location.
+			<br />
+			<br />
+			To retrieve the attachments, click on each link below and use your browser's <strong>Save-As</strong> function to save the file to the location of your choice.</div>
+
+	<div class="note"><strong>These files will be permanently removed on <span class="date">${deldate}</span>. So be sure to retrieve them before that date. Thank you.</strong></div>
+
+	<div class="attach">
+
+	<strong>DOWNLOAD YOUR FILES HERE:</strong>
+
+		<ul>
+		% for attachment in attachments:
+			<li><a href="http://ears.wrtdesign.com/download.php?p=${filepath}&amp;f=${attachment[3]}">${attachment[0]}</a> (${attachment[2]})</li>
+			% endfor
+		</ul>
+
+		<strong>OR:</strong>
+
+		<ul>
+		<a href="http://ears.wrtdesign.com/download_zip.php?p=${filepath}">DOWNLOAD ALL FILES AS A .ZIP FILE</a>
+		</ul>
+        
+	</div>
+
+</div>
+
+<!-- END MAIN CONTENT //-->
+
+<!-- BEGIN OFFSITE RSS FEED CONTENT
+    
+<div id="offsiteback">
+
+	<div id="offsite"></div>
+
+</div>
+
+//-->
+
+<!-- END OFFSITE RSS FEED CONTENT //-->
+
+<!-- BEGIN FOOTER CONTENT //-->
+
+<div id="footerwrap">
+
+	<div id="footerlogo"><img src="images/wrtlogo.png" alt="" width="25" height="25" /></div>
+
+  <div id="footer">&copy; <a href="http://www.wrtdesign.com/" target="_blank">Wallace Roberts &amp; Todd, LLC</a> &nbsp;&nbsp;&nbsp;&nbsp; <a href="http://www.facebook.com/wrtdesign" target="_blank">Facebook</a> | <a href="http://www.linkedin.com/company/wallace-roberts-&-todd-llc" target="_blank">LinkedIn</a> | <a href="http://twitter.com/wrtdesign" target="_blank">Twitter</a> | <a href="http://www.wrtdesign.com/offsite/" target="_blank">Offsite</a></div>
+
+</div>
+</body>
 </html>

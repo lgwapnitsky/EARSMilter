@@ -1,51 +1,253 @@
-#logo {
-  background-color: #ffffff;
-  color: #000000;
-  font-family: Arial,Helvetica,sans-serif;
-  font-style: normal;
-  font-variant: normal;
-  font-weight: normal;
-  font-size: 100%;
-  line-height: 1;
+@charset "utf-8";
+
+/*	Stylesheet Name:	WRT_EARS2013
+	Stylesheet URI:		wrtdesign.com
+	Author:				Wallace Roberts & Todd, LLC (JSM)
+	Author URI:			wrtdesign.com
+	Description:		Stylesheet for EARS System */
+
+body{
+	background-color: #FFF;
+	font-family: "Trebuchet MS", Arial, Helvetica, Verdana, sans-serif;
 }
-#logo {
-  padding: 1em;
+
+/* THIS DIV ID IS USED TO PLACE AND THE EARS LOGO */
+
+#earslogo {
+	background: transparent url(../images/earslogo.png);
+	background-position: top center;
+	background-repeat: no-repeat;
+	background-attachment: scroll;
+	
+	width: 64px;
+	height: 100px;
+	text-align: center;
+	margin-top: 20px;
+	margin-right: auto;
+	margin-bottom: 30px;
+	margin-left: auto;
 }
-#logo h1, #logo h2 {
-  margin: 0;
+
+/* THIS DIV ID IS USED TO PLACE AND STYLE THE TITLE, NOTICE AND ATTACHMENT LINKS */
+
+#content {
+	position: relative;
+	width: 600px;
+	margin-right: auto;
+	margin-left: auto;
+	background-color: #A6CE3B;
+
+	border-width: 1px;
+	border-style: solid;
+	border-color: #999;
+
+	border-radius: 5px 5px 5px 5px;
+	-moz-border-radius: 5px 5px 5px 5px;
+	-ms-border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 5px 5px 5px 5px; /*10px 10px 10px 10px*/
 }
-#logo h1 {
-  height: 100px;
+
+/* THIS STYLE IS USED TO ADD THE SHADOW TO THE MAIN CONTENT DIV */
+
+.shadow {
+	box-shadow: 0 0 8px 3px rgba(0,0,0,.2);
+	-moz-box-shadow: 0 0 8px 3px rgba(0,0,0,.2);
+	-ms-box-shadow: 0 0 8px 3px rgba(0,0,0,.2);
+	-webkit-box-shadow: 0 0 8px 3px rgba(0,0,0,.2);
 }
-#logo h1 span {
-  float: left;
-  height: 100%;
+
+/* THIS DIV ID USED TO PLACE AND STYLE THE MAIN CONTENT TITLE */
+
+#title {
+	position: relative;
+	width: 560px;
+	color: #FFF;
+	font-size: 27px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: bold;
+	text-align: center;
+	margin: 20px;
 }
-#logo h1 #EARS {
-  background: transparent url(../images/EARS_logo.png) no-repeat scroll left top;
-  width: 150px;
-  text-indent: -1000em;
-  height: 100px;
-  text-transform: uppercase;
-  color: #3366ff;
-  font-size: 100px;
+
+/* THIS CLASS IS USED TO PLACE AND STYLE THE MAIN CONTENT NOTICE */
+
+.note {
+	position: relative;
+	width: 520px;
+	color: #000;
+	font-size: 18px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	text-align: left;
+	
+	padding-top: 20px;
+	padding-bottom: 20px;
+	margin-right: 40px;
+	margin-left: 40px;
+
+	border-width: 1px;
+	border-style: dotted none none none;
+	border-color: #000;
 }
-#logo h1 #WRT {
-  width: 50px;
-  height: 50px;
-  text-indent: -1000em;
-  font-size: 50px;
-  text-transform: uppercase;
-  color: #cc0000;
+
+/* THIS CLASS IS USED TO STYLE THE FILE REMOVAL DATE */
+
+.date {
+	color: #FFF;
 }
-#EARS_desc {
-  text-align: left;
-  font-family: Arial,Helvetica,sans-serif;
-  font-weight: normal;
+
+/* THIS CLASS IS USED TO PLACE AND STYLE THE MAIN CONTENT ATTACHMENTS */
+
+.attach {
+	position: relative;
+	width: 520px;
+	color: #000;
+	font-size: 18px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	text-align: left;
+	
+	padding-top: 20px;
+	padding-bottom: 20px;
+	margin-right: 40px;
+	margin-left: 40px;
+
+	border-width: 1px;
+	border-style: dotted none none none;
+	border-color: #000;
 }
-#EARS_files {
-  text-align: left;
-  font-weight: bold;
-  font-family: "Courier New",Courier,monospace;
-  font-size: 14pt;
+
+/* THIS IS USED TO STYLE THE UNORDERED LIST OF ATTACHMENTS */
+
+ul {
+	list-style-type: disc;
+	font-size: 20px;
+}
+
+/* THIS DIV ID IS USED TO POSITION #OFFSITE CONTAINER AND PLACE BACKGROUND IMAGE */
+
+#offsiteback {
+	position: relative;
+	width: 600px;
+	height: 56px;
+	background-image: url(../images/wrtoffsite.png);
+	text-align: center;
+	margin-top: 27px;
+	margin-right: auto;
+	margin-bottom: 30px;
+	margin-left: auto;
+}
+
+/* THIS DIV ID IS THE CONTAINER THE SCRIPT PORTS THE OFFSITE RSS FEED INTO */
+
+#offsite {
+	position: absolute;
+	width: 362px;
+	text-align: center;
+	top: -7px;
+	right: 34px;
+	bottom: 0px;
+	left: 204px;
+}
+
+/* THE FOLLOWING STYLES DEAL WITH THE RSS FEED APPEARANCE */
+
+#offsite p {
+	margin: 0px auto;
+}
+.rssFeed {
+	font-size: 13px;
+	text-align: center;
+}
+h6 {
+	margin-bottom: 5px;
+}
+.rssBody {
+	font-size: 10px;
+	color: #A6CE3B;
+}
+.rssBody a {
+	font-size: 13px;
+	color: #A6CE3B;
+}
+.rssBody .rssRow {
+	list-style-type: none;
+	font-size: 11px;
+	color: #000;
+}
+
+/* THIS DIV ID IS THE CONTAINER USED TO POSITION THE #FOOTER DIV */
+
+#footerwrap {
+	position: relative;
+	width: 600px;
+	height: 10px;
+	color: #999;
+	font-size: 10px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	text-align: center;
+	margin-top: 10px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+/* THIS DIV ID IS USED TO HOLD AND STYLE THE COPYRIGHT, WEB AND SOCIAL MEDIA LINKS */
+
+#footer {
+	position: absolute;
+	width: 575px; /* 362px */
+	height: 20px;
+	color: #999;
+	font-size: 10px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	text-align: center;
+	vertical-align: middle;
+	top: 7px;
+	right: 0px; /* 34px */
+	left: 25px; /* 204px */
+}
+
+#footerlogo {
+	position: absolute;
+	width: 25px;
+	height: 25px;
+	color: #999;
+	font-size: 10px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	text-align: center;
+	right: 20px; /* 34px */
+	left: 0px; /* 204px */
+}
+
+/* THESE CLASSES ARE USED TO STYLE THE ATTACHMENT LINKS */
+
+.attach a:link, .attach a:visited {
+	color: #FFF;
+	text-decoration: none;
+}
+.attach a:hover, .attach a:active {
+	color: #FFF;
+	text-decoration: none;
+	border-bottom-width: 1px;
+	border-bottom-style: dotted;
+}
+
+/* THESE CLASSES ARE USED TO STYLE THE FOOTER LINKS */
+
+#footer a:link, #footer a:visited {
+	color: #999;
+	text-decoration: none;
+}
+#footer a:hover, #footer a:active {
+	color: #A6CE3B;
+	text-decoration: none;
 }
