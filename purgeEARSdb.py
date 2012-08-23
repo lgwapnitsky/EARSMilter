@@ -98,7 +98,6 @@ class Purge:
     def purge( self ):
         self.purgeAttachmentsMessages()
         self.purgeSenders()
-        self.done()
 
     def purgeAttachmentsMessages( self ):
         session = self.session
@@ -129,10 +128,13 @@ class Purge:
                         if verbose:
                             print ( "deleting %s\nreceived on:%s" % ( message.subject, message.dateReceived ) )
                         session.delete( message )
+                session.commit()
+
                 if len( q.message ) == 0:
                     session.delete( q )
                     if verbose:
                         print ( "deleting %s" % q.filename )
+                session.commit()
 
     def purgeSenders( self ):
         session = self.session
@@ -143,6 +145,7 @@ class Purge:
             if verbose:
                 print ( '%s removed from list of Senders' % ( sender.email_address ) )
             session.delete( sender )
+        session.commit()
 
     def done( self ):
         self.session.commit()
