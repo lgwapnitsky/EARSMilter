@@ -3,4 +3,5 @@
 EARS Code
 #########
 
-.. automodule:: EARS.py
+.. automodule:: EARS
+   :members:

@@ -1,3 +1,10 @@
+"""EARS.py
+
+.. moduleauthor:: Larry G. Wapnitsky <larry@wapnitsky.com>
+
+"""
+
+
 #!/usr/bin/env python
 
 import Milter
@@ -5,7 +12,9 @@ import time
 
 from EARSmilter import EARSmilter as EARS
 
+"""Test for Sphinx Docs
 
+"""
 
 ## === Define multiprocessing == ##
 
