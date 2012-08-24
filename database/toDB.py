@@ -1,7 +1,7 @@
 from database import SQLAlchemy as db
 from database.SQLAlchemy import *
 
-from datetime import date, datetime, timedelta
+from datetime import datetime
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
