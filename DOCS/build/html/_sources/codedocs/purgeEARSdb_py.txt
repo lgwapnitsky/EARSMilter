@@ -3,12 +3,26 @@
 purgeEARSdb.py
 ##############
 
+.. automodule:: purgeEARSdb
+   :members: 
+
+.. autoclass:: Options
+   :members:
+   
+For command-line usage, see :ref:`how_to_use`.
+
+.. autoclass:: Purge
+   :members:
 
 
+.. _how_to_use:
 
 How to use
 **********
+
 Proper usage of purgeEARSdb.py
+
+.. code-block:: sh
 
 
    usage: purgeEARSdb.py [-h] [-q] [-v] [-D DAYS] [-H HOURS] [-M MINUTES] [-x] -s
@@ -42,4 +56,13 @@ Proper usage of purgeEARSdb.py
                            MySQL username
      -p PASSWORD, --password PASSWORD
                            MySQL password
+
+
+Example :program:`cron` job setup:
+
+.. code-block:: sh
+
+   @daily /usr/bin/env python /var/spool/EARS/purgeEARSdb/purgeEARSdb.py -s mailproc.wrtdesign.com -d EARS -u EARS -p WRTears -q -x -v
+
+This setups a daily job to run the script and remove unassociated senders from the database using the default of 7 days
 

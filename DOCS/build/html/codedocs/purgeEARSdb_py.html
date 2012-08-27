@@ -28,6 +28,7 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="top" title="EARSmilter 1.0 documentation" href="../index.html" />
     <link rel="up" title="EARS Code" href="../codedocs.html" />
+    <link rel="next" title="Database Definitions and Functions" href="database.html" />
     <link rel="prev" title="EARS.py" href="EARS_py.html" /> 
   </head>
   <body>
@@ -41,6 +42,9 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="database.html" title="Database Definitions and Functions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
           <a href="EARS_py.html" title="EARS.py"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">EARSmilter 1.0 documentation</a> &raquo;</li>
@@ -53,100 +57,95 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="purgeearsdb-py">
-<h1>purgeEARSdb.py<a class="headerlink" href="#purgeearsdb-py" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="how-to-use">
-<h2>How to use<a class="headerlink" href="#how-to-use" title="Permalink to this headline">¶</a></h2>
-<p>Proper usage of purgeEARSdb.py</p>
+  <div class="section" id="module-purgeEARSdb">
+<span id="purgeearsdb-py"></span><h1>purgeEARSdb.py<a class="headerlink" href="#module-purgeEARSdb" title="Permalink to this headline">¶</a></h1>
+<p>EARS Database Purge</p>
+<dl class="class">
+<dt id="purgeEARSdb.Options">
+<em class="property">class </em><tt class="descclassname">purgeEARSdb.</tt><tt class="descname">Options</tt><a class="headerlink" href="#purgeEARSdb.Options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Establish the command-line options for purgeEARSdb.py</p>
+</dd></dl>
+
+<p>For command-line usage, see <a class="reference internal" href="#how-to-use"><em>How to use</em></a>.</p>
+<dl class="class">
+<dt id="purgeEARSdb.Purge">
+<em class="property">class </em><tt class="descclassname">purgeEARSdb.</tt><tt class="descname">Purge</tt><big>(</big><em>options</em><big>)</big><a class="headerlink" href="#purgeEARSdb.Purge" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="purgeEARSdb.Purge.purgeAttachmentsMessages">
+<tt class="descname">purgeAttachmentsMessages</tt><big>(</big><big>)</big><a class="headerlink" href="#purgeEARSdb.Purge.purgeAttachmentsMessages" title="Permalink to this definition">¶</a></dt>
+<dd><div class="highlight-python"><div class="highlight"><pre><span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span> <span class="n">Attachment</span> <span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span> <span class="n">Attachment</span><span class="o">.</span><span class="n">received</span> <span class="o">&lt;=</span> <span class="n">delta</span> <span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Searches attachments based on provided delta time (default of 7 days)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">query</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">q</span><span class="o">.</span><span class="n">message</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">dateReceived</span> <span class="o">&lt;=</span> <span class="n">delta</span><span class="p">:</span>
+</pre></div>
+</div>
+<p>Only deletes messages older than the specified delta.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="purgeEARSdb.Purge.purgeSenders">
+<tt class="descname">purgeSenders</tt><big>(</big><big>)</big><a class="headerlink" href="#purgeEARSdb.Purge.purgeSenders" title="Permalink to this definition">¶</a></dt>
+<dd><p>Designed to remove senders with no assocated messages from the database</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="purgeEARSdb.Purge.query_yes_no">
+<tt class="descname">query_yes_no</tt><big>(</big><em>question</em>, <em>default='yes'</em><big>)</big><a class="headerlink" href="#purgeEARSdb.Purge.query_yes_no" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask a yes/no question via raw_input() and return their answer.</p>
+<p>&#8220;question&#8221; is a string that is presented to the user.
+&#8220;default&#8221; is the presumed answer if the user just hits &lt;Enter&gt;.</p>
 <blockquote>
-<div><dl class="docutils">
-<dt>usage: purgeEARSdb.py [-h] [-q] [-v] [-D DAYS] [-H HOURS] [-M MINUTES] [-x] -s</dt>
-<dd>SERVER -d DATABASE -u USERNAME -p PASSWORD</dd>
-</dl>
-<p>Purge old messages/attachments from EARS database</p>
-<dl class="docutils">
-<dt>optional arguments:</dt>
-<dd><blockquote class="first">
-<div><table class="docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
-<td>show this help message and exit</td></tr>
-</tbody>
-</table>
-</div></blockquote>
-<table class="last docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd><span class="option">-q</span>, <span class="option">--quiet</span></kbd></td>
-<td>Run without prompting
--v, &#8211;verbose         Verbose output</td></tr>
-</tbody>
-</table>
-</dd>
-<dt>Message/Attachment age options:</dt>
-<dd><table class="first last docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-D <var>DAYS</var></span>, <span class="option">--days <var>DAYS</var></span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>Remove message older than x days (default = 7)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-H <var>HOURS</var></span>, <span class="option">--hours <var>HOURS</var></span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>Remove message older than x hours (default = 0)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-M <var>MINUTES</var></span>, <span class="option">--minutes <var>MINUTES</var></span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>Remove message older than x minutes (default = 0)</td></tr>
-</tbody>
-</table>
-</dd>
-<dt>Sender Options:</dt>
-<dd><table class="first last docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-x</span>, <span class="option">--purge-senders</span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>Purge senders from database that are no longer
-associated with messages/attachments</td></tr>
-</tbody>
-</table>
-</dd>
-<dt>Database Options (required):</dt>
-<dd><table class="first last docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-s <var>SERVER</var></span>, <span class="option">--server <var>SERVER</var></span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>MySQL server name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-d <var>DATABASE</var></span>, <span class="option">--database <var>DATABASE</var></span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>MySQL database name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-u <var>USERNAME</var></span>, <span class="option">--username <var>USERNAME</var></span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>MySQL username</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-p <var>PASSWORD</var></span>, <span class="option">--password <var>PASSWORD</var></span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>MySQL password</td></tr>
-</tbody>
-</table>
-</dd>
-</dl>
-</div></blockquote>
+<div>It must be &#8220;yes&#8221; (the default), &#8220;no&#8221; or None (meaning
+an answer is required of the user).</div></blockquote>
+<p>The &#8220;answer&#8221; return value is one of &#8220;yes&#8221; or &#8220;no&#8221;.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="how-to-use">
+<span id="id1"></span><h2>How to use<a class="headerlink" href="#how-to-use" title="Permalink to this headline">¶</a></h2>
+<p>Proper usage of purgeEARSdb.py</p>
+<div class="highlight-sh"><div class="highlight"><pre>usage: purgeEARSdb.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-q<span class="o">]</span> <span class="o">[</span>-v<span class="o">]</span> <span class="o">[</span>-D DAYS<span class="o">]</span> <span class="o">[</span>-H HOURS<span class="o">]</span> <span class="o">[</span>-M MINUTES<span class="o">]</span> <span class="o">[</span>-x<span class="o">]</span> -s
+                   SERVER -d DATABASE -u USERNAME -p PASSWORD
+
+Purge old messages/attachments from EARS database
+
+optional arguments:
+  -h, --help            show this <span class="nb">help </span>message and <span class="nb">exit</span>
+
+ -q, --quiet           Run without prompting
+  -v, --verbose         Verbose output
+
+Message/Attachment age options:
+  -D DAYS, --days DAYS  Remove message older than x days <span class="o">(</span><span class="nv">default</span> <span class="o">=</span> 7<span class="o">)</span>
+  -H HOURS, --hours HOURS
+                        Remove message older than x hours <span class="o">(</span><span class="nv">default</span> <span class="o">=</span> 0<span class="o">)</span>
+  -M MINUTES, --minutes MINUTES
+                        Remove message older than x minutes <span class="o">(</span><span class="nv">default</span> <span class="o">=</span> 0<span class="o">)</span>
+
+Sender Options:
+  -x, --purge-senders   Purge senders from database that are no longer
+                        associated with messages/attachments
+
+Database Options <span class="o">(</span>required<span class="o">)</span>:
+  -s SERVER, --server SERVER
+                        MySQL server name
+  -d DATABASE, --database DATABASE
+                        MySQL database name
+  -u USERNAME, --username USERNAME
+                        MySQL username
+  -p PASSWORD, --password PASSWORD
+                        MySQL password
+</pre></div>
+</div>
+<p>Example <strong class="program">cron</strong> job setup:</p>
+<div class="highlight-sh"><div class="highlight"><pre>@daily /usr/bin/env python /var/spool/EARS/purgeEARSdb/purgeEARSdb.py -s mailproc.wrtdesign.com -d EARS -u EARS -p WRTears -q -x -v
+</pre></div>
+</div>
+<p>This setups a daily job to run the script and remove unassociated senders from the database using the default of 7 days</p>
 </div>
 </div>
 
@@ -167,6 +166,9 @@ associated with messages/attachments</td></tr>
   <h4>Previous topic</h4>
   <p class="topless"><a href="EARS_py.html"
                         title="previous chapter">EARS.py</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="database.html"
+                        title="next chapter">Database Definitions and Functions</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/codedocs/purgeEARSdb_py.txt"
@@ -198,6 +200,9 @@ associated with messages/attachments</td></tr>
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="database.html" title="Database Definitions and Functions"
+             >next</a> |</li>
         <li class="right" >
           <a href="EARS_py.html" title="EARS.py"
              >previous</a> |</li>

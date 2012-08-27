@@ -8,3 +8,4 @@ EARS Code
    
    codedocs/EARS_py.rst
    codedocs/purgeEARSdb_py.rst
+   codedocs/database.rst
