@@ -1,0 +1,213 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>purgeEARSdb.py &mdash; EARSmilter 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="EARSmilter 1.0 documentation" href="../index.html" />
+    <link rel="up" title="EARS Code" href="../codedocs.html" />
+    <link rel="prev" title="EARS.py" href="EARS_py.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="EARS_py.html" title="EARS.py"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">EARSmilter 1.0 documentation</a> &raquo;</li>
+          <li><a href="../codedocs.html" accesskey="U">EARS Code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="purgeearsdb-py">
+<h1>purgeEARSdb.py<a class="headerlink" href="#purgeearsdb-py" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="how-to-use">
+<h2>How to use<a class="headerlink" href="#how-to-use" title="Permalink to this headline">¶</a></h2>
+<p>Proper usage of purgeEARSdb.py</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>usage: purgeEARSdb.py [-h] [-q] [-v] [-D DAYS] [-H HOURS] [-M MINUTES] [-x] -s</dt>
+<dd>SERVER -d DATABASE -u USERNAME -p PASSWORD</dd>
+</dl>
+<p>Purge old messages/attachments from EARS database</p>
+<dl class="docutils">
+<dt>optional arguments:</dt>
+<dd><blockquote class="first">
+<div><table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+</tbody>
+</table>
+</div></blockquote>
+<table class="last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-q</span>, <span class="option">--quiet</span></kbd></td>
+<td>Run without prompting
+-v, &#8211;verbose         Verbose output</td></tr>
+</tbody>
+</table>
+</dd>
+<dt>Message/Attachment age options:</dt>
+<dd><table class="first last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-D <var>DAYS</var></span>, <span class="option">--days <var>DAYS</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Remove message older than x days (default = 7)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-H <var>HOURS</var></span>, <span class="option">--hours <var>HOURS</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Remove message older than x hours (default = 0)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-M <var>MINUTES</var></span>, <span class="option">--minutes <var>MINUTES</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Remove message older than x minutes (default = 0)</td></tr>
+</tbody>
+</table>
+</dd>
+<dt>Sender Options:</dt>
+<dd><table class="first last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-x</span>, <span class="option">--purge-senders</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Purge senders from database that are no longer
+associated with messages/attachments</td></tr>
+</tbody>
+</table>
+</dd>
+<dt>Database Options (required):</dt>
+<dd><table class="first last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-s <var>SERVER</var></span>, <span class="option">--server <var>SERVER</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>MySQL server name</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-d <var>DATABASE</var></span>, <span class="option">--database <var>DATABASE</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>MySQL database name</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-u <var>USERNAME</var></span>, <span class="option">--username <var>USERNAME</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>MySQL username</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-p <var>PASSWORD</var></span>, <span class="option">--password <var>PASSWORD</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>MySQL password</td></tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">purgeEARSdb.py</a><ul>
+<li><a class="reference internal" href="#how-to-use">How to use</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="EARS_py.html"
+                        title="previous chapter">EARS.py</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/codedocs/purgeEARSdb_py.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="EARS_py.html" title="EARS.py"
+             >previous</a> |</li>
+        <li><a href="../index.html">EARSmilter 1.0 documentation</a> &raquo;</li>
+          <li><a href="../codedocs.html" >EARS Code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Larry G. Wapnitsky.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

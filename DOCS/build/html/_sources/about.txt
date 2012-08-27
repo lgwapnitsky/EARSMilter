@@ -28,7 +28,7 @@ Incoming Email attachment size is no longer limited by WRT, only by the sender�
 Here’s what it looks like:
 
 
-.. image:: EARSmilter.png
+.. image:: images/EARSmilter.png
 
 
 Notice the subject line has been appended with “[Attachments Processed]”. This tells you that the message was passed to the EARS system and attachments have been saved and removed. Also notice the ‘Retrieve_Attachments.html’ attachment – this is where you get your files back when you open it.

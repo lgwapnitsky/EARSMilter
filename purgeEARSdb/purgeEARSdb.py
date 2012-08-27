@@ -1,3 +1,12 @@
+"""Purge EARS database
+
+.. module:: purgeEARSdb.py
+    :synopsis: Purge EARS database
+    
+.. moduleauthor:: Larry G. Wapnitsky <larry@wapnitsky.com>
+
+"""
+
 #!/usr/bin/env python
 
 import database.SQLAlchemy as EARS_db
@@ -14,6 +23,9 @@ from argparse import ArgumentParser
 import sys
 
 class Options:
+    """
+    Establish the command-line options for purgeEARSdb.py
+    """
     def __init__( self ):
         self.setOptions()
         self.ageAdjust()

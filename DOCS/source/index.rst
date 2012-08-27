@@ -8,9 +8,10 @@ WRT E-mail Attachment Removal/Retrieval System (EARS) Milter
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    
    about.rst
+   
    requirements.rst
    installation.rst
    codedocs.rst

@@ -3,5 +3,8 @@
 EARS Code
 #########
 
-.. automodule:: EARS
-   :members:
+.. toctree::
+   :maxdepth: 2
+   
+   codedocs/EARS_py.rst
+   codedocs/purgeEARSdb_py.rst
