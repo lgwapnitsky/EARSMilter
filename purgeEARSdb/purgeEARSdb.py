@@ -3,7 +3,7 @@
 .. module:: purgeEARSdb.py
     :synopsis: Purge EARS database
     
-.. moduleauthor:: Larry G. Wapnitsky <larry@wapnitsky.com>
+.. moduleauthor:: Larry G. Wapnitsky <larry@qual-ITsystems.com>
 
 """
 

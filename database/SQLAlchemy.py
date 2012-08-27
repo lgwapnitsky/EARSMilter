@@ -1,8 +1,8 @@
 """
-SQLAlchemy Database Definitions
-*******************************
+SQLAlchemy.py - SQLAlchemy Database Definitions
+***********************************************
 
-.. module:: purgeEARSdb.py
+.. module:: SQLAlchemy.py
     :synopsis: EARS database SQLAlchemy Definitions
     
 .. moduleauthor:: Larry G. Wapnitsky <larry@qual-ITsystems.com>
@@ -84,6 +84,7 @@ class Attachment( Base ):
 class Message( Base ):
     """
     Messages contain automatically generated relationships to attachments and recipients via the ``mr_link`` and ``ma_link`` table definitions.
+    
     """
 
     __tablename__ = "message"

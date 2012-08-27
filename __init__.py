@@ -1,6 +1,6 @@
-"""EARS milter
+"""EARS milter startup script
 
-.. moduleauthor::Larry G. Wapnitsky <larry@wapnitsky.com>
+.. moduleauthor::Larry G. Wapnitsky <larry@qual-ITsystems.com>
 
 """
 

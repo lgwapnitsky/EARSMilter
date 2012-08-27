@@ -1,14 +1,13 @@
+#!/usr/bin/env python
+
 """The main startup file for the EARS milter
 
 .. module:: EARS.py
     :synopsis: The startup file for the EARS milter
     
-.. moduleauthor:: Larry G. Wapnitsky <larry@wapnitsky.com>
+.. moduleauthor:: Larry G. Wapnitsky <larry@qual-ITsystems.com>
 
 """
-
-
-#!/usr/bin/env python
 
 import Milter
 import time

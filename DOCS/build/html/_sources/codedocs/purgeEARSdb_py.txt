@@ -64,5 +64,5 @@ Example :program:`cron` job setup:
 
    @daily /usr/bin/env python /var/spool/EARS/purgeEARSdb/purgeEARSdb.py -s mailproc.wrtdesign.com -d EARS -u EARS -p WRTears -q -x -v
 
-This setups a daily job to run the script and remove unassociated senders from the database using the default of 7 days
+This setups a daily job to run the script and remove non-associated senders from the database using the default of 7 days
 

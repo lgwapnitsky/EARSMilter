@@ -1,3 +1,12 @@
+"""EARS Milter definitions and functions
+
+.. py:module:: EARSmilter
+    :synopsis: EARS Milter definitions and functions
+    
+.. moduleauthor:: Larry G. Wapnitsky <larry@qual-ITsystems.com>
+
+"""
+
 import Milter
 import codecs
 import datetime
@@ -19,6 +28,7 @@ import types
 
 from Milter.utils import parse_addr
 
+
 from StringIO import StringIO
 
 from datetime import date, datetime, timedelta
@@ -39,6 +49,9 @@ from database.toDB import *
 sys.stdout = codecs.getwriter( 'utf-8' )( sys.stdout )
 
 class EARSlog():
+    """
+    Establishes logging for different error statuses:  INFO, WARN, DEBUG, ERR
+    """
     def __init__( self ):
         self.log = logger( 'EARSmilter' )
 
@@ -60,18 +73,29 @@ logfile.log.start()
 ## === === ##
 
 class milter( Milter.Base ):
+    """
+    Milter processing derived from pymilter
+    """
     def __init__( self ):
+        """
+        Connects to the established log and sets a unique ID for the Milter process
+        """
         self.log = logfile
         self.id = Milter.uniqueID()
 
     def close( self ):
         return Milter.CONTINUE
 
-    def abort( self ):
-        self.log.warn( '!!! client disconnected prematurely !!!' )
+    #===========================================================================
+    # def abort( self ):
+    #    self.log.warn( '!!! client disconnected prematurely !!!' )
+    #===========================================================================
 
     @Milter.noreply
     def connect( self, IPname, family, hostaddr ):
+        """
+        Initializes when a new connection to the Milter is made via SMTP
+        """
         self.IP = hostaddr[0]
         self.port = hostaddr[1]
         if family == AF_INET6:
@@ -93,6 +117,9 @@ class milter( Milter.Base ):
 
     @Milter.noreply
     def header( self, name, hval ):
+        """
+        Processes headers from the incoming message and writes them to a new variable for database storage.
+        """
         rgxSubject = re.compile( '^(subject)', re.IGNORECASE | re.DOTALL )
         rgxMessageID = re.compile( '^(message-id)', re.IGNORECASE | re.DOTALL )
 
@@ -135,6 +162,9 @@ class milter( Milter.Base ):
         return Milter.CONTINUE
 
     def eom( self ):
+        """
+        End-Of-Message milter function
+        """
         self.fp.seek( 0 )
         msg = mime.message_from_file( self.fp )
         self._msg = msg

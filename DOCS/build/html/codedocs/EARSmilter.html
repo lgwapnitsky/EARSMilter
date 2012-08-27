@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>EARS.py &mdash; EARSmilter 1.0 documentation</title>
+    <title>EARS Milter main class/functions &mdash; EARSmilter 1.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -28,8 +28,8 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="top" title="EARSmilter 1.0 documentation" href="../index.html" />
     <link rel="up" title="EARS Code" href="../codedocs.html" />
-    <link rel="next" title="EARS Milter main class/functions" href="EARSmilter.html" />
-    <link rel="prev" title="EARS Code" href="../codedocs.html" /> 
+    <link rel="next" title="purgeEARSdb.py" href="purgeEARSdb_py.html" />
+    <link rel="prev" title="EARS.py" href="EARS_py.html" /> 
   </head>
   <body>
     <div class="related">
@@ -42,10 +42,10 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="EARSmilter.html" title="EARS Milter main class/functions"
+          <a href="purgeEARSdb_py.html" title="purgeEARSdb.py"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="../codedocs.html" title="EARS Code"
+          <a href="EARS_py.html" title="EARS.py"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">EARSmilter 1.0 documentation</a> &raquo;</li>
           <li><a href="../codedocs.html" accesskey="U">EARS Code</a> &raquo;</li> 
@@ -57,29 +57,31 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="module-EARS">
-<span id="ears-py"></span><h1>EARS.py<a class="headerlink" href="#module-EARS" title="Permalink to this headline">¶</a></h1>
-<p>The main startup file for the EARS milter</p>
-<span class="target" id="module-EARS.py"></span><dl class="function">
-<dt id="EARS.background">
-<tt class="descclassname">EARS.</tt><tt class="descname">background</tt><big>(</big><big>)</big><a class="headerlink" href="#EARS.background" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function starts the background threading of EARS so that multiple processes can handle incoming messages.</p>
+  <div class="section" id="module-EARSmilter">
+<span id="ears-milter-main-class-functions"></span><h1>EARS Milter main class/functions<a class="headerlink" href="#module-EARSmilter" title="Permalink to this headline">¶</a></h1>
+<p>EARS milter class</p>
+<dl class="class">
+<dt id="EARSmilter.EARSlog">
+<em class="property">class </em><tt class="descclassname">EARSmilter.</tt><tt class="descname">EARSlog</tt><a class="headerlink" href="#EARSmilter.EARSlog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Establishes logging for different error statuses:  INFO, WARN, DEBUG, ERR</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="EARS.main">
-<tt class="descclassname">EARS.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="headerlink" href="#EARS.main" title="Permalink to this definition">¶</a></dt>
-<dd><p>The main startup for the EARS milter.</p>
-<dl class="docutils">
-<dt>Milter factory flags are set so that the milter can:</dt>
-<dd><ul class="first last simple">
-<li>Change the body of the message</li>
-<li>Change the headers of the message</li>
-<li>Add headers to the message</li>
-<li>Add/Delete recipients</li>
-</ul>
-</dd>
-</dl>
+<dl class="class">
+<dt id="EARSmilter.milter">
+<em class="property">class </em><tt class="descclassname">EARSmilter.</tt><tt class="descname">milter</tt><big>(</big><em>Milter.Base</em><big>)</big><a class="headerlink" href="#EARSmilter.milter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Milter processing derived from pymilter</p>
+<dl class="method">
+<dt id="EARSmilter.milter.__init__">
+<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="headerlink" href="#EARSmilter.milter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects to the established log and sets a unique ID for the Milter process</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EARSmilter.milter.eom">
+<tt class="descname">eom</tt><big>(</big><big>)</big><a class="headerlink" href="#EARSmilter.milter.eom" title="Permalink to this definition">¶</a></dt>
+<dd><p>End-Of-Message milter function</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -91,14 +93,14 @@
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="../codedocs.html"
-                        title="previous chapter">EARS Code</a></p>
+  <p class="topless"><a href="EARS_py.html"
+                        title="previous chapter">EARS.py</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="EARSmilter.html"
-                        title="next chapter">EARS Milter main class/functions</a></p>
+  <p class="topless"><a href="purgeEARSdb_py.html"
+                        title="next chapter">purgeEARSdb.py</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
-    <li><a href="../_sources/codedocs/EARS_py.txt"
+    <li><a href="../_sources/codedocs/EARSmilter.txt"
            rel="nofollow">Show Source</a></li>
   </ul>
 <div id="searchbox" style="display: none">
@@ -128,10 +130,10 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="EARSmilter.html" title="EARS Milter main class/functions"
+          <a href="purgeEARSdb_py.html" title="purgeEARSdb.py"
              >next</a> |</li>
         <li class="right" >
-          <a href="../codedocs.html" title="EARS Code"
+          <a href="EARS_py.html" title="EARS.py"
              >previous</a> |</li>
         <li><a href="../index.html">EARSmilter 1.0 documentation</a> &raquo;</li>
           <li><a href="../codedocs.html" >EARS Code</a> &raquo;</li> 

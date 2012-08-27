@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>EARS.py &mdash; EARSmilter 1.0 documentation</title>
+    <title>Customized Python Logging &mdash; EARSmilter 1.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -28,8 +28,7 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="top" title="EARSmilter 1.0 documentation" href="../index.html" />
     <link rel="up" title="EARS Code" href="../codedocs.html" />
-    <link rel="next" title="EARS Milter main class/functions" href="EARSmilter.html" />
-    <link rel="prev" title="EARS Code" href="../codedocs.html" /> 
+    <link rel="prev" title="Database Definitions and Functions" href="database.html" /> 
   </head>
   <body>
     <div class="related">
@@ -42,10 +41,7 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="EARSmilter.html" title="EARS Milter main class/functions"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="../codedocs.html" title="EARS Code"
+          <a href="database.html" title="Database Definitions and Functions"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">EARSmilter 1.0 documentation</a> &raquo;</li>
           <li><a href="../codedocs.html" accesskey="U">EARS Code</a> &raquo;</li> 
@@ -57,31 +53,40 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="module-EARS">
-<span id="ears-py"></span><h1>EARS.py<a class="headerlink" href="#module-EARS" title="Permalink to this headline">¶</a></h1>
-<p>The main startup file for the EARS milter</p>
-<span class="target" id="module-EARS.py"></span><dl class="function">
-<dt id="EARS.background">
-<tt class="descclassname">EARS.</tt><tt class="descname">background</tt><big>(</big><big>)</big><a class="headerlink" href="#EARS.background" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function starts the background threading of EARS so that multiple processes can handle incoming messages.</p>
+  <div class="section" id="module-logs">
+<span id="customized-python-logging"></span><h1>Customized Python Logging<a class="headerlink" href="#module-logs" title="Permalink to this headline">¶</a></h1>
+<p>Logger.py is a customized Python logging script that can be used in other applications</p>
+<span class="target" id="module-logs.logger"></span><div class="section" id="module-logger.py">
+<span id="logger-py"></span><h2>logger.py<a class="headerlink" href="#module-logger.py" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="logs.logger.logger">
+<em class="property">class </em><tt class="descclassname">logs.logger.</tt><tt class="descname">logger</tt><big>(</big><em>lname</em><big>)</big><a class="headerlink" href="#logs.logger.logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>logger class</p>
+<dl class="method">
+<dt id="logs.logger.logger.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>lname</em><big>)</big><a class="headerlink" href="#logs.logger.logger.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor - requires a filename prefix.</p>
+<p>Logs are stored in /var/log.  If the log files do not exist, or the permissions are incorrect for the
+executing user, you will receive the following message:</p>
+<div class="highlight-sh"><div class="highlight"><pre>Please make sure that the log files exist by running the following commands as root:
+
+    touch /var/log/EARSmilter.log
+    touch /var/log/EARSmilter.err
+    chmod 666 /var/log/EARSmilter.log
+    chmod 666 /var/log/EARSmilter.err
+</pre></div>
+</div>
 </dd></dl>
 
-<dl class="function">
-<dt id="EARS.main">
-<tt class="descclassname">EARS.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="headerlink" href="#EARS.main" title="Permalink to this definition">¶</a></dt>
-<dd><p>The main startup for the EARS milter.</p>
-<dl class="docutils">
-<dt>Milter factory flags are set so that the milter can:</dt>
-<dd><ul class="first last simple">
-<li>Change the body of the message</li>
-<li>Change the headers of the message</li>
-<li>Add headers to the message</li>
-<li>Add/Delete recipients</li>
-</ul>
-</dd>
-</dl>
+<dl class="method">
+<dt id="logs.logger.logger.start">
+<tt class="descname">start</tt><big>(</big><big>)</big><a class="headerlink" href="#logs.logger.logger.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the logger</p>
 </dd></dl>
 
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -90,15 +95,20 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Customized Python Logging</a><ul>
+<li><a class="reference internal" href="#module-logger.py">logger.py</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
-  <p class="topless"><a href="../codedocs.html"
-                        title="previous chapter">EARS Code</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="EARSmilter.html"
-                        title="next chapter">EARS Milter main class/functions</a></p>
+  <p class="topless"><a href="database.html"
+                        title="previous chapter">Database Definitions and Functions</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
-    <li><a href="../_sources/codedocs/EARS_py.txt"
+    <li><a href="../_sources/codedocs/logs.txt"
            rel="nofollow">Show Source</a></li>
   </ul>
 <div id="searchbox" style="display: none">
@@ -128,10 +138,7 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="EARSmilter.html" title="EARS Milter main class/functions"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="../codedocs.html" title="EARS Code"
+          <a href="database.html" title="Database Definitions and Functions"
              >previous</a> |</li>
         <li><a href="../index.html">EARSmilter 1.0 documentation</a> &raquo;</li>
           <li><a href="../codedocs.html" >EARS Code</a> &raquo;</li> 
