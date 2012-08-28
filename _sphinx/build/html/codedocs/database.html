@@ -88,11 +88,11 @@ Links are generated automatically.</p>
 
 <dl class="class">
 <dt id="database.SQLAlchemy.Attachment">
-<em class="property">class </em><tt class="descclassname">database.SQLAlchemy.</tt><tt class="descname">Attachment</tt><big>(</big><em>filename</em>, <em>received</em>, <em>hash</em>, <em>data</em><big>)</big><a class="headerlink" href="#database.SQLAlchemy.Attachment" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">database.SQLAlchemy.</tt><tt class="descname">Attachment</tt><big>(</big><em>filename</em>, <em>received</em>, <em>hash</em>, <em>data</em><big>)</big><a class="reference internal" href="../_modules/database/SQLAlchemy.html#Attachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.SQLAlchemy.Attachment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attachments are stored as binary blobs in the MySQL database for later retrieval</p>
 <dl class="method">
 <dt id="database.SQLAlchemy.Attachment.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>filename</em>, <em>received</em>, <em>hash</em>, <em>data</em><big>)</big><a class="headerlink" href="#database.SQLAlchemy.Attachment.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>filename</em>, <em>received</em>, <em>hash</em>, <em>data</em><big>)</big><a class="reference internal" href="../_modules/database/SQLAlchemy.html#Attachment.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.SQLAlchemy.Attachment.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attachment data requires a filename, the date the attachment was received, the filehash and the binary data</p>
 </dd></dl>
 
@@ -100,11 +100,11 @@ Links are generated automatically.</p>
 
 <dl class="class">
 <dt id="database.SQLAlchemy.Message">
-<em class="property">class </em><tt class="descclassname">database.SQLAlchemy.</tt><tt class="descname">Message</tt><big>(</big><em>subject</em>, <em>headers</em>, <em>body</em>, <em>dateReceived</em>, <em>raw_original</em><big>)</big><a class="headerlink" href="#database.SQLAlchemy.Message" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">database.SQLAlchemy.</tt><tt class="descname">Message</tt><big>(</big><em>subject</em>, <em>headers</em>, <em>body</em>, <em>dateReceived</em>, <em>raw_original</em><big>)</big><a class="reference internal" href="../_modules/database/SQLAlchemy.html#Message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.SQLAlchemy.Message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Messages contain automatically generated relationships to attachments and recipients via the <tt class="docutils literal"><span class="pre">mr_link</span></tt> and <tt class="docutils literal"><span class="pre">ma_link</span></tt> table definitions.</p>
 <dl class="method">
 <dt id="database.SQLAlchemy.Message.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>subject</em>, <em>headers</em>, <em>body</em>, <em>dateReceived</em>, <em>raw_original</em><big>)</big><a class="headerlink" href="#database.SQLAlchemy.Message.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>subject</em>, <em>headers</em>, <em>body</em>, <em>dateReceived</em>, <em>raw_original</em><big>)</big><a class="reference internal" href="../_modules/database/SQLAlchemy.html#Message.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.SQLAlchemy.Message.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Message data requires a subject, the headers, message body, the date the message was received and a raw copy of the oricinal message</p>
 </dd></dl>
 
@@ -112,11 +112,11 @@ Links are generated automatically.</p>
 
 <dl class="class">
 <dt id="database.SQLAlchemy.Recipient">
-<em class="property">class </em><tt class="descclassname">database.SQLAlchemy.</tt><tt class="descname">Recipient</tt><big>(</big><em>email_address</em><big>)</big><a class="headerlink" href="#database.SQLAlchemy.Recipient" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">database.SQLAlchemy.</tt><tt class="descname">Recipient</tt><big>(</big><em>email_address</em><big>)</big><a class="reference internal" href="../_modules/database/SQLAlchemy.html#Recipient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.SQLAlchemy.Recipient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recipient table</p>
 <dl class="method">
 <dt id="database.SQLAlchemy.Recipient.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>email_address</em><big>)</big><a class="headerlink" href="#database.SQLAlchemy.Recipient.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>email_address</em><big>)</big><a class="reference internal" href="../_modules/database/SQLAlchemy.html#Recipient.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.SQLAlchemy.Recipient.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>A valid email address must be provided for the recipient</p>
 </dd></dl>
 
@@ -124,11 +124,11 @@ Links are generated automatically.</p>
 
 <dl class="class">
 <dt id="database.SQLAlchemy.Sender">
-<em class="property">class </em><tt class="descclassname">database.SQLAlchemy.</tt><tt class="descname">Sender</tt><big>(</big><em>email_address</em><big>)</big><a class="headerlink" href="#database.SQLAlchemy.Sender" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">database.SQLAlchemy.</tt><tt class="descname">Sender</tt><big>(</big><em>email_address</em><big>)</big><a class="reference internal" href="../_modules/database/SQLAlchemy.html#Sender"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.SQLAlchemy.Sender" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sender table</p>
 <dl class="method">
 <dt id="database.SQLAlchemy.Sender.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>email_address</em><big>)</big><a class="headerlink" href="#database.SQLAlchemy.Sender.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>email_address</em><big>)</big><a class="reference internal" href="../_modules/database/SQLAlchemy.html#Sender.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.SQLAlchemy.Sender.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>A valid email address must be provided for the recipient</p>
 </dd></dl>
 
@@ -139,11 +139,11 @@ Links are generated automatically.</p>
 <span id="todb-py-ears-milter-database-population"></span><h2>toDB.py - EARS Milter Database Population<a class="headerlink" href="#module-toDB.py" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="database.toDB.toDB">
-<em class="property">class </em><tt class="descclassname">database.toDB.</tt><tt class="descname">toDB</tt><big>(</big><em>username</em>, <em>password</em>, <em>server</em>, <em>database</em><big>)</big><a class="headerlink" href="#database.toDB.toDB" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">database.toDB.</tt><tt class="descname">toDB</tt><big>(</big><em>username</em>, <em>password</em>, <em>server</em>, <em>database</em><big>)</big><a class="reference internal" href="../_modules/database/toDB.html#toDB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.toDB.toDB" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class holds all the functions to add/update new messages and attachments to the EARS database.</p>
 <dl class="method">
 <dt id="database.toDB.toDB.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>username</em>, <em>password</em>, <em>server</em>, <em>database</em><big>)</big><a class="headerlink" href="#database.toDB.toDB.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>username</em>, <em>password</em>, <em>server</em>, <em>database</em><big>)</big><a class="reference internal" href="../_modules/database/toDB.html#toDB.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.toDB.toDB.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>To initialize the EARS database population class,  you must provide a valid
 username, password, server and database names.</p>
 <p>The database itself must exist prior to the first execution of EARS, but this class
@@ -153,14 +153,14 @@ will automatically generate the necessary tables.</p>
 
 <dl class="method">
 <dt id="database.toDB.toDB.newMessage">
-<tt class="descname">newMessage</tt><big>(</big><em>sender</em>, <em>subject</em>, <em>headers</em>, <em>raw_original</em>, <em>recipients</em><big>)</big><a class="headerlink" href="#database.toDB.toDB.newMessage" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">newMessage</tt><big>(</big><em>sender</em>, <em>subject</em>, <em>headers</em>, <em>raw_original</em>, <em>recipients</em><big>)</big><a class="reference internal" href="../_modules/database/toDB.html#toDB.newMessage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.toDB.toDB.newMessage" title="Permalink to this definition">¶</a></dt>
 <dd><p>When a message is submitted to EARS, existing sender and recipient e-mail addresses are checked for
 in the databse.  If they do not exist, they are added automatically.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="database.toDB.toDB.addAttachment">
-<tt class="descname">addAttachment</tt><big>(</big><em>filename</em>, <em>filehash</em>, <em>data</em><big>)</big><a class="headerlink" href="#database.toDB.toDB.addAttachment" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">addAttachment</tt><big>(</big><em>filename</em>, <em>filehash</em>, <em>data</em><big>)</big><a class="reference internal" href="../_modules/database/toDB.html#toDB.addAttachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.toDB.toDB.addAttachment" title="Permalink to this definition">¶</a></dt>
 <dd><p>When attachments are submitted to EARS, the filehash is compared with existing files in the database.
 If the file already exists, the datetime stamp is updated so that the attachment does not get deleted
 sooner than it should be when <strong class="program">purgeEARSdb.py</strong> is run.</p>
@@ -168,7 +168,7 @@ sooner than it should be when <strong class="program">purgeEARSdb.py</strong> is
 
 <dl class="method">
 <dt id="database.toDB.toDB.close">
-<tt class="descname">close</tt><big>(</big><big>)</big><a class="headerlink" href="#database.toDB.toDB.close" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">close</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/database/toDB.html#toDB.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.toDB.toDB.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Commits the message and its attachment(s) to the database</p>
 </dd></dl>
 

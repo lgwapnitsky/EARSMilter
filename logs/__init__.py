@@ -5,4 +5,4 @@ Logger.py is a customized Python logging script that can be used in other applic
 
 """
 
-import logger
+from logger import *

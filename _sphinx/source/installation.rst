@@ -3,11 +3,17 @@
 EARS Milter Installation
 ########################
 
-:ref:`Server Installation`
-  * :ref:`Debian Installation`
-  * :ref:`MySQL Installation`
-  * :ref:`Web Server Installation`
-:ref:`Python Installation/Configuration`
+* :ref:`Server Installation`
+
+   * :ref:`Debian Installation`
+   * :ref:`MySQL Installation`
+   * :ref:`Web Server Installation`
+   * :ref:`Mail Server Installation`
+
+      * :ref:`Postfix`
+      * :ref:`sendmail`
+
+* :ref:`Python Installation/Configuration`
 
 .. _Server Installation:
 
@@ -39,6 +45,23 @@ Web Server Installation
 .. todo:: Apache installation
 
 
+.. _Mail Server Installation:
+
+Mail Server Installation
+========================
+
+.. _Postfix:
+
+Postfix
+-------
+
+
+.. _sendmail:
+
+sendmail
+--------
+
+
 .. _Python Installation/Configuration:
 
 Python Installation/Configuration
@@ -52,3 +75,5 @@ The Python Way
 ==============
 
 
+.. _Postfix before-queue Milter support: http://www.postfix.org/MILTER_README.html
+.. _sendmail Milter installation: https://www.milter.org/developers/installation

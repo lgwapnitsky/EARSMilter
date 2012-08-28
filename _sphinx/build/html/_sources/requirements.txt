@@ -3,9 +3,24 @@
 EARS Milter Requirements
 ########################
 
-The EARS Milter is a `python-based mail-filter`_ written for the `postfix mail transfer agent (MTA)`_.  Postfix must be installed on your system in order for this milter to function properly.  It may work with any other MTA that supports milters but has only been tested with postfix.
+The EARS Milter is a Python-based `mail-filter`_ written for the `postfix`_ and `sendmail`_ mail transfer agents (MTAs).
 
-*This milter has only been tested on Python 2.7 running on Debian Squeeze/Wheezy*
+.. note:: *Postfix* or *sendmail* must be installed on your system in order for this milter to function properly.
+   It may work with any other MTA that supports milters but has only been tested with postfix and sendmail.
+
+.. note:: *This milter has only been tested on Python 2.7 running on Debian Squeeze/Wheezy*
+
+Server Requirements
+*******************
+
+The following software is required for the milter to run:
+
+* `Debian Squeeze/Wheezy`_
+* `MySQL database`_
+* `Apache HTTP Server`_
+* `PHP 5.x`_
+* `postfix`_ or `sendmail`_
+
 
 Python Requirements
 *******************
@@ -19,20 +34,19 @@ The following Python modules are required on the system in order for the EARS Mi
 * `tnefparse`_
 * `mako`_
 
-Additional Requirements
-***********************
+Optional Software
+*****************
 
-The following software is required for the milter to run:
+The following software is optional, but is useful for diagnostics
 
-* `Debian Squeeze/Wheezy`_
-* `MySQL database`_
-* `Apache HTTP Server`_
-* `PHP 5.x`_
+* `phpMyAdmin`_
+* telnet
 
 
 
-.. _python-based mail-filter: http://www.postfix.org/www.postfix.org/MILTER_README.html
-.. _postfix mail transfer agent (MTA): http://www.postfix.org
+.. _mail-filter: http://www.milter.org
+.. _postfix: http://www.postfix.org
+.. _sendmail: http://www.sendmail.com/sm/open_source/docs/
 .. _Python 2.7: http://python.org
 .. _SQLalchemy: http://sqlalchemy.org
 .. _pymilter: http://www.bmsi.com/python/milter.html
@@ -43,3 +57,4 @@ The following software is required for the milter to run:
 .. _Apache HTTP Server: http://projects.apache.org/projects/http_server.html
 .. _PHP 5.x : http://www.php.net
 .. _Debian Squeeze/Wheezy: http://www.debian.org/releases
+.. _phpMyAdmin: http://www.phpmyadmin.net

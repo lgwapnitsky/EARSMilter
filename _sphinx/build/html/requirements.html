@@ -57,8 +57,27 @@
             
   <div class="section" id="ears-milter-requirements">
 <h1>EARS Milter Requirements<a class="headerlink" href="#ears-milter-requirements" title="Permalink to this headline">¶</a></h1>
-<p>The EARS Milter is a <a class="reference external" href="http://www.postfix.org/www.postfix.org/MILTER_README.html">python-based mail-filter</a> written for the <a class="reference external" href="http://www.postfix.org">postfix mail transfer agent (MTA)</a>.  Postfix must be installed on your system in order for this milter to function properly.  It may work with any other MTA that supports milters but has only been tested with postfix.</p>
-<p><em>This milter has only been tested on Python 2.7 running on Debian Squeeze/Wheezy</em></p>
+<p>The EARS Milter is a Python-based <a class="reference external" href="http://www.milter.org">mail-filter</a> written for the <a class="reference external" href="http://www.postfix.org">postfix</a> and <a class="reference external" href="http://www.sendmail.com/sm/open_source/docs/">sendmail</a> mail transfer agents (MTAs).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><em>Postfix</em> or <em>sendmail</em> must be installed on your system in order for this milter to function properly.
+It may work with any other MTA that supports milters but has only been tested with postfix and sendmail.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><em>This milter has only been tested on Python 2.7 running on Debian Squeeze/Wheezy</em></p>
+</div>
+<div class="section" id="server-requirements">
+<h2>Server Requirements<a class="headerlink" href="#server-requirements" title="Permalink to this headline">¶</a></h2>
+<p>The following software is required for the milter to run:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.debian.org/releases">Debian Squeeze/Wheezy</a></li>
+<li><a class="reference external" href="http://www.mysql.com">MySQL database</a></li>
+<li><a class="reference external" href="http://projects.apache.org/projects/http_server.html">Apache HTTP Server</a></li>
+<li><a class="reference external" href="http://www.php.net">PHP 5.x</a></li>
+<li><a class="reference external" href="http://www.postfix.org">postfix</a> or <a class="reference external" href="http://www.sendmail.com/sm/open_source/docs/">sendmail</a></li>
+</ul>
+</div>
 <div class="section" id="python-requirements">
 <h2>Python Requirements<a class="headerlink" href="#python-requirements" title="Permalink to this headline">¶</a></h2>
 <p>The following Python modules are required on the system in order for the EARS Milter to function:</p>
@@ -71,14 +90,12 @@
 <li><a class="reference external" href="http://www.makotemplates.org/">mako</a></li>
 </ul>
 </div>
-<div class="section" id="additional-requirements">
-<h2>Additional Requirements<a class="headerlink" href="#additional-requirements" title="Permalink to this headline">¶</a></h2>
-<p>The following software is required for the milter to run:</p>
+<div class="section" id="optional-software">
+<h2>Optional Software<a class="headerlink" href="#optional-software" title="Permalink to this headline">¶</a></h2>
+<p>The following software is optional, but is useful for diagnostics</p>
 <ul class="simple">
-<li><a class="reference external" href="http://www.debian.org/releases">Debian Squeeze/Wheezy</a></li>
-<li><a class="reference external" href="http://www.mysql.com">MySQL database</a></li>
-<li><a class="reference external" href="http://projects.apache.org/projects/http_server.html">Apache HTTP Server</a></li>
-<li><a class="reference external" href="http://www.php.net">PHP 5.x</a></li>
+<li><a class="reference external" href="http://www.phpmyadmin.net">phpMyAdmin</a></li>
+<li>telnet</li>
 </ul>
 </div>
 </div>
@@ -92,8 +109,9 @@
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">EARS Milter Requirements</a><ul>
+<li><a class="reference internal" href="#server-requirements">Server Requirements</a></li>
 <li><a class="reference internal" href="#python-requirements">Python Requirements</a></li>
-<li><a class="reference internal" href="#additional-requirements">Additional Requirements</a></li>
+<li><a class="reference internal" href="#optional-software">Optional Software</a></li>
 </ul>
 </li>
 </ul>
