@@ -70,6 +70,22 @@
 </pre></div>
 </div>
 <p>This import is necessary in order to define the specific field type for a MySQL database</p>
+<dl class="data">
+<dt id="database.SQLAlchemy.mr_link">
+<tt class="descclassname">database.SQLAlchemy.</tt><tt class="descname">mr_link</tt><em class="property"> = Table('mr_link', MetaData(bind=None), Column('recipient_id', Integer(), ForeignKey('recipient.id'), table=&lt;mr_link&gt;), Column('msg_id', Integer(), ForeignKey('message.id'), table=&lt;mr_link&gt;), schema=None)</em><a class="headerlink" href="#database.SQLAlchemy.mr_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Special table used to create relationships between messages and recipients/attachments.
+This table is never referenced specifically in the code other than in the table definition for :py:class:Message.
+Links are generated automatically.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="database.SQLAlchemy.ma_link">
+<tt class="descclassname">database.SQLAlchemy.</tt><tt class="descname">ma_link</tt><em class="property"> = Table('att_link', MetaData(bind=None), Column('file_id', Integer(), ForeignKey('attachment.id'), table=&lt;att_link&gt;), Column('msg_id', Integer(), ForeignKey('message.id'), table=&lt;att_link&gt;), schema=None)</em><a class="headerlink" href="#database.SQLAlchemy.ma_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Special table used to create relationships between messages and recipients/attachments.
+This table is never referenced specifically in the code other than in the table definition for <tt class="docutils literal"><span class="pre">Message</span></tt>.
+Links are generated automatically.</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="database.SQLAlchemy.Attachment">
 <em class="property">class </em><tt class="descclassname">database.SQLAlchemy.</tt><tt class="descname">Attachment</tt><big>(</big><em>filename</em>, <em>received</em>, <em>hash</em>, <em>data</em><big>)</big><a class="headerlink" href="#database.SQLAlchemy.Attachment" title="Permalink to this definition">¶</a></dt>
@@ -118,22 +134,6 @@
 
 </dd></dl>
 
-<dl class="data">
-<dt id="database.SQLAlchemy.ma_link">
-<tt class="descclassname">database.SQLAlchemy.</tt><tt class="descname">ma_link</tt><em class="property"> = Table('att_link', MetaData(bind=None), Column('file_id', Integer(), ForeignKey('attachment.id'), table=&lt;att_link&gt;), Column('msg_id', Integer(), ForeignKey('message.id'), table=&lt;att_link&gt;), schema=None)</em><a class="headerlink" href="#database.SQLAlchemy.ma_link" title="Permalink to this definition">¶</a></dt>
-<dd><p>Special table used to create relationships between messages and recipients/attachments.
-This table is never referenced specifically in the code other than in the table definition for <tt class="docutils literal"><span class="pre">Message</span></tt>.
-Links are generated automatically.</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="database.SQLAlchemy.mr_link">
-<tt class="descclassname">database.SQLAlchemy.</tt><tt class="descname">mr_link</tt><em class="property"> = Table('mr_link', MetaData(bind=None), Column('recipient_id', Integer(), ForeignKey('recipient.id'), table=&lt;mr_link&gt;), Column('msg_id', Integer(), ForeignKey('message.id'), table=&lt;mr_link&gt;), schema=None)</em><a class="headerlink" href="#database.SQLAlchemy.mr_link" title="Permalink to this definition">¶</a></dt>
-<dd><p>Special table used to create relationships between messages and recipients/attachments.
-This table is never referenced specifically in the code other than in the table definition for :py:class:Message.
-Links are generated automatically.</p>
-</dd></dl>
-
 </div>
 <span class="target" id="module-database.toDB"></span><div class="section" id="module-toDB.py">
 <span id="todb-py-ears-milter-database-population"></span><h2>toDB.py - EARS Milter Database Population<a class="headerlink" href="#module-toDB.py" title="Permalink to this headline">¶</a></h2>
@@ -152,6 +152,13 @@ will automatically generate the necessary tables.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="database.toDB.toDB.newMessage">
+<tt class="descname">newMessage</tt><big>(</big><em>sender</em>, <em>subject</em>, <em>headers</em>, <em>raw_original</em>, <em>recipients</em><big>)</big><a class="headerlink" href="#database.toDB.toDB.newMessage" title="Permalink to this definition">¶</a></dt>
+<dd><p>When a message is submitted to EARS, existing sender and recipient e-mail addresses are checked for
+in the databse.  If they do not exist, they are added automatically.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="database.toDB.toDB.addAttachment">
 <tt class="descname">addAttachment</tt><big>(</big><em>filename</em>, <em>filehash</em>, <em>data</em><big>)</big><a class="headerlink" href="#database.toDB.toDB.addAttachment" title="Permalink to this definition">¶</a></dt>
 <dd><p>When attachments are submitted to EARS, the filehash is compared with existing files in the database.
@@ -163,13 +170,6 @@ sooner than it should be when <strong class="program">purgeEARSdb.py</strong> is
 <dt id="database.toDB.toDB.close">
 <tt class="descname">close</tt><big>(</big><big>)</big><a class="headerlink" href="#database.toDB.toDB.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Commits the message and its attachment(s) to the database</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="database.toDB.toDB.newMessage">
-<tt class="descname">newMessage</tt><big>(</big><em>sender</em>, <em>subject</em>, <em>headers</em>, <em>raw_original</em>, <em>recipients</em><big>)</big><a class="headerlink" href="#database.toDB.toDB.newMessage" title="Permalink to this definition">¶</a></dt>
-<dd><p>When a message is submitted to EARS, existing sender and recipient e-mail addresses are checked for
-in the databse.  If they do not exist, they are added automatically.</p>
 </dd></dl>
 
 </dd></dl>
@@ -241,6 +241,7 @@ in the databse.  If they do not exist, they are added automatically.</p>
     </div>
     <div class="footer">
         &copy; Copyright 2012, Larry G. Wapnitsky.
+      Last updated on Aug 28, 2012.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>

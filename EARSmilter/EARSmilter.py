@@ -236,8 +236,24 @@ class milter( Milter.Base ):
 ## === === ##
 
 class ProcessMessage():
-#    def __init__( self, _msgID, _msg, _R, _from, _db, _log ):
+    """
+    All message processing is done via this class.
+    
+    * Attachments are parsed/removed
+    * Winmail.DAT files are extracted
+    * Retreive_Attachments.html file is added to original message
+    * Message information is stored in the MySQL database
+    """
+
     def __init__( self, _db, _log, _from ):
+        """
+        * **_db** - toDB class
+        * **_log** - EARSlog class
+        * **_from** - sender's e-mail address
+        
+        **subChange** is set to *False*.  If no attachments are removed, **subChange**
+        will be set to *True* and "Removed Attachments" will be removed from the subject line
+        """
 
         self.db = _db
         self.message = self.db.message
@@ -246,7 +262,6 @@ class ProcessMessage():
 
         self.fhandling = FileSys( self.message.raw_original )
         self.attachDir = self.fhandling.attachDir
-        print self.attachDir
 
         self.subjChange = False
 
@@ -254,6 +269,20 @@ class ProcessMessage():
 
 
     def ParseAttachments( self ):
+        """
+        The message is passed through this function in order to analyze and potentially remove attachments
+        
+        If the attached file is WINMAIL.DAT, it is sent for further processing so that the files it contains
+        can be extracted and provided to the recipient(s)
+        
+        Attachments are then analyzed for size and, if are above the set threshold, are detached.
+        
+        If no attachments are extracted, the folder created in the **dropDir** is removed.
+        
+        Otherwise, the "Retrieve_Attachments.html" notice is created and appended to the original message along
+        with any attachments that remained below the threshold
+        """
+
         msg = self.message.raw_original
         sender = self.message.sender
         recipients = self.message.recipients
@@ -344,6 +373,11 @@ class ProcessMessage():
         return ( msg, self.subjChange )
 
     def extract_attachment( self, data, fname ):
+        """
+        Used to extract attachments that are NOT in a WINMAIL.DAT file.
+        
+        Filenames are unicode-corrected.
+        """
         file_counter = 1
         file_created = False
         fname_to_write = fname
@@ -357,9 +391,7 @@ class ProcessMessage():
             if os.path.exists( exdir_file ):
                 fileName, fileExtension = os.path.splitext( fname_to_write )
                 fileName = re.sub( '\(\d*\)$', '', fileName )
-                print fileName
                 fname_to_write = u"".join( [unicode( fileName ), u'(', unicode( file_counter ), u')', unicode( fileExtension )] )
-                print fname_to_write
                 file_counter += 1
             else:
                 extracted = open( exdir_file, "wb" )
@@ -378,6 +410,11 @@ class ProcessMessage():
         return ( fname_to_write, exdir_file_size )
 
     def winmail_parse( self, fname ):
+        """
+        If a WINMAIL.DAT file is attached to this message, parse and attempt to extract the files it contains.
+        
+        For more information on WINMAIL.DAT and TNEF files, please see `Transport Neutral Encapsulation Format <http://en.wikipedia.org/wiki/Transport_Neutral_Encapsulation_Format>`_
+        """
         wparts = []
         body_types = ( {'body':'txt', 'htmlbody':'html'} )
         body = None
@@ -409,6 +446,12 @@ class ProcessMessage():
         return wparts
 
     def delete_attachments( self, part, notice ):
+        """
+        For each attachment that needs to be removed from the message,
+        edit the headers of the message and add in the "Retrieve_Attachments.html" file.
+        
+        This only needs to be run once to avoid multiple copies of the HTML file being attached
+        """
         for key, value in part.get_params():
             part.del_param( key )
 
@@ -423,6 +466,16 @@ class ProcessMessage():
         return part
 
     def mako_notice( self, fnames ):
+        """
+        The "Retrieve_Attachments.html" file is generated.using the `Mako Template Engine for Python <http://www.makotemplates.org/>`_.
+        
+        The template is stored in the *www* subfolder of the main EARS milter folder.  The CSS and image files should be stored on
+        an externally-accessible web server.
+        
+        Each filename is encoded in Unicode and parsed to be valid for URLs (hence, special characters like ampersands and percent signs
+        can be part of valid filenames and still downloaded properly).
+        
+        """
         attach = []
         path = '';
 
