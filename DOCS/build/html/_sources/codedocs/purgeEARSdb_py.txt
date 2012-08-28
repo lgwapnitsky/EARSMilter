@@ -9,7 +9,9 @@ purgeEARSdb.py
 .. autoclass:: Options
    :members:
    
-For command-line usage, see :ref:`how_to_use`.
+   .. note:: 
+   
+         For command-line usage, see :ref:`how_to_use`.
 
 .. autoclass:: Purge
    :members:
