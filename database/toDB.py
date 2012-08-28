@@ -58,6 +58,13 @@ class toDB():
 
     def close( self ):
         self.session.add( self.message )
-        self.session.commit()
-        self.session.close()
+
+        committed = False
+
+        while not committed:
+            try:
+                self.session.commit()
+                committed = True
+            finally:
+                self.session.close()
 
