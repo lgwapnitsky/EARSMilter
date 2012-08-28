@@ -5,6 +5,7 @@ EARS Milter main class/functions
 
 .. automodule:: EARSmilter
 
+
 * :ref:`EARSlog`
 * :ref:`milter`
 * :ref:`ProcessMessage`
@@ -15,7 +16,7 @@ EARS Milter main class/functions
 EARSlog
 *******
 
-.. autoclass:: EARSlog
+.. autoclass:: EARSmilter.EARSmilter.EARSlog
 
 
 .. _milter:
@@ -23,9 +24,9 @@ EARSlog
 milter
 ******
 
-.. autoclass:: milter(Milter.Base)
-  
-   .. automethod:: __init__
+.. autoclass:: EARSmilter.EARSmilter.milter(Milter.Base)
+   :members:
+   
   
    .. py:function:: @Milter.noreply
       connect(IPname, family, hostaddr)
@@ -45,14 +46,14 @@ milter
       Regular Expression searches used to extract and log the Subject and Message ID of incoming messages
         
 
-   .. automethod:: eom
+
    
 .. _ProcessMessage:
    
 ProcessMessage
 **************
 
-.. autoclass:: ProcessMessage
+.. autoclass:: EARSmilter.EARSmilter.ProcessMessage
    :members:
    :special-members:
 
@@ -62,6 +63,6 @@ ProcessMessage
 FileSys
 *******
 
-.. autoclass:: FileSys
+.. autoclass:: EARSmilter.EARSmilter.FileSys
    :members:
    :special-members:

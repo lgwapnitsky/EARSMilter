@@ -5,5 +5,5 @@ EARS milter class definition and mail processing functions
 
 """
 
-##import EARSmilter
-from EARSmilter import *
+import EARSmilter
+

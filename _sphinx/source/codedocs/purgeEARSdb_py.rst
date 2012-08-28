@@ -6,14 +6,14 @@ purgeEARSdb.py
 .. automodule:: purgeEARSdb
    :members: 
 
-.. autoclass:: Options
+.. autoclass:: purgeEARSdb.purgeEARSdb.Options
    :members:
    
    .. note:: 
    
          For command-line usage, see :ref:`how_to_use`.
 
-.. autoclass:: Purge
+.. autoclass:: purgeEARSdb.purgeEARSdb.Purge
    :members:
 
 

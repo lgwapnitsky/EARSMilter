@@ -4,4 +4,4 @@
 
 """
 
-from purgeEARSdb import *
+import purgeEARSdb

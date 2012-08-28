@@ -69,8 +69,8 @@
 <div class="section" id="earslog">
 <span id="id1"></span><h2>EARSlog<a class="headerlink" href="#earslog" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="EARSmilter.EARSlog">
-<em class="property">class </em><tt class="descclassname">EARSmilter.</tt><tt class="descname">EARSlog</tt><a class="headerlink" href="#EARSmilter.EARSlog" title="Permalink to this definition">¶</a></dt>
+<dt id="EARSmilter.EARSmilter.EARSlog">
+<em class="property">class </em><tt class="descclassname">EARSmilter.EARSmilter.</tt><tt class="descname">EARSlog</tt><a class="reference internal" href="../_modules/EARSmilter/EARSmilter.html#EARSlog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EARSmilter.EARSmilter.EARSlog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Establishes logging for different error statuses:  INFO, WARN, DEBUG, ERR</p>
 </dd></dl>
 
@@ -78,17 +78,11 @@
 <div class="section" id="milter">
 <span id="id2"></span><h2>milter<a class="headerlink" href="#milter" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="EARSmilter.milter">
-<em class="property">class </em><tt class="descclassname">EARSmilter.</tt><tt class="descname">milter</tt><big>(</big><em>Milter.Base</em><big>)</big><a class="headerlink" href="#EARSmilter.milter" title="Permalink to this definition">¶</a></dt>
+<dt id="EARSmilter.EARSmilter.milter">
+<em class="property">class </em><tt class="descclassname">EARSmilter.EARSmilter.</tt><tt class="descname">milter</tt><big>(</big><em>Milter.Base</em><big>)</big><a class="reference internal" href="../_modules/EARSmilter/EARSmilter.html#milter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EARSmilter.EARSmilter.milter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Milter processing derived from pymilter.</p>
 <p><strong>Only functions that have been heavily modified from standard Milter processing
 have been documented</strong></p>
-<dl class="method">
-<dt id="EARSmilter.milter.__init__">
-<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="headerlink" href="#EARSmilter.milter.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Connects to the established log and sets a unique ID for the Milter process</p>
-</dd></dl>
-
 <dl class="function">
 <dt>
 <tt class="descname">&#64;Milter.noreply</tt></dt>
@@ -111,8 +105,8 @@ have been documented</strong></p>
 </dd></dl>
 
 <dl class="method">
-<dt id="EARSmilter.milter.eom">
-<tt class="descname">eom</tt><big>(</big><big>)</big><a class="headerlink" href="#EARSmilter.milter.eom" title="Permalink to this definition">¶</a></dt>
+<dt id="EARSmilter.EARSmilter.milter.eom">
+<tt class="descname">eom</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/EARSmilter/EARSmilter.html#milter.eom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EARSmilter.EARSmilter.milter.eom" title="Permalink to this definition">¶</a></dt>
 <dd><p>End-Of-Message milter function</p>
 <p>Connection to the database is established here via the toDB class:</p>
 <div class="highlight-py"><div class="highlight"><pre><span class="n">db</span> <span class="o">=</span> <span class="n">toDB</span><span class="p">(</span> <span class="s">&#39;root&#39;</span><span class="p">,</span> <span class="s">&#39;python&#39;</span><span class="p">,</span> <span class="s">&#39;python.dev.wrtdesign.com&#39;</span><span class="p">,</span> <span class="s">&#39;EARS&#39;</span> <span class="p">)</span>
@@ -134,8 +128,8 @@ then add the EARS link page to the message before being sent to the recipient(s)
 <div class="section" id="processmessage">
 <span id="id3"></span><h2>ProcessMessage<a class="headerlink" href="#processmessage" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="EARSmilter.ProcessMessage">
-<em class="property">class </em><tt class="descclassname">EARSmilter.</tt><tt class="descname">ProcessMessage</tt><big>(</big><em>_db</em>, <em>_log</em>, <em>_from</em><big>)</big><a class="headerlink" href="#EARSmilter.ProcessMessage" title="Permalink to this definition">¶</a></dt>
+<dt id="EARSmilter.EARSmilter.ProcessMessage">
+<em class="property">class </em><tt class="descclassname">EARSmilter.EARSmilter.</tt><tt class="descname">ProcessMessage</tt><big>(</big><em>_db</em>, <em>_log</em>, <em>_from</em><big>)</big><a class="reference internal" href="../_modules/EARSmilter/EARSmilter.html#ProcessMessage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EARSmilter.EARSmilter.ProcessMessage" title="Permalink to this definition">¶</a></dt>
 <dd><p>All message processing is done via this class.</p>
 <ul class="simple">
 <li>Attachments are parsed/removed</li>
@@ -144,8 +138,8 @@ then add the EARS link page to the message before being sent to the recipient(s)
 <li>Message information is stored in the MySQL database</li>
 </ul>
 <dl class="method">
-<dt id="EARSmilter.ProcessMessage.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>_db</em>, <em>_log</em>, <em>_from</em><big>)</big><a class="headerlink" href="#EARSmilter.ProcessMessage.__init__" title="Permalink to this definition">¶</a></dt>
+<dt id="EARSmilter.EARSmilter.ProcessMessage.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>_db</em>, <em>_log</em>, <em>_from</em><big>)</big><a class="reference internal" href="../_modules/EARSmilter/EARSmilter.html#ProcessMessage.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EARSmilter.EARSmilter.ProcessMessage.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><ul class="simple">
 <li><strong>_db</strong> - toDB class</li>
 <li><strong>_log</strong> - EARSlog class</li>
@@ -156,8 +150,8 @@ will be set to <em>True</em> and &#8220;Removed Attachments&#8221; will be remov
 </dd></dl>
 
 <dl class="method">
-<dt id="EARSmilter.ProcessMessage.ParseAttachments">
-<tt class="descname">ParseAttachments</tt><big>(</big><big>)</big><a class="headerlink" href="#EARSmilter.ProcessMessage.ParseAttachments" title="Permalink to this definition">¶</a></dt>
+<dt id="EARSmilter.EARSmilter.ProcessMessage.ParseAttachments">
+<tt class="descname">ParseAttachments</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/EARSmilter/EARSmilter.html#ProcessMessage.ParseAttachments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EARSmilter.EARSmilter.ProcessMessage.ParseAttachments" title="Permalink to this definition">¶</a></dt>
 <dd><p>The message is passed through this function in order to analyze and potentially remove attachments</p>
 <p>If the attached file is WINMAIL.DAT, it is sent for further processing so that the files it contains
 can be extracted and provided to the recipient(s)</p>
@@ -168,30 +162,30 @@ with any attachments that remained below the threshold</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="EARSmilter.ProcessMessage.extract_attachment">
-<tt class="descname">extract_attachment</tt><big>(</big><em>data</em>, <em>fname</em><big>)</big><a class="headerlink" href="#EARSmilter.ProcessMessage.extract_attachment" title="Permalink to this definition">¶</a></dt>
+<dt id="EARSmilter.EARSmilter.ProcessMessage.extract_attachment">
+<tt class="descname">extract_attachment</tt><big>(</big><em>data</em>, <em>fname</em><big>)</big><a class="reference internal" href="../_modules/EARSmilter/EARSmilter.html#ProcessMessage.extract_attachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EARSmilter.EARSmilter.ProcessMessage.extract_attachment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Used to extract attachments that are NOT in a WINMAIL.DAT file.</p>
 <p>Filenames are unicode-corrected.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="EARSmilter.ProcessMessage.winmail_parse">
-<tt class="descname">winmail_parse</tt><big>(</big><em>fname</em><big>)</big><a class="headerlink" href="#EARSmilter.ProcessMessage.winmail_parse" title="Permalink to this definition">¶</a></dt>
+<dt id="EARSmilter.EARSmilter.ProcessMessage.winmail_parse">
+<tt class="descname">winmail_parse</tt><big>(</big><em>fname</em><big>)</big><a class="reference internal" href="../_modules/EARSmilter/EARSmilter.html#ProcessMessage.winmail_parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EARSmilter.EARSmilter.ProcessMessage.winmail_parse" title="Permalink to this definition">¶</a></dt>
 <dd><p>If a WINMAIL.DAT file is attached to this message, parse and attempt to extract the files it contains.</p>
 <p>For more information on WINMAIL.DAT and TNEF files, please see <a class="reference external" href="http://en.wikipedia.org/wiki/Transport_Neutral_Encapsulation_Format">Transport Neutral Encapsulation Format</a></p>
 </dd></dl>
 
 <dl class="method">
-<dt id="EARSmilter.ProcessMessage.delete_attachments">
-<tt class="descname">delete_attachments</tt><big>(</big><em>part</em>, <em>notice</em><big>)</big><a class="headerlink" href="#EARSmilter.ProcessMessage.delete_attachments" title="Permalink to this definition">¶</a></dt>
+<dt id="EARSmilter.EARSmilter.ProcessMessage.delete_attachments">
+<tt class="descname">delete_attachments</tt><big>(</big><em>part</em>, <em>notice</em><big>)</big><a class="reference internal" href="../_modules/EARSmilter/EARSmilter.html#ProcessMessage.delete_attachments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EARSmilter.EARSmilter.ProcessMessage.delete_attachments" title="Permalink to this definition">¶</a></dt>
 <dd><p>For each attachment that needs to be removed from the message,
 edit the headers of the message and add in the &#8220;Retrieve_Attachments.html&#8221; file.</p>
 <p>This only needs to be run once to avoid multiple copies of the HTML file being attached</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="EARSmilter.ProcessMessage.mako_notice">
-<tt class="descname">mako_notice</tt><big>(</big><em>fnames</em><big>)</big><a class="headerlink" href="#EARSmilter.ProcessMessage.mako_notice" title="Permalink to this definition">¶</a></dt>
+<dt id="EARSmilter.EARSmilter.ProcessMessage.mako_notice">
+<tt class="descname">mako_notice</tt><big>(</big><em>fnames</em><big>)</big><a class="reference internal" href="../_modules/EARSmilter/EARSmilter.html#ProcessMessage.mako_notice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EARSmilter.EARSmilter.ProcessMessage.mako_notice" title="Permalink to this definition">¶</a></dt>
 <dd><p>The &#8220;Retrieve_Attachments.html&#8221; file is generated.using the <a class="reference external" href="http://www.makotemplates.org/">Mako Template Engine for Python</a>.</p>
 <p>The template is stored in the <em>www</em> subfolder of the main EARS milter folder.  The CSS and image files should be stored on
 an externally-accessible web server.</p>
@@ -205,11 +199,11 @@ can be part of valid filenames and still downloaded properly).</p>
 <div class="section" id="filesys">
 <span id="id4"></span><h2>FileSys<a class="headerlink" href="#filesys" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="EARSmilter.FileSys">
-<em class="property">class </em><tt class="descclassname">EARSmilter.</tt><tt class="descname">FileSys</tt><big>(</big><em>msg</em><big>)</big><a class="headerlink" href="#EARSmilter.FileSys" title="Permalink to this definition">¶</a></dt>
+<dt id="EARSmilter.EARSmilter.FileSys">
+<em class="property">class </em><tt class="descclassname">EARSmilter.EARSmilter.</tt><tt class="descname">FileSys</tt><big>(</big><em>msg</em><big>)</big><a class="reference internal" href="../_modules/EARSmilter/EARSmilter.html#FileSys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EARSmilter.EARSmilter.FileSys" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
-<dt id="EARSmilter.FileSys.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>msg</em><big>)</big><a class="headerlink" href="#EARSmilter.FileSys.__init__" title="Permalink to this definition">¶</a></dt>
+<dt id="EARSmilter.EARSmilter.FileSys.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>msg</em><big>)</big><a class="reference internal" href="../_modules/EARSmilter/EARSmilter.html#FileSys.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EARSmilter.EARSmilter.FileSys.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>msg</strong> - Message passed directly from the Milter</p>
 <p>Variables that are established for this class are:</p>
 <ul class="simple">
@@ -220,26 +214,26 @@ can be part of valid filenames and still downloaded properly).</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="EARSmilter.FileSys.Dir">
-<tt class="descname">Dir</tt><big>(</big><big>)</big><a class="headerlink" href="#EARSmilter.FileSys.Dir" title="Permalink to this definition">¶</a></dt>
+<dt id="EARSmilter.EARSmilter.FileSys.Dir">
+<tt class="descname">Dir</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/EARSmilter/EARSmilter.html#FileSys.Dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EARSmilter.EARSmilter.FileSys.Dir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a unique folder in the <strong>dropDir</strong> based on the hash of the whole incoming message</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="EARSmilter.FileSys.hashit">
-<tt class="descname">hashit</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#EARSmilter.FileSys.hashit" title="Permalink to this definition">¶</a></dt>
+<dt id="EARSmilter.EARSmilter.FileSys.hashit">
+<tt class="descname">hashit</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="../_modules/EARSmilter/EARSmilter.html#FileSys.hashit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EARSmilter.EARSmilter.FileSys.hashit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates a hash for <strong>dropDir</strong> folders and individual files</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="EARSmilter.FileSys.filesize_notation">
-<tt class="descname">filesize_notation</tt><big>(</big><em>filesize</em><big>)</big><a class="headerlink" href="#EARSmilter.FileSys.filesize_notation" title="Permalink to this definition">¶</a></dt>
+<dt id="EARSmilter.EARSmilter.FileSys.filesize_notation">
+<tt class="descname">filesize_notation</tt><big>(</big><em>filesize</em><big>)</big><a class="reference internal" href="../_modules/EARSmilter/EARSmilter.html#FileSys.filesize_notation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EARSmilter.EARSmilter.FileSys.filesize_notation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines proper filesize notation (K, M, G) based on mathematical calculation loop</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="EARSmilter.FileSys.unicodeConvert">
-<tt class="descname">unicodeConvert</tt><big>(</big><em>fname</em><big>)</big><a class="headerlink" href="#EARSmilter.FileSys.unicodeConvert" title="Permalink to this definition">¶</a></dt>
+<dt id="EARSmilter.EARSmilter.FileSys.unicodeConvert">
+<tt class="descname">unicodeConvert</tt><big>(</big><em>fname</em><big>)</big><a class="reference internal" href="../_modules/EARSmilter/EARSmilter.html#FileSys.unicodeConvert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EARSmilter.EARSmilter.FileSys.unicodeConvert" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert text to unicode.</p>
 <p>This was designed to address issues with Latin-1 (iso-8859-1) encoding
 in addition to other foreign characters.</p>
