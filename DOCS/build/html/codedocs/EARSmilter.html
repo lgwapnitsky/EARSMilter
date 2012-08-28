@@ -59,31 +59,132 @@
             
   <div class="section" id="module-EARSmilter">
 <span id="ears-milter-main-class-functions"></span><h1>EARS Milter main class/functions<a class="headerlink" href="#module-EARSmilter" title="Permalink to this headline">¶</a></h1>
-<p>EARS milter class</p>
+<p>EARS milter class definition and mail processing functions</p>
+<ul class="simple">
+<li><a class="reference internal" href="#earslog"><em>EARSlog</em></a></li>
+<li><a class="reference internal" href="#milter"><em>milter</em></a></li>
+<li><a class="reference internal" href="#processmessage"><em>ProcessMessage</em></a></li>
+<li><a class="reference internal" href="#filesys"><em>FileSys</em></a></li>
+</ul>
+<div class="section" id="earslog">
+<span id="id1"></span><h2>EARSlog<a class="headerlink" href="#earslog" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="EARSmilter.EARSlog">
 <em class="property">class </em><tt class="descclassname">EARSmilter.</tt><tt class="descname">EARSlog</tt><a class="headerlink" href="#EARSmilter.EARSlog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Establishes logging for different error statuses:  INFO, WARN, DEBUG, ERR</p>
 </dd></dl>
 
+</div>
+<div class="section" id="milter">
+<span id="id2"></span><h2>milter<a class="headerlink" href="#milter" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="EARSmilter.milter">
 <em class="property">class </em><tt class="descclassname">EARSmilter.</tt><tt class="descname">milter</tt><big>(</big><em>Milter.Base</em><big>)</big><a class="headerlink" href="#EARSmilter.milter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Milter processing derived from pymilter</p>
+<dd><p>Milter processing derived from pymilter.</p>
+<p><strong>Only functions that have been heavily modified from standard Milter processing
+have been documented</strong></p>
 <dl class="method">
 <dt id="EARSmilter.milter.__init__">
 <tt class="descname">__init__</tt><big>(</big><big>)</big><a class="headerlink" href="#EARSmilter.milter.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connects to the established log and sets a unique ID for the Milter process</p>
 </dd></dl>
 
+<dl class="function">
+<dt>
+<tt class="descname">&#64;Milter.noreply</tt></dt>
+<dt id="EARSmilter.milter.connect">
+<tt class="descname">connect</tt><big>(</big><em>IPname</em>, <em>family</em>, <em>hostaddr</em><big>)</big><a class="headerlink" href="#EARSmilter.milter.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes when a new connection to the Milter is made via SMTP</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<tt class="descname">&#64;Milter.noreply</tt></dt>
+<dt id="EARSmilter.milter.header">
+<tt class="descname">header</tt><big>(</big><em>name</em>, <em>hval</em><big>)</big><a class="headerlink" href="#EARSmilter.milter.header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes headers from the incoming message and writes them to a variable for database storage</p>
+<div class="highlight-py"><div class="highlight"><pre><span class="n">rgxSubject</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span> <span class="s">&#39;^(subject)&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span> <span class="p">)</span>
+<span class="n">rgxMessageID</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span> <span class="s">&#39;^(message-id)&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Regular Expression searches used to extract and log the Subject and Message ID of incoming messages</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="EARSmilter.milter.eom">
 <tt class="descname">eom</tt><big>(</big><big>)</big><a class="headerlink" href="#EARSmilter.milter.eom" title="Permalink to this definition">¶</a></dt>
 <dd><p>End-Of-Message milter function</p>
+<p>Connection to the database is established here via the toDB class:</p>
+<div class="highlight-py"><div class="highlight"><pre><span class="n">db</span> <span class="o">=</span> <span class="n">toDB</span><span class="p">(</span> <span class="s">&#39;root&#39;</span><span class="p">,</span> <span class="s">&#39;python&#39;</span><span class="p">,</span> <span class="s">&#39;python.dev.wrtdesign.com&#39;</span><span class="p">,</span> <span class="s">&#39;EARS&#39;</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>The variables above can be changed accordingly.</p>
+<p>New messages are initialized in the database via:</p>
+<div class="highlight-py"><div class="highlight"><pre><span class="n">db</span><span class="o">.</span><span class="n">newMessage</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">canon_from</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Subject</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_msg</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="p">)</span>        
+</pre></div>
+</div>
+<p>and are subsequently shipped to the ProcessMessage class to parse/remove attachments,
+then add the EARS link page to the message before being sent to the recipient(s)</p>
+<p>If an error occurs, an Exception is thrown and logged to the &lt;logname&gt;.err file</p>
 </dd></dl>
 
 </dd></dl>
 
+</div>
+<div class="section" id="processmessage">
+<span id="id3"></span><h2>ProcessMessage<a class="headerlink" href="#processmessage" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="EARSmilter.ProcessMessage">
+<em class="property">class </em><tt class="descclassname">EARSmilter.</tt><tt class="descname">ProcessMessage</tt><big>(</big><em>_db</em>, <em>_log</em>, <em>_from</em><big>)</big><a class="headerlink" href="#EARSmilter.ProcessMessage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="filesys">
+<span id="id4"></span><h2>FileSys<a class="headerlink" href="#filesys" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="EARSmilter.FileSys">
+<em class="property">class </em><tt class="descclassname">EARSmilter.</tt><tt class="descname">FileSys</tt><big>(</big><em>msg</em><big>)</big><a class="headerlink" href="#EARSmilter.FileSys" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="EARSmilter.FileSys.Dir">
+<tt class="descname">Dir</tt><big>(</big><big>)</big><a class="headerlink" href="#EARSmilter.FileSys.Dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a unique folder in the <strong>dropDir</strong> based on the hash of the whole incoming message</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EARSmilter.FileSys.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>msg</em><big>)</big><a class="headerlink" href="#EARSmilter.FileSys.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>msg</strong> - Message passed directly from the Milter</p>
+<p>Variables that are established for this class are:</p>
+<ul class="simple">
+<li><strong>dropDir</strong> - Base folder where attachment files will be stored</li>
+<li><strong>min_attach_size</strong> - Minimum attachment size to detach from the message</li>
+<li><strong>remfile</strong> - Name of the file with links to removed attachments</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="EARSmilter.FileSys.filesize_notation">
+<tt class="descname">filesize_notation</tt><big>(</big><em>filesize</em><big>)</big><a class="headerlink" href="#EARSmilter.FileSys.filesize_notation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines proper filesize notation (K, M, G) based on mathematical calculation loop</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EARSmilter.FileSys.hashit">
+<tt class="descname">hashit</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#EARSmilter.FileSys.hashit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a hash for <strong>dropDir</strong> folders and individual files</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EARSmilter.FileSys.unicodeConvert">
+<tt class="descname">unicodeConvert</tt><big>(</big><em>fname</em><big>)</big><a class="headerlink" href="#EARSmilter.FileSys.unicodeConvert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert text to unicode.</p>
+<p>This was designed to address issues with Latin-1 (iso-8859-1) encoding
+in addition to other foreign characters.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -92,6 +193,17 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">EARS Milter main class/functions</a><ul>
+<li><a class="reference internal" href="#earslog">EARSlog</a></li>
+<li><a class="reference internal" href="#milter">milter</a></li>
+<li><a class="reference internal" href="#processmessage">ProcessMessage</a></li>
+<li><a class="reference internal" href="#filesys">FileSys</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="EARS_py.html"
                         title="previous chapter">EARS.py</a></p>

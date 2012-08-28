@@ -74,7 +74,11 @@ logfile.log.start()
 
 class milter( Milter.Base ):
     """
-    Milter processing derived from pymilter
+    Milter processing derived from pymilter.
+    
+    **Only functions that have been heavily modified from standard Milter processing
+    have been documented**
+    
     """
     def __init__( self ):
         """
@@ -164,7 +168,27 @@ class milter( Milter.Base ):
     def eom( self ):
         """
         End-Of-Message milter function
+        
+        Connection to the database is established here via the toDB class:
+        
+        .. code-block:: py
+        
+            db = toDB( 'root', 'python', 'python.dev.wrtdesign.com', 'EARS' )
+            
+        The variables above can be changed accordingly.
+        
+        New messages are initialized in the database via:
+        
+        .. code-block:: py
+        
+            db.newMessage( self.canon_from, self.Subject, self.headers, self._msg, self.R )        
+
+        and are subsequently shipped to the ProcessMessage class to parse/remove attachments,
+        then add the EARS link page to the message before being sent to the recipient(s)
+        
+        If an error occurs, an Exception is thrown and logged to the <logname>.err file
         """
+
         self.fp.seek( 0 )
         msg = mime.message_from_file( self.fp )
         self._msg = msg
@@ -432,6 +456,16 @@ class ProcessMessage():
 
 class FileSys():
     def __init__( self, msg ):
+        """
+        **msg** - Message passed directly from the Milter
+        
+        Variables that are established for this class are:
+        
+        * **dropDir** - Base folder where attachment files will be stored
+        * **min_attach_size** - Minimum attachment size to detach from the message
+        * **remfile** - Name of the file with links to removed attachments
+        
+        """
         self.msg = msg
 
         self.dropDir = "/dropdir/"
@@ -441,6 +475,9 @@ class FileSys():
         self.attachDir = self.Dir()
 
     def Dir( self ):
+        """
+        Creates a unique folder in the **dropDir** based on the hash of the whole incoming message
+        """
         out = tempfile.TemporaryFile()
         self.msg.dump( out )
         out.seek( 0 )
@@ -454,12 +491,18 @@ class FileSys():
         return attachDir
 
     def hashit( self, data ):
+        """
+        Generates a hash for **dropDir** folders and individual files
+        """
         sha1 = hashlib.sha1()
         sha1.update( data )
 
         return sha1.hexdigest()
 
     def filesize_notation( self, filesize ):
+        """
+        Determines proper filesize notation (K, M, G) based on mathematical calculation loop
+        """
         f_num = float( filesize )
         notation = ['', 'K', 'M', 'G']
         magnitude = 0
@@ -471,6 +514,12 @@ class FileSys():
 
 
     def unicodeConvert( self, fname ):
+        """
+        Convert text to unicode.
+        
+        This was designed to address issues with Latin-1 (iso-8859-1) encoding
+        in addition to other foreign characters.
+        """
         normalized = False
 
 #        if '8859-1' in fname:
