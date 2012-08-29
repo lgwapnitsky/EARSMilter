@@ -57,79 +57,201 @@
             
   <div class="section" id="ears-milter-installation">
 <h1>EARS Milter Installation<a class="headerlink" href="#ears-milter-installation" title="Permalink to this headline">¶</a></h1>
-<ul>
-<li><p class="first"><a class="reference internal" href="#server-installation"><em>Server Installation</em></a></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><a class="reference internal" href="#debian-installation"><em>Debian Install</em></a></p>
-</li>
-<li><p class="first"><a class="reference internal" href="#mysql-installation"><em>MySQL Installation</em></a></p>
-</li>
-<li><p class="first"><a class="reference internal" href="#web-server-installation"><em>Web Server Installation</em></a></p>
-</li>
-<li><p class="first"><a class="reference internal" href="#mail-server-installation"><em>Mail Server Installation</em></a></p>
-<blockquote>
-<div><ul class="simple">
-<li><a class="reference internal" href="#postfix"><em>Postfix</em></a></li>
-<li><a class="reference internal" href="#sendmail"><em>sendmail</em></a></li>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#server-installation" id="id4">Server Installation</a><ul>
+<li><a class="reference internal" href="#debian-install" id="id5">Debian Install</a></li>
+<li><a class="reference internal" href="#web-server-installation" id="id6">Web Server Installation</a></li>
+<li><a class="reference internal" href="#git-installation" id="id7">Git Installation</a></li>
+<li><a class="reference internal" href="#mail-server-installation" id="id8">Mail Server Installation</a></li>
 </ul>
-</div></blockquote>
 </li>
+<li><a class="reference internal" href="#python-installation-configuration" id="id9">Python Installation/Configuration</a><ul>
+<li><a class="reference internal" href="#the-debian-way" id="id10">The Debian Way</a></li>
+<li><a class="reference internal" href="#the-python-way" id="id11">The Python Way</a></li>
 </ul>
-</div></blockquote>
 </li>
-<li><p class="first"><a class="reference internal" href="#python-installation-configuration"><em>Python Installation/Configuration</em></a></p>
-</li>
+<li><a class="reference internal" href="#optional-software-installation" id="id12">Optional Software Installation</a><ul>
+<li><a class="reference internal" href="#phpmyadmin" id="id13">phpMyAdmin</a></li>
 </ul>
+</li>
+<li><a class="reference internal" href="#accquiring-and-configuring-the-milter" id="id14">Accquiring and configuring the Milter</a></li>
+</ul>
+</div>
 <div class="section" id="server-installation">
-<span id="id1"></span><h2>Server Installation<a class="headerlink" href="#server-installation" title="Permalink to this headline">¶</a></h2>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">Document server installation</p>
-</div>
+<h2><a class="toc-backref" href="#id4">Server Installation</a><a class="headerlink" href="#server-installation" title="Permalink to this headline">¶</a></h2>
+<p>This milter has been tested on Debian Squeeze/Wheezy using a LAMP (Linux/Apache/MySQL/PHP)-based web server <a class="footnote-reference" href="#f1" id="id1">[1]</a>.</p>
 <div class="section" id="debian-install">
-<span id="debian-installation"></span><h3>Debian Install<a class="headerlink" href="#debian-install" title="Permalink to this headline">¶</a></h3>
-<div class="admonition-todo admonition" id="index-1">
-<p class="first admonition-title">Todo</p>
-<p class="last">Debian installation documentation</p>
-</div>
-</div>
-<div class="section" id="mysql-installation">
-<span id="id2"></span><h3>MySQL Installation<a class="headerlink" href="#mysql-installation" title="Permalink to this headline">¶</a></h3>
-<div class="admonition-todo admonition" id="index-2">
-<p class="first admonition-title">Todo</p>
-<p class="last">MySQL installation instructions</p>
+<h3><a class="toc-backref" href="#id5">Debian Install</a><a class="headerlink" href="#debian-install" title="Permalink to this headline">¶</a></h3>
+<p>Installing a Debian Squeeze/Wheezy server is a fairly straight-forward procedure.  The best method to use
+can be found via HowtoForge&#8217;s <a class="reference external" href="http://www.howtoforge.com/perfect-server-debian-squeeze-ispconfig-2">The Perfect Server - Debian Squeeze (Debian 6.0) [ISPConfig 2]</a> and following
+it up through <strong>8 Change The Default Shell</strong> on page 3.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>In WRT&#8217;s environment, virtual linux servers are set up using Linux Containers (<a class="reference external" href="http://lxc.sourceforge.net/">lxc</a>).</p>
+<p>To create a new system, log in to the LXC server as root and use the  <tt class="docutils literal"><span class="pre">`lxc-prepare</span></tt> <a class="reference external" href="http://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;ved=0CCAQFjAA&amp;url=http://mindref.blogspot.com/2011/01/debian-lxc-create.html&amp;ei=Gxk-UO7IMIH86wGEoIGgDg&amp;usg=AFQjCNH8nf1DFSRpLmQigOgj8AsU-xhA3Q&amp;sig2=KpSOTudr5eTp97MCE7aLRw">script</a>.</p>
+<p class="last">Make sure to edit <tt class="docutils literal"><span class="pre">/var/lib/lxc/&lt;machine</span> <span class="pre">name&gt;/rootfs/etc/network/interfaces</span></tt> and enter the appropriate
+static IP, routing and gateway information.</p>
 </div>
 </div>
 <div class="section" id="web-server-installation">
-<span id="id3"></span><h3>Web Server Installation<a class="headerlink" href="#web-server-installation" title="Permalink to this headline">¶</a></h3>
-<div class="admonition-todo admonition" id="index-3">
-<p class="first admonition-title">Todo</p>
-<p class="last">Apache installation</p>
+<h3><a class="toc-backref" href="#id6">Web Server Installation</a><a class="headerlink" href="#web-server-installation" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Unless otherwise specifiec, all commands are run as the <tt class="docutils literal"><span class="pre">root</span></tt> user.</p>
 </div>
+<p>The web server needs to be set up in a LAMP configuration (Apache Web Server, MySQL, PHP)</p>
+<ol class="arabic">
+<li><p class="first">Install MySQL</p>
+<div class="highlight-sh"><div class="highlight"><pre>aptitude install mysql-server mysql-client
+</pre></div>
+</div>
+<p>Enter a password for the root MySQL user.</p>
+</li>
+<li><p class="first">Install Apache2</p>
+<div class="highlight-sh"><div class="highlight"><pre>aptitude install apache2
+</pre></div>
+</div>
+<p>Test to see that the web-server is running properly by visiting the IP address of this server in a web browser.
+You should see an image similar to this:</p>
+<img alt="_images/apache2.png" src="_images/apache2.png" />
+</li>
+<li><p class="first">Install PHP5</p>
+<p>PHP5 and the Apache PHP5 module are required to serve the EARS web-based code.  Install them as follows:</p>
+<div class="highlight-sh"><div class="highlight"><pre>aptitude install php5 libapache2-mod-php5
+</pre></div>
+</div>
+<p>Restart Apache:</p>
+<div class="highlight-sh"><div class="highlight"><pre>/etc/init.d/apache2 restart
+</pre></div>
+</div>
+</li>
+<li><p class="first">Install MySQL support in PHP5</p>
+<p>To get MySQL support in PHP, we can install the <em>php5-mysql</em> package. It&#8217;s a good idea to install some other PHP5 modules as well as you might need them for your applications. You can search for available PHP5 modules like this:</p>
+<div class="highlight-sh"><div class="highlight"><pre>apt-cache search php5
+</pre></div>
+</div>
+<p>Pick the ones you need and install them like this:</p>
+<div class="highlight-sh"><div class="highlight"><pre>aptitude install php5-mysql php5-curl php-pear php5-imagick php5-mcrypt php5-memcache
+</pre></div>
+</div>
+<p>Now restart Apache2:</p>
+<div class="highlight-sh"><div class="highlight"><pre>/etc/init.d/apache2 restart
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="git-installation">
+<h3><a class="toc-backref" href="#id7">Git Installation</a><a class="headerlink" href="#git-installation" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://git-scm.com">Git</a> <a class="footnote-reference" href="#f2" id="id2">[2]</a> is required to download the EARS Milter code from the development repository.</p>
+<ol class="arabic">
+<li><p class="first">Install Git</p>
+<div class="highlight-sh"><div class="highlight"><pre>aptitude install git
+</pre></div>
+</div>
+</li>
+<li><p class="first">Configure git access</p>
+<ul>
+<li><p class="first">On the EARS Milter server, create a <em>ssh</em> key and copy it to the development repository server:</p>
+<blockquote>
+<div><div class="highlight-sh"><div class="highlight"><pre><span class="nb">cd</span> ~/.ssh
+ssh-keygen -t rsa
+<span class="nb">cd</span> ~
+</pre></div>
+</div>
+<p>Hit return at the prompts to create the key without passphrase authentication.</p>
+<div class="highlight-sh"><div class="highlight"><pre>scp ~/.ssh/id_rsa.pub git
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Log in to the repository server and authorize the key:</p>
+<blockquote>
+<div><div class="highlight-sh"><div class="highlight"><pre>ssh root@git
+<span class="nb">cd </span>gitolite-admin
+cp id_rsa.pub keydir/root<span class="se">\@</span>&lt;milterservername&gt;.pub
+emacs keydir/root<span class="se">\@</span>&lt;milterservername&gt;.pub
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">Remove the <tt class="docutils literal"><span class="pre">&#64;&lt;servername&gt;</span></tt> from the second-to-last line of the file and save</div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><strong>DO NOT</strong> delete the last line - a blank line is necessary</p>
+</div>
+<div class="highlight-sh"><div class="highlight"><pre>git commit -a
+git push
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">On the EARS Milter server, test access to the repository server:</p>
+<blockquote>
+<div><div class="highlight-sh"><div class="highlight"><pre><span class="nb">cd</span> /tmp
+git clone gitolite@git:gitolite-admin
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">If this fails, please verify all the steps in this section</div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</li>
+</ol>
 </div>
 <div class="section" id="mail-server-installation">
-<span id="id4"></span><h3>Mail Server Installation<a class="headerlink" href="#mail-server-installation" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="postfix">
-<span id="id5"></span><h4>Postfix<a class="headerlink" href="#postfix" title="Permalink to this headline">¶</a></h4>
-</div>
-<div class="section" id="sendmail">
-<span id="id6"></span><h4>sendmail<a class="headerlink" href="#sendmail" title="Permalink to this headline">¶</a></h4>
+<h3><a class="toc-backref" href="#id8">Mail Server Installation</a><a class="headerlink" href="#mail-server-installation" title="Permalink to this headline">¶</a></h3>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Install Postfix</p>
 </div>
 </div>
 </div>
 <div class="section" id="python-installation-configuration">
-<span id="id7"></span><h2>Python Installation/Configuration<a class="headerlink" href="#python-installation-configuration" title="Permalink to this headline">¶</a></h2>
-<div class="admonition-todo admonition" id="index-4">
-<p class="first admonition-title">Todo</p>
-<p class="last">Python installation.configuration</p>
-</div>
+<h2><a class="toc-backref" href="#id9">Python Installation/Configuration</a><a class="headerlink" href="#python-installation-configuration" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="the-debian-way">
-<h3>The Debian Way<a class="headerlink" href="#the-debian-way" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id10">The Debian Way</a><a class="headerlink" href="#the-debian-way" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="the-python-way">
-<h3>The Python Way<a class="headerlink" href="#the-python-way" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id11">The Python Way</a><a class="headerlink" href="#the-python-way" title="Permalink to this headline">¶</a></h3>
 </div>
+</div>
+<div class="section" id="optional-software-installation">
+<h2><a class="toc-backref" href="#id12">Optional Software Installation</a><a class="headerlink" href="#optional-software-installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="phpmyadmin">
+<h3><a class="toc-backref" href="#id13">phpMyAdmin</a><a class="headerlink" href="#phpmyadmin" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://www.phpmyadmin.net">phpMyAdmin</a> is a web interface through which you can manage your MySQL databases. It&#8217;s a good idea to install it:</p>
+<div class="highlight-sh"><div class="highlight"><pre>aptitude install phpmyadmin
+</pre></div>
+</div>
+<p>You will see the following question:</p>
+<blockquote>
+<div><div class="line-block">
+<div class="line"><tt class="docutils literal"><span class="pre">Web</span> <span class="pre">server</span> <span class="pre">to</span> <span class="pre">reconfigure</span> <span class="pre">automatically:</span></tt> &lt;&#8211; apache2</div>
+<div class="line"><tt class="docutils literal"><span class="pre">Configure</span> <span class="pre">database</span> <span class="pre">for</span> <span class="pre">phpmyadmin</span> <span class="pre">with</span> <span class="pre">dbconfig-common?</span></tt> &lt;&#8211; No</div>
+</div>
+</div></blockquote>
+<p>Afterwards, you can access phpMyAdmin under <a class="reference external" href="http:/">http:/</a>/&lt;serverIP&gt;/phpmyadmin/:</p>
+<img alt="_images/phpMyAdmin.png" src="_images/phpMyAdmin.png" />
+</div>
+</div>
+<div class="section" id="accquiring-and-configuring-the-milter">
+<h2><a class="toc-backref" href="#id14">Accquiring and configuring the Milter</a><a class="headerlink" href="#accquiring-and-configuring-the-milter" title="Permalink to this headline">¶</a></h2>
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Adapted from HowtoForge&#8217;s <a class="reference external" href="http://www.howtoforge.com/installing-apache2-with-php5-and-mysql-support-on-debian-squeeze-lamp">Installing Apache2 With PHP5 And MySQL Support On Debian Squeeze (LAMP)</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td><a class="reference external" href="http://git-scm.com/book">Pro Git</a> by Scott Chacon is available to read online for free.</td></tr>
+</tbody>
+</table>
 </div>
 </div>
 
@@ -144,13 +266,9 @@
 <li><a class="reference internal" href="#">EARS Milter Installation</a><ul>
 <li><a class="reference internal" href="#server-installation">Server Installation</a><ul>
 <li><a class="reference internal" href="#debian-install">Debian Install</a></li>
-<li><a class="reference internal" href="#mysql-installation">MySQL Installation</a></li>
 <li><a class="reference internal" href="#web-server-installation">Web Server Installation</a></li>
-<li><a class="reference internal" href="#mail-server-installation">Mail Server Installation</a><ul>
-<li><a class="reference internal" href="#postfix">Postfix</a></li>
-<li><a class="reference internal" href="#sendmail">sendmail</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#git-installation">Git Installation</a></li>
+<li><a class="reference internal" href="#mail-server-installation">Mail Server Installation</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#python-installation-configuration">Python Installation/Configuration</a><ul>
@@ -158,6 +276,11 @@
 <li><a class="reference internal" href="#the-python-way">The Python Way</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#optional-software-installation">Optional Software Installation</a><ul>
+<li><a class="reference internal" href="#phpmyadmin">phpMyAdmin</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#accquiring-and-configuring-the-milter">Accquiring and configuring the Milter</a></li>
 </ul>
 </li>
 </ul>
@@ -210,7 +333,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2012, Larry G. Wapnitsky.
-      Last updated on Aug 28, 2012.
+      Last updated on Aug 29, 2012.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>

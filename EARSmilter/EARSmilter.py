@@ -1,6 +1,6 @@
 """EARS Milter definitions and functions
 
-.. py:module:: EARSmilter
+.. :module:: EARSmilter.py
     :synopsis: EARS Milter definitions and functions
     
 .. moduleauthor:: Larry G. Wapnitsky <larry@qual-ITsystems.com>

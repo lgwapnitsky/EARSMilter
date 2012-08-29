@@ -2,7 +2,7 @@
 logger.py
 *********
 
-.. module:: logger.py
+.. module:: logger
     :synopsis: customized logging class that can be used in other scripts
     
 .. moduleauthor:: Larry G. Wapnitsky <larry@qual-ITsystems.com>
