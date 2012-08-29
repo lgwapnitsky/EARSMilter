@@ -61,21 +61,22 @@
 <ul class="simple">
 <li><a class="reference internal" href="#server-installation" id="id4">Server Installation</a><ul>
 <li><a class="reference internal" href="#debian-install" id="id5">Debian Install</a></li>
-<li><a class="reference internal" href="#web-server-installation" id="id6">Web Server Installation</a></li>
-<li><a class="reference internal" href="#git-installation" id="id7">Git Installation</a></li>
-<li><a class="reference internal" href="#mail-server-installation" id="id8">Mail Server Installation</a></li>
+<li><a class="reference internal" href="#webmin-installation" id="id6">Webmin Installation</a></li>
+<li><a class="reference internal" href="#web-server-installation" id="id7">Web Server Installation</a></li>
+<li><a class="reference internal" href="#git-installation" id="id8">Git Installation</a></li>
+<li><a class="reference internal" href="#mail-server-installation" id="id9">Mail Server Installation</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#python-installation-configuration" id="id9">Python Installation/Configuration</a><ul>
-<li><a class="reference internal" href="#the-debian-way" id="id10">The Debian Way</a></li>
-<li><a class="reference internal" href="#the-python-way" id="id11">The Python Way</a></li>
+<li><a class="reference internal" href="#python-installation-configuration" id="id10">Python Installation/Configuration</a><ul>
+<li><a class="reference internal" href="#the-debian-way" id="id11">The Debian Way</a></li>
+<li><a class="reference internal" href="#the-python-way" id="id12">The Python Way</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#optional-software-installation" id="id12">Optional Software Installation</a><ul>
-<li><a class="reference internal" href="#phpmyadmin" id="id13">phpMyAdmin</a></li>
+<li><a class="reference internal" href="#optional-software-installation" id="id13">Optional Software Installation</a><ul>
+<li><a class="reference internal" href="#phpmyadmin" id="id14">phpMyAdmin</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#accquiring-and-configuring-the-milter" id="id14">Accquiring and configuring the Milter</a></li>
+<li><a class="reference internal" href="#accquiring-and-configuring-the-milter" id="id15">Accquiring and configuring the Milter</a></li>
 </ul>
 </div>
 <div class="section" id="server-installation">
@@ -93,23 +94,49 @@ it up through <strong>8 Change The Default Shell</strong> on page 3.</p>
 <p class="last">Make sure to edit <tt class="docutils literal"><span class="pre">/var/lib/lxc/&lt;machine</span> <span class="pre">name&gt;/rootfs/etc/network/interfaces</span></tt> and enter the appropriate
 static IP, routing and gateway information.</p>
 </div>
+<p>After logging in, make sure to install <tt class="docutils literal"><span class="pre">cifs-utils</span></tt>, <tt class="docutils literal"><span class="pre">telnet</span></tt>, <tt class="docutils literal"><span class="pre">rsyslog</span></tt> and <tt class="docutils literal"><span class="pre">logrotate</span></tt>.</p>
+<div class="highlight-sh"><div class="highlight"><pre>aptitude install telnet rsyslog logrotate
+</pre></div>
+</div>
+</div>
+<div class="section" id="webmin-installation">
+<h3><a class="reference external" href="http://www.webmin.com/deb.html">Webmin</a> Installation<a class="headerlink" href="#webmin-installation" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Create a file called <tt class="docutils literal"><span class="pre">/etc/apt/sources.list.d/webmin.list</span></tt>.  Add the following lines, then save:</p>
+<div class="highlight-sh"><div class="highlight"><pre>deb http://download.webmin.com/download/repository sarge contrib
+deb http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib
+</pre></div>
+</div>
+</li>
+<li><p class="first">Download and install the security key, then update and install <tt class="docutils literal"><span class="pre">webmin</span></tt>:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span class="c"># cd /root</span>
+<span class="c"># wget http://www.webmin.com/jcameron-key.asc</span>
+<span class="c"># apt-key add jcameron-key.asc</span>
+<span class="c"># aptitude update</span>
+<span class="c"># aptitude install webmin</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Test the installation by going to <tt class="docutils literal"><span class="pre">https://&lt;serverIP&gt;:10000</span></tt>.  Log in using the system root password.</p>
+</li>
+</ol>
 </div>
 <div class="section" id="web-server-installation">
-<h3><a class="toc-backref" href="#id6">Web Server Installation</a><a class="headerlink" href="#web-server-installation" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id7">Web Server Installation</a><a class="headerlink" href="#web-server-installation" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Unless otherwise specifiec, all commands are run as the <tt class="docutils literal"><span class="pre">root</span></tt> user.</p>
+<p class="last">Unless otherwise specified, all commands are run as the <tt class="docutils literal"><span class="pre">root</span></tt> user.</p>
 </div>
 <p>The web server needs to be set up in a LAMP configuration (Apache Web Server, MySQL, PHP)</p>
 <ol class="arabic">
 <li><p class="first">Install MySQL</p>
-<div class="highlight-sh"><div class="highlight"><pre>aptitude install mysql-server mysql-client
+<div class="highlight-sh"><div class="highlight"><pre><span class="c"># aptitude install mysql-server mysql-client</span>
 </pre></div>
 </div>
 <p>Enter a password for the root MySQL user.</p>
 </li>
 <li><p class="first">Install Apache2</p>
-<div class="highlight-sh"><div class="highlight"><pre>aptitude install apache2
+<div class="highlight-sh"><div class="highlight"><pre><span class="c"># aptitude install apache2</span>
 </pre></div>
 </div>
 <p>Test to see that the web-server is running properly by visiting the IP address of this server in a web browser.
@@ -118,36 +145,36 @@ You should see an image similar to this:</p>
 </li>
 <li><p class="first">Install PHP5</p>
 <p>PHP5 and the Apache PHP5 module are required to serve the EARS web-based code.  Install them as follows:</p>
-<div class="highlight-sh"><div class="highlight"><pre>aptitude install php5 libapache2-mod-php5
+<div class="highlight-sh"><div class="highlight"><pre><span class="c"># aptitude install php5 libapache2-mod-php5</span>
 </pre></div>
 </div>
 <p>Restart Apache:</p>
-<div class="highlight-sh"><div class="highlight"><pre>/etc/init.d/apache2 restart
+<div class="highlight-sh"><div class="highlight"><pre><span class="c"># /etc/init.d/apache2 restart</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first">Install MySQL support in PHP5</p>
 <p>To get MySQL support in PHP, we can install the <em>php5-mysql</em> package. It&#8217;s a good idea to install some other PHP5 modules as well as you might need them for your applications. You can search for available PHP5 modules like this:</p>
-<div class="highlight-sh"><div class="highlight"><pre>apt-cache search php5
+<div class="highlight-sh"><div class="highlight"><pre><span class="c"># apt-cache search php5</span>
 </pre></div>
 </div>
 <p>Pick the ones you need and install them like this:</p>
-<div class="highlight-sh"><div class="highlight"><pre>aptitude install php5-mysql php5-curl php-pear php5-imagick php5-mcrypt php5-memcache
+<div class="highlight-sh"><div class="highlight"><pre><span class="c"># aptitude install php5-mysql php5-curl php-pear php5-imagick php5-mcrypt php5-memcache</span>
 </pre></div>
 </div>
 <p>Now restart Apache2:</p>
-<div class="highlight-sh"><div class="highlight"><pre>/etc/init.d/apache2 restart
+<div class="highlight-sh"><div class="highlight"><pre><span class="c"># /etc/init.d/apache2 restart</span>
 </pre></div>
 </div>
 </li>
 </ol>
 </div>
 <div class="section" id="git-installation">
-<h3><a class="toc-backref" href="#id7">Git Installation</a><a class="headerlink" href="#git-installation" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id8">Git Installation</a><a class="headerlink" href="#git-installation" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="http://git-scm.com">Git</a> <a class="footnote-reference" href="#f2" id="id2">[2]</a> is required to download the EARS Milter code from the development repository.</p>
 <ol class="arabic">
 <li><p class="first">Install Git</p>
-<div class="highlight-sh"><div class="highlight"><pre>aptitude install git
+<div class="highlight-sh"><div class="highlight"><pre><span class="c"># aptitude install git</span>
 </pre></div>
 </div>
 </li>
@@ -155,23 +182,23 @@ You should see an image similar to this:</p>
 <ul>
 <li><p class="first">On the EARS Milter server, create a <em>ssh</em> key and copy it to the development repository server:</p>
 <blockquote>
-<div><div class="highlight-sh"><div class="highlight"><pre><span class="nb">cd</span> ~/.ssh
-ssh-keygen -t rsa
-<span class="nb">cd</span> ~
+<div><div class="highlight-sh"><div class="highlight"><pre><span class="c"># cd ~/.ssh</span>
+<span class="c"># ssh-keygen -t rsa</span>
+<span class="c"># cd ~</span>
 </pre></div>
 </div>
 <p>Hit return at the prompts to create the key without passphrase authentication.</p>
-<div class="highlight-sh"><div class="highlight"><pre>scp ~/.ssh/id_rsa.pub git
+<div class="highlight-sh"><div class="highlight"><pre><span class="c"># scp ~/.ssh/id_rsa.pub git</span>
 </pre></div>
 </div>
 </div></blockquote>
 </li>
 <li><p class="first">Log in to the repository server and authorize the key:</p>
 <blockquote>
-<div><div class="highlight-sh"><div class="highlight"><pre>ssh root@git
-<span class="nb">cd </span>gitolite-admin
-cp id_rsa.pub keydir/root<span class="se">\@</span>&lt;milterservername&gt;.pub
-emacs keydir/root<span class="se">\@</span>&lt;milterservername&gt;.pub
+<div><div class="highlight-sh"><div class="highlight"><pre><span class="c"># ssh root@git</span>
+<span class="c"># cd gitolite-admin</span>
+<span class="c"># cp id_rsa.pub keydir/root\@&lt;milterservername&gt;.pub</span>
+<span class="c"># emacs keydir/root\@&lt;milterservername&gt;.pub</span>
 </pre></div>
 </div>
 <div class="line-block">
@@ -181,21 +208,19 @@ emacs keydir/root<span class="se">\@</span>&lt;milterservername&gt;.pub
 <p class="first admonition-title">Warning</p>
 <p class="last"><strong>DO NOT</strong> delete the last line - a blank line is necessary</p>
 </div>
-<div class="highlight-sh"><div class="highlight"><pre>git commit -a
-git push
+<div class="highlight-sh"><div class="highlight"><pre><span class="c"># git commit -a</span>
+<span class="c"># git push</span>
 </pre></div>
 </div>
 </div></blockquote>
 </li>
 <li><p class="first">On the EARS Milter server, test access to the repository server:</p>
 <blockquote>
-<div><div class="highlight-sh"><div class="highlight"><pre><span class="nb">cd</span> /tmp
-git clone gitolite@git:gitolite-admin
+<div><div class="highlight-sh"><div class="highlight"><pre><span class="c"># cd /tmp</span>
+<span class="c"># git clone gitolite@git:gitolite-admin</span>
 </pre></div>
 </div>
-<div class="line-block">
-<div class="line">If this fails, please verify all the steps in this section</div>
-</div>
+<p>If this fails, please verify all the steps in this section</p>
 </div></blockquote>
 </li>
 </ul>
@@ -203,26 +228,111 @@ git clone gitolite@git:gitolite-admin
 </ol>
 </div>
 <div class="section" id="mail-server-installation">
-<h3><a class="toc-backref" href="#id8">Mail Server Installation</a><a class="headerlink" href="#mail-server-installation" title="Permalink to this headline">¶</a></h3>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">Install Postfix</p>
+<h3><a class="toc-backref" href="#id9">Mail Server Installation</a><a class="headerlink" href="#mail-server-installation" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Install postfix with <a class="reference external" href="http://www.pcre.org">PCRE</a> support:</p>
+<div class="highlight-sh"><div class="highlight"><pre>
+</pre></div>
 </div>
+<p># aptitude install postfix postfix-pcre</p>
+<p>If prompted to remove packages relating to <tt class="docutils literal"><span class="pre">exim4</span></tt> or <tt class="docutils literal"><span class="pre">sendmail</span></tt>, choose to <em>Accept the solution</em>.</p>
+<p>When prompted for <em>mail server configuration type</em>, choose <em>Satellite System</em>:</p>
+<img alt="_images/postfix1.png" src="_images/postfix1.png" />
+<p>Enter a fully-qualified domain name in the form of <em>servername.wrtdesign.com</em>, where <em>servername</em> is the name of the EARS Milter server.
+Make sure that there is a DNS entry for this server and its corresponding IP address on the DNS server.</p>
+<img alt="_images/postfix2.png" src="_images/postfix2.png" />
+<p>Enter the FQDN of the MS Exchange server when prompted for a relay host:</p>
+<img alt="_images/postfix3.png" src="_images/postfix3.png" />
+<p>Accept the defaults for <em>Root and postmaster mail recipient</em>, <em>Other destinations to accept mail for</em> and <em>Force synchronous updates...</em>.</p>
+<p>For <em>Local networks</em>, enter <tt class="docutils literal"><span class="pre">10.102.0.0\16,</span> <span class="pre">192.168.0.0\24,</span> <span class="pre">127.0.0.1</span></tt>.  This will handle all of WRT&#8217;s internal networks as well as the localhost.</p>
+<p>Accept all the rest of the defaults.</p>
+</li>
+<li><p class="first">Add the following lines to <tt class="docutils literal"><span class="pre">/etc/postfix/main.cf</span></tt>:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span class="nv">disable_vrfy_command</span> <span class="o">=</span> yes
+smtpd_command_filter  pcre:/etc/postfix/bogus_commands
+<span class="nv">smtpd_recipient_restrictions</span> <span class="o">=</span> permit_mynetworks reject_unauth_destination
+</pre></div>
+</div>
+<p>Remove the following line from the same file:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span class="c">#inet_interfaces = loopback-only</span>
+</pre></div>
+</div>
+<p>Edit the following line to read:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span class="nv">inet_protocols</span> <span class="o">=</span> ipv4
+</pre></div>
+</div>
+</li>
+<li><p class="first">Open up <tt class="docutils literal"><span class="pre">/etc/postfix/master.cf</span></tt> and uncomment the line:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span class="c">#submission inet n       -       -       -       -       smtpd</span>
+</pre></div>
+</div>
+<p>Add the following lines (with indentation) to the same file:</p>
+<div class="highlight-sh"><div class="highlight"><pre>scan      unix  -       -       n       -       10      smtp
+ -o <span class="nv">smtp_send_xforward_command</span><span class="o">=</span>yes
+ -o <span class="nv">disable_mime_output_conversion</span><span class="o">=</span>yes
+ -o <span class="nv">smtp_generic_maps</span><span class="o">=</span>
+</pre></div>
+</div>
+<p>Add the following (indented) after the line marked <tt class="docutils literal"><span class="pre">relay</span></tt>:</p>
+<div class="highlight-sh"><div class="highlight"><pre>-o <span class="nv">smtp_fallback_relay</span><span class="o">=</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create a file called <tt class="docutils literal"><span class="pre">/etc/postfix/bogus_commands</span></tt> and enter the following two lines:</p>
+<div class="highlight-sh"><div class="highlight"><pre>/^<span class="o">[</span>^ <span class="o">]{</span>3<span class="o">}</span><span class="se">\s</span>.*/  NOOP
+/^https<span class="o">{</span>0,1<span class="o">}</span><span class="se">\:\/\/</span>.*/ NOOP
+</pre></div>
+</div>
+</li>
+<li><p class="first">Reload the configuration and send a test message:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span class="c"># postfix reload</span>
+<span class="c"># telnet localhost 25</span>
+telnet localhost 25
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is <span class="s1">&#39;^]&#39;</span>.
+220 ph-wks-lin01.wrtdesign.com ESMTP Postfix <span class="o">(</span>Debian/GNU<span class="o">)</span>
+ehlo localhost
+250-ph-wks-lin01.wrtdesign.com
+250-PIPELINING
+250-SIZE 10240000
+250-ETRN
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250 DSN
+mail from: root
+250 2.1.0 Ok
+rcpt to: ph_test@wrtdesign.com
+250 2.1.5 Ok
+data
+354 End data with &lt;CR&gt;&lt;LF&gt;.&lt;CR&gt;&lt;LF&gt;
+<span class="nb">test</span>
+.
+250 2.0.0 Ok: queued as 4F00049F2A
+</pre></div>
+</div>
+</li>
+</ol>
 </div>
 </div>
 <div class="section" id="python-installation-configuration">
-<h2><a class="toc-backref" href="#id9">Python Installation/Configuration</a><a class="headerlink" href="#python-installation-configuration" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id10">Python Installation/Configuration</a><a class="headerlink" href="#python-installation-configuration" title="Permalink to this headline">¶</a></h2>
+<p>The default version of Python in Debian Squeeze/Wheezy is 2.7.  This is what we will be installing.</p>
+<div class="highlight-sh"><div class="highlight"><pre>% aptitude install python
+</pre></div>
+</div>
 <div class="section" id="the-debian-way">
-<h3><a class="toc-backref" href="#id10">The Debian Way</a><a class="headerlink" href="#the-debian-way" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id11">The Debian Way</a><a class="headerlink" href="#the-debian-way" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="the-python-way">
-<h3><a class="toc-backref" href="#id11">The Python Way</a><a class="headerlink" href="#the-python-way" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id12">The Python Way</a><a class="headerlink" href="#the-python-way" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 <div class="section" id="optional-software-installation">
-<h2><a class="toc-backref" href="#id12">Optional Software Installation</a><a class="headerlink" href="#optional-software-installation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id13">Optional Software Installation</a><a class="headerlink" href="#optional-software-installation" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="phpmyadmin">
-<h3><a class="toc-backref" href="#id13">phpMyAdmin</a><a class="headerlink" href="#phpmyadmin" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id14">phpMyAdmin</a><a class="headerlink" href="#phpmyadmin" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="http://www.phpmyadmin.net">phpMyAdmin</a> is a web interface through which you can manage your MySQL databases. It&#8217;s a good idea to install it:</p>
 <div class="highlight-sh"><div class="highlight"><pre>aptitude install phpmyadmin
 </pre></div>
@@ -239,7 +349,17 @@ git clone gitolite@git:gitolite-admin
 </div>
 </div>
 <div class="section" id="accquiring-and-configuring-the-milter">
-<h2><a class="toc-backref" href="#id14">Accquiring and configuring the Milter</a><a class="headerlink" href="#accquiring-and-configuring-the-milter" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id15">Accquiring and configuring the Milter</a><a class="headerlink" href="#accquiring-and-configuring-the-milter" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><blockquote>
+<div>milter_protocol = 6
+smtpd_milters = unix:/var/spool/EARS/EARSmilter.sock
+milter_default_action = accept</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If/when you add additional milters to this sytem, make sure that <strong>EARS</strong> is the last one listed, as milters are processed in order.</p>
+</div>
+</div></blockquote>
 <table class="docutils footnote" frame="void" id="f1" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
@@ -266,6 +386,7 @@ git clone gitolite@git:gitolite-admin
 <li><a class="reference internal" href="#">EARS Milter Installation</a><ul>
 <li><a class="reference internal" href="#server-installation">Server Installation</a><ul>
 <li><a class="reference internal" href="#debian-install">Debian Install</a></li>
+<li><a class="reference internal" href="#webmin-installation">Webmin Installation</a></li>
 <li><a class="reference internal" href="#web-server-installation">Web Server Installation</a></li>
 <li><a class="reference internal" href="#git-installation">Git Installation</a></li>
 <li><a class="reference internal" href="#mail-server-installation">Mail Server Installation</a></li>

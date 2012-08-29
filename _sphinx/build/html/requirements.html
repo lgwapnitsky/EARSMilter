@@ -57,7 +57,7 @@
             
   <div class="section" id="ears-milter-requirements">
 <h1>EARS Milter Requirements<a class="headerlink" href="#ears-milter-requirements" title="Permalink to this headline">¶</a></h1>
-<p>The EARS Milter is a Python-based <a class="reference external" href="http://www.milter.org">mail-filter</a> written for the <a class="reference external" href="http://www.postfix.org">postfix</a> mail transfer agent (MTA).</p>
+<p>The EARS Milter is a Python-based <a class="reference external" href="http://www.milter.orghttp://www.webmin.com/deb.html">mail-filter</a> written for the <a class="reference external" href="http://www.postfix.org">postfix</a> mail transfer agent (MTA).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last"><em>Postfix</em> must be installed on your system in order for this milter to function properly.
@@ -77,6 +77,7 @@ It may work with any other MTA that supports milters but has only been tested wi
 <li><a class="reference external" href="http://www.php.net">PHP 5.x</a></li>
 <li><a class="reference external" href="http://www.postfix.org">postfix</a></li>
 <li><a class="reference external" href="http://git-scm.com">Git</a> - required to download the Milter from the development repository</li>
+<li>cifs-utils</li>
 </ul>
 </div>
 <div class="section" id="python-requirements">
@@ -91,12 +92,19 @@ It may work with any other MTA that supports milters but has only been tested wi
 <li><a class="reference external" href="http://www.makotemplates.org/">mako</a></li>
 </ul>
 </div>
+<div class="section" id="recommended-software">
+<h2>Recommended Software<a class="headerlink" href="#recommended-software" title="Permalink to this headline">¶</a></h2>
+<p>While not necessary, this software should be installed as it will be referenced during the installation procedure:
+* telnet
+* rsyslog
+* logrotate
+* <a class="reference external" href="http://www.webmin.com/deb.html">Webmin</a></p>
+</div>
 <div class="section" id="optional-software">
 <h2>Optional Software<a class="headerlink" href="#optional-software" title="Permalink to this headline">¶</a></h2>
 <p>The following software is optional, but is useful for diagnostics</p>
 <ul class="simple">
 <li><a class="reference external" href="http://www.phpmyadmin.net">phpMyAdmin</a></li>
-<li>telnet</li>
 </ul>
 </div>
 </div>
@@ -112,6 +120,7 @@ It may work with any other MTA that supports milters but has only been tested wi
 <li><a class="reference internal" href="#">EARS Milter Requirements</a><ul>
 <li><a class="reference internal" href="#server-requirements">Server Requirements</a></li>
 <li><a class="reference internal" href="#python-requirements">Python Requirements</a></li>
+<li><a class="reference internal" href="#recommended-software">Recommended Software</a></li>
 <li><a class="reference internal" href="#optional-software">Optional Software</a></li>
 </ul>
 </li>

@@ -26,11 +26,42 @@ it up through **8 Change The Default Shell** on page 3.
    
    Make sure to edit ``/var/lib/lxc/<machine name>/rootfs/etc/network/interfaces`` and enter the appropriate
    static IP, routing and gateway information.
+   
+After logging in, make sure to install ``cifs-utils``, ``telnet``, ``rsyslog`` and ``logrotate``.
+
+.. code-block:: sh
+
+   aptitude install telnet rsyslog logrotate
+   
+   
+   
+`Webmin`_ Installation
+======================
+
+#. Create a file called ``/etc/apt/sources.list.d/webmin.list``.  Add the following lines, then save:
+
+   .. code-block:: sh
+
+      deb http://download.webmin.com/download/repository sarge contrib
+      deb http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib
+
+#. Download and install the security key, then update and install ``webmin``:
+
+   .. code-block:: sh
+
+      # cd /root
+      # wget http://www.webmin.com/jcameron-key.asc
+      # apt-key add jcameron-key.asc
+      # aptitude update
+      # aptitude install webmin
+
+#. Test the installation by going to ``https://<serverIP>:10000``.  Log in using the system root password.
+
 
 Web Server Installation
 =======================
 
-.. note:: Unless otherwise specifiec, all commands are run as the ``root`` user.
+.. note:: Unless otherwise specified, all commands are run as the ``root`` user.
 
 The web server needs to be set up in a LAMP configuration (Apache Web Server, MySQL, PHP)
 
@@ -38,7 +69,7 @@ The web server needs to be set up in a LAMP configuration (Apache Web Server, My
 
    .. code-block:: sh
 
-      aptitude install mysql-server mysql-client
+      # aptitude install mysql-server mysql-client
 
    Enter a password for the root MySQL user.
 
@@ -46,7 +77,7 @@ The web server needs to be set up in a LAMP configuration (Apache Web Server, My
 
    .. code-block:: sh
 
-      aptitude install apache2
+      # aptitude install apache2
 
    Test to see that the web-server is running properly by visiting the IP address of this server in a web browser.
    You should see an image similar to this:
@@ -59,13 +90,13 @@ The web server needs to be set up in a LAMP configuration (Apache Web Server, My
 
    .. code-block:: sh
 
-      aptitude install php5 libapache2-mod-php5
+      # aptitude install php5 libapache2-mod-php5
 
    Restart Apache:
 
    .. code-block:: sh
 
-     /etc/init.d/apache2 restart
+     # /etc/init.d/apache2 restart
 
 #. Install MySQL support in PHP5
 
@@ -73,19 +104,19 @@ The web server needs to be set up in a LAMP configuration (Apache Web Server, My
 
    .. code-block:: sh
 
-      apt-cache search php5
+      # apt-cache search php5
 
    Pick the ones you need and install them like this:
 
    .. code-block:: sh
 
-      aptitude install php5-mysql php5-curl php-pear php5-imagick php5-mcrypt php5-memcache
+      # aptitude install php5-mysql php5-curl php-pear php5-imagick php5-mcrypt php5-memcache
 
    Now restart Apache2:
 
    .. code-block:: sh
 
-      /etc/init.d/apache2 restart
+     # /etc/init.d/apache2 restart
 
 
 Git Installation
@@ -97,7 +128,7 @@ Git Installation
 
    .. code-block:: sh
 
-      aptitude install git
+      # aptitude install git
 
 #. Configure git access
 
@@ -105,24 +136,24 @@ Git Installation
 
       .. code-block:: sh
 
-         cd ~/.ssh
-         ssh-keygen -t rsa
-         cd ~
+         # cd ~/.ssh
+         # ssh-keygen -t rsa
+         # cd ~
 
       Hit return at the prompts to create the key without passphrase authentication.
 
       .. code-block:: sh
 
-         scp ~/.ssh/id_rsa.pub git
+         # scp ~/.ssh/id_rsa.pub git
 
    * Log in to the repository server and authorize the key:
 
       .. code-block:: sh
 
-         ssh root@git
-         cd gitolite-admin
-         cp id_rsa.pub keydir/root\@<milterservername>.pub
-         emacs keydir/root\@<milterservername>.pub
+         # ssh root@git
+         # cd gitolite-admin
+         # cp id_rsa.pub keydir/root\@<milterservername>.pub
+         # emacs keydir/root\@<milterservername>.pub
 
       | Remove the ``@<servername>`` from the second-to-last line of the file and save
 
@@ -130,28 +161,138 @@ Git Installation
 
       .. code-block:: sh
 
-         git commit -a
-         git push
+         # git commit -a
+         # git push
 
    * On the EARS Milter server, test access to the repository server:
 
       .. code-block:: sh
 
-         cd /tmp
-         git clone gitolite@git:gitolite-admin
+         # cd /tmp
+         # git clone gitolite@git:gitolite-admin
 
-      | If this fails, please verify all the steps in this section
+      If this fails, please verify all the steps in this section
 
 
 Mail Server Installation
 ========================
 
-.. todo:: Install Postfix
+#. Install postfix with `PCRE`_ support:
+
+   .. code-block:: sh
+
+   # aptitude install postfix postfix-pcre
+
+   If prompted to remove packages relating to ``exim4`` or ``sendmail``, choose to *Accept the solution*.
+
+   When prompted for *mail server configuration type*, choose *Satellite System*:
+
+   .. image:: images/postfix1.png
+
+   Enter a fully-qualified domain name in the form of *servername.wrtdesign.com*, where *servername* is the name of the EARS Milter server.
+   Make sure that there is a DNS entry for this server and its corresponding IP address on the DNS server.
+
+   .. image:: images/postfix2.png
+
+   Enter the FQDN of the MS Exchange server when prompted for a relay host:
+
+   .. image:: images/postfix3.png
+
+   Accept the defaults for *Root and postmaster mail recipient*, *Other destinations to accept mail for* and *Force synchronous updates...*.
+
+   For *Local networks*, enter ``10.102.0.0\16, 192.168.0.0\24, 127.0.0.1``.  This will handle all of WRT's internal networks as well as the localhost.
+
+   Accept all the rest of the defaults.
+
+#. Add the following lines to ``/etc/postfix/main.cf``:
+
+   .. code-block:: sh
+
+      disable_vrfy_command = yes
+      smtpd_command_filter  pcre:/etc/postfix/bogus_commands
+      smtpd_recipient_restrictions = permit_mynetworks reject_unauth_destination
+
+   Remove the following line from the same file:
+
+   .. code-block:: sh
+
+      #inet_interfaces = loopback-only
+
+   Edit the following line to read:
+
+   .. code-block:: sh
+
+      inet_protocols = ipv4
+
+
+#. Open up ``/etc/postfix/master.cf`` and uncomment the line:
+
+   .. code-block:: sh
+
+      #submission inet n       -       -       -       -       smtpd
+
+   Add the following lines (with indentation) to the same file:
+
+   .. code-block:: sh
+
+      scan      unix  -       -       n       -       10      smtp
+       -o smtp_send_xforward_command=yes
+       -o disable_mime_output_conversion=yes
+       -o smtp_generic_maps=
+
+   Add the following (indented) after the line marked ``relay``:
+
+   .. code-block:: sh
+
+        -o smtp_fallback_relay=
+
+#. Create a file called ``/etc/postfix/bogus_commands`` and enter the following two lines:
+
+   .. code-block:: sh
+
+      /^[^ ]{3}\s.*/  NOOP
+      /^https{0,1}\:\/\/.*/ NOOP
+
+#. Reload the configuration and send a test message:
+
+   .. code-block:: sh
+
+      # postfix reload
+      # telnet localhost 25
+      telnet localhost 25
+      Trying 127.0.0.1...
+      Connected to localhost.
+      Escape character is '^]'.
+      220 ph-wks-lin01.wrtdesign.com ESMTP Postfix (Debian/GNU)
+      ehlo localhost
+      250-ph-wks-lin01.wrtdesign.com
+      250-PIPELINING
+      250-SIZE 10240000
+      250-ETRN
+      250-STARTTLS
+      250-ENHANCEDSTATUSCODES
+      250-8BITMIME
+      250 DSN
+      mail from: root
+      250 2.1.0 Ok
+      rcpt to: ph_test@wrtdesign.com
+      250 2.1.5 Ok
+      data
+      354 End data with <CR><LF>.<CR><LF>
+      test
+      .
+      250 2.0.0 Ok: queued as 4F00049F2A
 
 
 Python Installation/Configuration
 *********************************
 
+The default version of Python in Debian Squeeze/Wheezy is 2.7.  This is what we will be installing.
+
+.. code-block:: sh
+
+   % aptitude install python
+   
 
 The Debian Way
 ==============
@@ -183,6 +324,13 @@ Afterwards, you can access phpMyAdmin under http://<serverIP>/phpmyadmin/:
 
 Accquiring and configuring the Milter
 *************************************
+      milter_protocol = 6
+      smtpd_milters = unix:/var/spool/EARS/EARSmilter.sock
+      milter_default_action = accept
+
+   .. note:: If/when you add additional milters to this sytem, make sure that **EARS** is the last one listed, as milters are processed in order.
+
+
 
 .. :rubric:: Footnotes
 
@@ -190,7 +338,6 @@ Accquiring and configuring the Milter
 .. [#f2] `Pro Git`_ by Scott Chacon is available to read online for free.
 
 .. _Postfix before-queue Milter support: http://www.postfix.org/MILTER_README.html
-.. _sendmail Milter installation: https://www.milter.org/developers/installation
 .. _The Perfect Server - Debian Squeeze (Debian 6.0) [ISPConfig 2]: http://www.howtoforge.com/perfect-server-debian-squeeze-ispconfig-2
 .. _Installing Apache2 With PHP5 And MySQL Support On Debian Squeeze (LAMP): http://www.howtoforge.com/installing-apache2-with-php5-and-mysql-support-on-debian-squeeze-lamp
 .. _lxc: http://lxc.sourceforge.net/
@@ -198,3 +345,5 @@ Accquiring and configuring the Milter
 .. _phpMyAdmin:  http://www.phpmyadmin.net
 .. _Git: http://git-scm.com
 .. _Pro Git: http://git-scm.com/book
+.. _Webmin: http://www.webmin.com/deb.html
+.. _PCRE:  http://www.pcre.org

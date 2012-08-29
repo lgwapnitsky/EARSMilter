@@ -21,6 +21,8 @@ The following software is required for the Milter to run:
 * `PHP 5.x`_
 * `postfix`_
 * `Git`_ - required to download the Milter from the development repository
+* cifs-utils
+
 
 
 Python Requirements
@@ -35,17 +37,25 @@ The following Python modules are required on the system in order for the EARS Mi
 * `tnefparse`_
 * `mako`_
 
+Recommended Software
+********************
+
+While not necessary, this software should be installed as it will be referenced during the installation procedure:
+* telnet
+* rsyslog
+* logrotate
+* `Webmin`_
+
+
 Optional Software
 *****************
 
 The following software is optional, but is useful for diagnostics
 
 * `phpMyAdmin`_
-* telnet
 
 
-
-.. _mail-filter: http://www.milter.org
+.. _mail-filter: http://www.milter.orghttp://www.webmin.com/deb.html
 .. _postfix: http://www.postfix.org
 .. _Python 2.7: http://python.org
 .. _SQLalchemy: http://sqlalchemy.org
@@ -59,3 +69,4 @@ The following software is optional, but is useful for diagnostics
 .. _Debian Squeeze/Wheezy: http://www.debian.org/releases
 .. _phpMyAdmin: http://www.phpmyadmin.net
 .. _Git: http://git-scm.com
+.. _Webmin: http://www.webmin.com/deb.html
