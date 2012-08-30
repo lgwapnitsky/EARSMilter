@@ -302,6 +302,15 @@ Sendmail
       # "Smart" relay host (may be null)
       DSexchange.wrtdesign.com
 
+#.  Add all internal recipient domains to ``/etc/mail/databases``
+
+   Example:
+
+      .. code-block:: sh
+
+         @wrtdesign.com
+         @ph.wrtdesign.com
+
 
 #. Recompile the ``sendmail`` files and restart the MTA
 
@@ -482,16 +491,20 @@ Accquiring and configuring the Milter
 
    You will also need to edit ``/etc/init.d/EARS.sh`` and replace **postfix** with **smmta**.
 
+   .. code-block:: sh
+
+      % sed -i.bak 's/postfix/smmta/g' /etc/init.d/EARS.sh
+
 #. Create the log files:
 
    .. code-block:: sh
 
-         touch /var/log/EARSmilter.log
-         touch /var/log/EARSmilter.err
-         chmod 666 /var/log/EARSmilter.log
-         chmod 666 /var/log/EARSmilter.err
+      touch /var/log/EARSmilter.log
+      touch /var/log/EARSmilter.err
+      chmod 666 /var/log/EARSmilter.log
+      chmod 666 /var/log/EARSmilter.err
 
-# Add/edit the following lines to the configuration file for the appropriate MTA:
+#. Add/edit the following lines to the configuration file for the appropriate MTA:
 
    Postfix - ``/etc/postfix/main.cf``
 
