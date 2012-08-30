@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# EARSmilter_documentation build configuration file, created by
+# EARSmilter build configuration file, created by
 # ReST Editor on Aug 24, 2012
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -179,7 +179,7 @@ html_last_updated_fmt = '%b %d, %Y'
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'EARSmilter_documentationdoc'
+htmlhelp_basename = 'EARSmilterdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -194,7 +194,7 @@ latex_font_size = u'10pt'
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
-latex_documents = [( 'index', 'EARSmilter_documentation.tex', u'EARSmilter_documentation Documentation', u'Larry G. Wapnitsky', 'manual' )]
+latex_documents = [( 'index', 'EARSmilter.tex', u'EARSmilter Documentation', u'Larry G. Wapnitsky', 'manual' )]
 
 
 # A dictionary that contains LaTeX snippets that override those Sphinx usually 
@@ -231,7 +231,7 @@ latex_use_parts = False
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [( 'index', 'EARSmilter_documentation', u'EARSmilter_documentation Documentation', [u'Larry G. Wapnitsky'], 1 )]
+man_pages = [( 'index', 'EARSmilter', u'EARSmilter Documentation', [u'Larry G. Wapnitsky'], 1 )]
 
 
 # -- Additional options --------------------------------------------------------

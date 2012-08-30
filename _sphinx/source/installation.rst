@@ -22,7 +22,7 @@ it up through **8 Change The Default Shell** on page 3.
 .. note::
    In WRT's environment, virtual linux servers are set up using Linux Containers (`lxc`_). 
    
-   To create a new system, log in to the LXC server as root and use the  ```lxc-prepare`` `script`_.
+   To create a new system, log in to the LXC server as root and use the  ``lxc-prepare`` `script`_.
    
    Make sure to edit ``/var/lib/lxc/<machine name>/rootfs/etc/network/interfaces`` and enter the appropriate
    static IP, routing and gateway information.
@@ -152,7 +152,7 @@ Git Installation
 
          % ssh root@git
          % cd gitolite-admin
-         % cp id_rsa.pub keydir/root\@<milterservername>.pub
+            % cp id_rsa.pub keydir/root\@<milterservername>.pub
          % emacs keydir/root\@<milterservername>.pub
 
       | Remove the ``@<servername>`` from the second-to-last line of the file and save
@@ -177,11 +177,14 @@ Git Installation
 Mail Server Installation
 ========================
 
+Postfix
+-------
+
 #. Install postfix with `PCRE`_ support:
 
    .. code-block:: sh
 
-   % aptitude install postfix postfix-pcre
+      % aptitude install postfix postfix-pcre
 
    If prompted to remove packages relating to ``exim4`` or ``sendmail``, choose to *Accept the solution*.
 
@@ -283,6 +286,36 @@ Mail Server Installation
       .
       250 2.0.0 Ok: queued as 4F00049F2A
 
+Sendmail
+--------
+
+#. Install sendmail:
+
+   .. code-block:: sh
+
+      % aptitude install sendmail
+
+   If prompted to remove packages relating to ``exim4`` or ``postfix``, choose to *Accept the solution*.
+
+#. Open the file ``/etc/mail/sendmail.mc`` in an editor.  Add the following lines above ``MAILER DEFINITIONS``:
+
+   .. code-block:: sh
+
+      FEATURE(`allmasquerade')dnl
+      FEATURE(`masquerade_envelope')dnl
+      FEATURE(`accept_unresolvable_domains')
+      FEATURE(`accept_unqualified_senders')
+
+#. Open the file ``/etc/mail/access``.  Add the following lines:
+
+   .. code-block:: sh
+
+      # Allow connect from local SonicWall
+      Connect:10.102.2.29             OK
+      ClientRate:10.102.2.19           0
+      GreetPause:10.102.2.29           0
+
+
 
 Python Installation/Configuration
 *********************************
@@ -308,7 +341,7 @@ but this can be considered a benefit as well since there is less chance of your 
 
 .. code-block:: sh
    
-   pip install SQLAlchemy pymilter MySQL-python Mako tnefparse
+   % pip install SQLAlchemy pymilter MySQL-python Mako tnefparse
 
 The Debian Method
 =================
@@ -320,7 +353,7 @@ Here is the simple command to install the required modules, except for ``tnefpar
 
 .. code-block:: sh
 
-   aptitude install python-sqlalchemy python-milter python-mysqldb python-mako
+   % aptitude install python-sqlalchemy python-milter python-mysqldb python-mako
 
 
 Optional Software Installation
@@ -333,20 +366,63 @@ phpMyAdmin
 
 .. code-block:: sh
 
-   aptitude install phpmyadmin
+   % aptitude install phpmyadmin
 
 You will see the following question:
 
    | ``Web server to reconfigure automatically:`` <-- apache2
    | ``Configure database for phpmyadmin with dbconfig-common?`` <-- No
 
-Afterwards, you can access phpMyAdmin under http://<serverIP>/phpmyadmin/:
+Afterwards, you can access phpMyAdmin by going to ``http://<serverIP>/phpmyadmin/:``
 
 .. image:: images/phpMyAdmin.png
 
 
 Accquiring and configuring the Milter
 *************************************
+#. Using *git*, clone **EARS** from the repository to the ``/var/spool`` folder:
+
+   .. code-block:: sh
+
+      % cd /var/spool
+      % git clone gitolite@git:EARSmilter EARS
+      % cd EARS
+
+#. Copy EARS.sh to ``/etc/init.d``.  Make it executable and enable it at boot.
+
+   .. code-block:: sh
+
+      % cp /var/spool/EARS/EARS.sh /etc/init.d
+      % chmod +x /etc/init.d/EARS.sh
+      % update-rc.d EARS.sh enable 2 3 4 5
+
+#. Create a virtual host file for Apache in ``/etc/apache2/sites-available/ears.conf`` that contains the following (modify as necessary):
+
+   .. code-block:: sh
+
+      <VirtualHost *:80>
+         ServerName ears.wrtdesign.com
+         DocumentRoot /var/www/EARS
+         Options -Indexes
+      </VirtualHost>
+
+   Create a link to this file to make the site active:
+
+   .. code-block:: sh
+
+      % ln -s /etc/apache2/sites-available/ears.conf /etc/apache2/sites-enabled/ears.conf
+
+   Create a folder called ``/var/www/EARS``.  Copy the files from ``/var/spool/EARS/www`` to this new folder and give Apache full rights to the folder.
+
+   .. code-block:: sh
+
+      % mkdir -p /var/www/EARS
+      % cp -R /var/spool/EARS/www/* /var/www/EARS
+      % chown -R www-data.www-data  /var/www/EARS
+      % chmod -x /var/www/EARS/*.php
+
+   .. code-block:: sh
+
       milter_protocol = 6
       smtpd_milters = unix:/var/spool/EARS/EARSmilter.sock
       milter_default_action = accept

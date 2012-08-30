@@ -3,10 +3,10 @@
 EARS Milter Requirements
 ########################
 
-The EARS Milter is a Python-based `mail-filter`_ written for the `postfix`_ mail transfer agent (MTA).
+The EARS Milter is a Python-based `mail-filter`_ written for the `postfix`_ and `sendmail`_ mail transfer agents (MTAs).
 
-.. note:: *Postfix* must be installed on your system in order for this milter to function properly.
-   It may work with any other MTA that supports milters but has only been tested with postfix.
+.. note:: *Postfix* or *sendmail* must be installed on your system in order for this milter to function properly.
+   It may work with any other MTA that supports milters but has only been tested with postfix and sendmail.
 
 .. note:: *This milter has only been tested on Python 2.7 running on Debian Squeeze/Wheezy*
 
@@ -19,7 +19,7 @@ The following software is required for the Milter to run:
 * `MySQL database`_
 * `Apache HTTP Server`_
 * `PHP 5.x`_
-* `postfix`_
+* `postfix`_ or `sendmail`_
 * `Git`_ - required to download the Milter from the development repository
 * cifs-utils
 
@@ -57,6 +57,7 @@ The following software is optional, but is useful for diagnostics
 
 .. _mail-filter: http://www.milter.orghttp://www.webmin.com/deb.html
 .. _postfix: http://www.postfix.org
+.. _sendmail: http://www.sendmail.com/sm/open_source/docs/
 .. _Python 2.7: http://python.org
 .. _SQLalchemy: http://sqlalchemy.org
 .. _pymilter: http://www.bmsi.com/python/milter.html
