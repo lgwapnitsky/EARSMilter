@@ -59,35 +59,35 @@
 <h1>EARS Milter Installation<a class="headerlink" href="#ears-milter-installation" title="Permalink to this headline">¶</a></h1>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><a class="reference internal" href="#server-installation" id="id4">Server Installation</a><ul>
-<li><a class="reference internal" href="#debian-install" id="id5">Debian Install</a></li>
-<li><a class="reference internal" href="#webmin-installation" id="id6">Webmin Installation</a></li>
-<li><a class="reference internal" href="#web-server-installation" id="id7">Web Server Installation</a></li>
-<li><a class="reference internal" href="#git-installation" id="id8">Git Installation</a></li>
-<li><a class="reference internal" href="#mail-server-installation" id="id9">Mail Server Installation</a><ul>
-<li><a class="reference internal" href="#postfix" id="id10">Postfix</a></li>
-<li><a class="reference internal" href="#sendmail" id="id11">Sendmail</a></li>
+<li><a class="reference internal" href="#server-installation" id="id6">Server Installation</a><ul>
+<li><a class="reference internal" href="#debian-install" id="id7">Debian Install</a></li>
+<li><a class="reference internal" href="#web-server-installation" id="id8">Web Server Installation</a></li>
+<li><a class="reference internal" href="#git-installation" id="id9">Git Installation</a></li>
+<li><a class="reference internal" href="#mail-server-installation" id="id10">Mail Server Installation</a><ul>
+<li><a class="reference internal" href="#postfix" id="id11">Postfix</a></li>
+<li><a class="reference internal" href="#sendmail" id="id12">Sendmail</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#python-installation-configuration" id="id12">Python Installation/Configuration</a><ul>
-<li><a class="reference internal" href="#the-python-method-preferred" id="id13">The Python Method (preferred)</a></li>
-<li><a class="reference internal" href="#the-debian-method" id="id14">The Debian Method</a></li>
+<li><a class="reference internal" href="#python-installation-configuration" id="id13">Python Installation/Configuration</a><ul>
+<li><a class="reference internal" href="#the-python-method-preferred" id="id14">The Python Method (preferred)</a></li>
+<li><a class="reference internal" href="#the-debian-method" id="id15">The Debian Method</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#optional-software-installation" id="id15">Optional Software Installation</a><ul>
-<li><a class="reference internal" href="#phpmyadmin" id="id16">phpMyAdmin</a></li>
+<li><a class="reference internal" href="#optional-software-installation" id="id16">Optional Software Installation</a><ul>
+<li><a class="reference internal" href="#phpmyadmin" id="id17">phpMyAdmin</a></li>
+<li><a class="reference internal" href="#webmin-installation" id="id18">Webmin Installation</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#accquiring-and-configuring-the-milter" id="id17">Accquiring and configuring the Milter</a></li>
+<li><a class="reference internal" href="#accquiring-and-configuring-the-milter" id="id19">Accquiring and configuring the Milter</a></li>
 </ul>
 </div>
 <div class="section" id="server-installation">
-<h2><a class="toc-backref" href="#id4">Server Installation</a><a class="headerlink" href="#server-installation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id6">Server Installation</a><a class="headerlink" href="#server-installation" title="Permalink to this headline">¶</a></h2>
 <p>This milter has been tested on Debian Squeeze/Wheezy using a LAMP (Linux/Apache/MySQL/PHP)-based web server <a class="footnote-reference" href="#f1" id="id1">[1]</a>.</p>
 <div class="section" id="debian-install">
-<h3><a class="toc-backref" href="#id5">Debian Install</a><a class="headerlink" href="#debian-install" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id7">Debian Install</a><a class="headerlink" href="#debian-install" title="Permalink to this headline">¶</a></h3>
 <p>Installing a Debian Squeeze/Wheezy server is a fairly straight-forward procedure.  The best method to use
 can be found via HowtoForge&#8217;s <a class="reference external" href="http://www.howtoforge.com/perfect-server-debian-squeeze-ispconfig-2">The Perfect Server - Debian Squeeze (Debian 6.0) [ISPConfig 2]</a> and following
 it up through <strong>8 Change The Default Shell</strong> on page 3.</p>
@@ -103,30 +103,8 @@ static IP, routing and gateway information.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="webmin-installation">
-<h3><a class="reference external" href="http://www.webmin.com/deb.html">Webmin</a> Installation<a class="headerlink" href="#webmin-installation" title="Permalink to this headline">¶</a></h3>
-<ol class="arabic">
-<li><p class="first">Create a file called <tt class="docutils literal"><span class="pre">/etc/apt/sources.list.d/webmin.list</span></tt>.  Add the following lines, then save:</p>
-<div class="highlight-sh"><div class="highlight"><pre>deb http://download.webmin.com/download/repository sarge contrib
-deb http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib
-</pre></div>
-</div>
-</li>
-<li><p class="first">Download and install the security key, then update and install <tt class="docutils literal"><span class="pre">webmin</span></tt>:</p>
-<div class="highlight-sh"><div class="highlight"><pre>% <span class="nb">cd</span> /root
-% wget http://www.webmin.com/jcameron-key.asc
-% apt-key add jcameron-key.asc
-% aptitude update
-% aptitude install webmin
-</pre></div>
-</div>
-</li>
-<li><p class="first">Test the installation by going to <tt class="docutils literal"><span class="pre">https://&lt;serverIP&gt;:10000</span></tt>.  Log in using the system root password.</p>
-</li>
-</ol>
-</div>
 <div class="section" id="web-server-installation">
-<h3><a class="toc-backref" href="#id7">Web Server Installation</a><a class="headerlink" href="#web-server-installation" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id8">Web Server Installation</a><a class="headerlink" href="#web-server-installation" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Unless otherwise specified, all commands are run as the <tt class="docutils literal"><span class="pre">root</span></tt> user.</p>
@@ -174,7 +152,7 @@ You should see an image similar to this:</p>
 </ol>
 </div>
 <div class="section" id="git-installation">
-<h3><a class="toc-backref" href="#id8">Git Installation</a><a class="headerlink" href="#git-installation" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id9">Git Installation</a><a class="headerlink" href="#git-installation" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="http://git-scm.com">Git</a> <a class="footnote-reference" href="#f2" id="id2">[2]</a> is required to download the EARS Milter code from the development repository.</p>
 <ol class="arabic">
 <li><p class="first">Install Git</p>
@@ -232,9 +210,15 @@ You should see an image similar to this:</p>
 </ol>
 </div>
 <div class="section" id="mail-server-installation">
-<h3><a class="toc-backref" href="#id9">Mail Server Installation</a><a class="headerlink" href="#mail-server-installation" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id10">Mail Server Installation</a><a class="headerlink" href="#mail-server-installation" title="Permalink to this headline">¶</a></h3>
+<div class="contents local topic" id="id3">
+<ul class="simple">
+<li><a class="reference internal" href="#postfix" id="id20">Postfix</a></li>
+<li><a class="reference internal" href="#sendmail" id="id21">Sendmail</a></li>
+</ul>
+</div>
 <div class="section" id="postfix">
-<h4><a class="toc-backref" href="#id10">Postfix</a><a class="headerlink" href="#postfix" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id20">Postfix</a><a class="headerlink" href="#postfix" title="Permalink to this headline">¶</a></h4>
 <ol class="arabic">
 <li><p class="first">Install postfix with <a class="reference external" href="http://www.pcre.org">PCRE</a> support:</p>
 <div class="highlight-sh"><div class="highlight"><pre>% aptitude install postfix postfix-pcre
@@ -321,7 +305,7 @@ data
 </ol>
 </div>
 <div class="section" id="sendmail">
-<h4><a class="toc-backref" href="#id11">Sendmail</a><a class="headerlink" href="#sendmail" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id21">Sendmail</a><a class="headerlink" href="#sendmail" title="Permalink to this headline">¶</a></h4>
 <ol class="arabic">
 <li><p class="first">Install sendmail:</p>
 <div class="highlight-sh"><div class="highlight"><pre>% aptitude install sendmail
@@ -350,7 +334,7 @@ GreetPause:10.102.2.29           0
 </div>
 </div>
 <div class="section" id="python-installation-configuration">
-<h2><a class="toc-backref" href="#id12">Python Installation/Configuration</a><a class="headerlink" href="#python-installation-configuration" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id13">Python Installation/Configuration</a><a class="headerlink" href="#python-installation-configuration" title="Permalink to this headline">¶</a></h2>
 <p>The default version of Python in Debian Squeeze/Wheezy is 2.7.  This is what we will be installing,
 along with a Python package installer (pip)</p>
 <div class="highlight-sh"><div class="highlight"><pre>% aptitude install python python-pip
@@ -360,7 +344,7 @@ along with a Python package installer (pip)</p>
 Each one has its advantages and disadvantages, but both are provided for instructional purposes.</p>
 <p>The recommendation is to stick with one method instead of combining them.</p>
 <div class="section" id="the-python-method-preferred">
-<h3><a class="toc-backref" href="#id13">The Python Method (preferred)</a><a class="headerlink" href="#the-python-method-preferred" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id14">The Python Method (preferred)</a><a class="headerlink" href="#the-python-method-preferred" title="Permalink to this headline">¶</a></h3>
 <p>The Python Package Index (<a class="reference external" href="http://pypi.python.org">PyPI</a>) is the most up-to-date resource for Python modules.  Bugfixes and updates are regularly
 submitted for a majority of modules.  The downside is that there is currenlty no way to automatically update the modules,
 but this can be considered a benefit as well since there is less chance of your code breaking.</p>
@@ -369,7 +353,7 @@ but this can be considered a benefit as well since there is less chance of your 
 </div>
 </div>
 <div class="section" id="the-debian-method">
-<h3><a class="toc-backref" href="#id14">The Debian Method</a><a class="headerlink" href="#the-debian-method" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id15">The Debian Method</a><a class="headerlink" href="#the-debian-method" title="Permalink to this headline">¶</a></h3>
 <p>Using debian&#8217;s built-in package manager is very easy and convenient.  When you do a full update on a Debian system, installed
 Python modules will be updated as well.  The downside is that sometimes the modules in the Debian repositories can be out-of-date.</p>
 <p>Here is the simple command to install the required modules, except for <tt class="docutils literal"><span class="pre">tnefparse</span></tt> which has to be installed via the Python method:</p>
@@ -379,9 +363,15 @@ Python modules will be updated as well.  The downside is that sometimes the modu
 </div>
 </div>
 <div class="section" id="optional-software-installation">
-<h2><a class="toc-backref" href="#id15">Optional Software Installation</a><a class="headerlink" href="#optional-software-installation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id16">Optional Software Installation</a><a class="headerlink" href="#optional-software-installation" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="id4">
+<ul class="simple">
+<li><a class="reference internal" href="#phpmyadmin" id="id22">phpMyAdmin</a></li>
+<li><a class="reference internal" href="#webmin-installation" id="id23">Webmin Installation</a></li>
+</ul>
+</div>
 <div class="section" id="phpmyadmin">
-<h3><a class="toc-backref" href="#id16">phpMyAdmin</a><a class="headerlink" href="#phpmyadmin" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id22">phpMyAdmin</a><a class="headerlink" href="#phpmyadmin" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="http://www.phpmyadmin.net">phpMyAdmin</a> is a web interface through which you can manage your MySQL databases. It&#8217;s a good idea to install it:</p>
 <div class="highlight-sh"><div class="highlight"><pre>% aptitude install phpmyadmin
 </pre></div>
@@ -396,9 +386,31 @@ Python modules will be updated as well.  The downside is that sometimes the modu
 <p>Afterwards, you can access phpMyAdmin by going to <tt class="docutils literal"><span class="pre">http://&lt;serverIP&gt;/phpmyadmin/:</span></tt></p>
 <img alt="_images/phpMyAdmin.png" src="_images/phpMyAdmin.png" />
 </div>
+<div class="section" id="webmin-installation">
+<h3><a class="reference external" href="http://www.webmin.com/deb.html">Webmin</a> Installation<a class="headerlink" href="#webmin-installation" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Create a file called <tt class="docutils literal"><span class="pre">/etc/apt/sources.list.d/webmin.list</span></tt>.  Add the following lines, then save:</p>
+<div class="highlight-sh"><div class="highlight"><pre>deb http://download.webmin.com/download/repository sarge contrib
+deb http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib
+</pre></div>
+</div>
+</li>
+<li><p class="first">Download and install the security key, then update and install <tt class="docutils literal"><span class="pre">webmin</span></tt>:</p>
+<div class="highlight-sh"><div class="highlight"><pre>% <span class="nb">cd</span> /root
+% wget http://www.webmin.com/jcameron-key.asc
+% apt-key add jcameron-key.asc
+% aptitude update
+% aptitude install webmin
+</pre></div>
+</div>
+</li>
+<li><p class="first">Test the installation by going to <tt class="docutils literal"><span class="pre">https://&lt;serverIP&gt;:10000</span></tt>.  Log in using the system root password.</p>
+</li>
+</ol>
+</div>
 </div>
 <div class="section" id="accquiring-and-configuring-the-milter">
-<h2><a class="toc-backref" href="#id17">Accquiring and configuring the Milter</a><a class="headerlink" href="#accquiring-and-configuring-the-milter" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id19">Accquiring and configuring the Milter</a><a class="headerlink" href="#accquiring-and-configuring-the-milter" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
 <li><p class="first">Using <em>git</em>, clone <strong>EARS</strong> from the repository to the <tt class="docutils literal"><span class="pre">/var/spool</span></tt> folder:</p>
 <div class="highlight-sh"><div class="highlight"><pre>% <span class="nb">cd</span> /var/spool
@@ -426,18 +438,46 @@ Python modules will be updated as well.  The downside is that sometimes the modu
 <div class="highlight-sh"><div class="highlight"><pre>% ln -s /etc/apache2/sites-available/ears.conf /etc/apache2/sites-enabled/ears.conf
 </pre></div>
 </div>
-<p>Create a folder called <tt class="docutils literal"><span class="pre">/var/www/EARS</span></tt>.  Copy the files from <tt class="docutils literal"><span class="pre">/var/spool/EARS/www</span></tt> to this new folder and give Apache full rights to the folder.</p>
+<p>Create a folder called <tt class="docutils literal"><span class="pre">/var/www/EARS</span></tt>.  Copy the files from <tt class="docutils literal"><span class="pre">/var/spool/EARS/www</span></tt> to this new folder and give Apache full rights to the folder.
+Restart Apache.</p>
 <div class="highlight-sh"><div class="highlight"><pre>% mkdir -p /var/www/EARS
 % cp -R /var/spool/EARS/www/* /var/www/EARS
 % chown -R www-data.www-data  /var/www/EARS
 % chmod -x /var/www/EARS/*.php
+% /etc/init.d/apache2 restart
 </pre></div>
 </div>
-<div class="highlight-sh"><div class="highlight"><pre><span class="nv">milter_protocol</span> <span class="o">=</span> 6
-<span class="nv">smtpd_milters</span> <span class="o">=</span> unix:/var/spool/EARS/EARSmilter.sock
-<span class="nv">milter_default_action</span> <span class="o">=</span> accept
+<div class="highlight-sh"><div class="highlight"><pre>
 </pre></div>
 </div>
+</li>
+<li><p class="first">Open the MySQL command-line utility</p>
+<div class="highlight-sh"><div class="highlight"><pre>% mysql -u <span class="s1">&#39;root&#39;</span> -p
+</pre></div>
+</div>
+<p>Create a blank database and associated MySQL user</p>
+<div class="highlight-sql"><div class="highlight"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="s1">&#39;&#39;</span><span class="n">EARS</span><span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span> <span class="s1">&#39;&#39;</span><span class="n">EARS</span><span class="s1">&#39;&#39;</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="ss">&quot;&#39;&#39;ears&#39;&#39;&quot;</span><span class="o">@</span><span class="ss">&quot;&#39;&#39;localhost&#39;&#39;&quot;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="ss">&quot;&#39;&#39;password&#39;&#39;&quot;</span><span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="n">FLUSH</span> <span class="k">PRIVILEGES</span><span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="n">EXIT</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set the appropriate permissions on <tt class="docutils literal"><span class="pre">/var/spool/EARS</span></tt> and its subdirectories based on the MTA installed.</p>
+<p>Postfix</p>
+<div class="highlight-sh"><div class="highlight"><pre>% chown -R postfix.postfix /var/spool/EARS
+</pre></div>
+</div>
+<p>Sendmail</p>
+<div class="highlight-sh"><div class="highlight"><pre>% chown -R smmta.smmta /var/spool/EARS
+</pre></div>
+</div>
+<p>You will also need to edit <tt class="docutils literal"><span class="pre">/etc/init.d/EARS.sh</span></tt> and replace <strong>postfix</strong> with <strong>smmta</strong>.</p>
+<blockquote>
+<div><p>milter_protocol = 6
+smtpd_milters = unix:/var/spool/EARS/EARSmilter.sock
+milter_default_action = accept</p>
+</div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If/when you add additional milters to this sytem, make sure that <strong>EARS</strong> is the last one listed, as milters are processed in order.</p>
@@ -470,7 +510,6 @@ Python modules will be updated as well.  The downside is that sometimes the modu
 <li><a class="reference internal" href="#">EARS Milter Installation</a><ul>
 <li><a class="reference internal" href="#server-installation">Server Installation</a><ul>
 <li><a class="reference internal" href="#debian-install">Debian Install</a></li>
-<li><a class="reference internal" href="#webmin-installation">Webmin Installation</a></li>
 <li><a class="reference internal" href="#web-server-installation">Web Server Installation</a></li>
 <li><a class="reference internal" href="#git-installation">Git Installation</a></li>
 <li><a class="reference internal" href="#mail-server-installation">Mail Server Installation</a><ul>
@@ -487,6 +526,7 @@ Python modules will be updated as well.  The downside is that sometimes the modu
 </li>
 <li><a class="reference internal" href="#optional-software-installation">Optional Software Installation</a><ul>
 <li><a class="reference internal" href="#phpmyadmin">phpMyAdmin</a></li>
+<li><a class="reference internal" href="#webmin-installation">Webmin Installation</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#accquiring-and-configuring-the-milter">Accquiring and configuring the Milter</a></li>

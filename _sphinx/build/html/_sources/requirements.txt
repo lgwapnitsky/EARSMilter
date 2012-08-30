@@ -41,6 +41,7 @@ Recommended Software
 ********************
 
 While not necessary, this software should be installed as it will be referenced during the installation procedure:
+
 * telnet
 * rsyslog
 * logrotate

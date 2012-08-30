@@ -35,29 +35,6 @@ After logging in, make sure to install ``cifs-utils``, ``telnet``, ``rsyslog`` a
    
    
    
-`Webmin`_ Installation
-======================
-
-#. Create a file called ``/etc/apt/sources.list.d/webmin.list``.  Add the following lines, then save:
-
-   .. code-block:: sh
-
-      deb http://download.webmin.com/download/repository sarge contrib
-      deb http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib
-
-#. Download and install the security key, then update and install ``webmin``:
-
-   .. code-block:: sh
-
-      % cd /root
-      % wget http://www.webmin.com/jcameron-key.asc
-      % apt-key add jcameron-key.asc
-      % aptitude update
-      % aptitude install webmin
-
-#. Test the installation by going to ``https://<serverIP>:10000``.  Log in using the system root password.
-
-
 Web Server Installation
 =======================
 
@@ -176,6 +153,9 @@ Git Installation
 
 Mail Server Installation
 ========================
+
+.. contents::
+   :local:
 
 Postfix
 -------
@@ -315,10 +295,27 @@ Sendmail
       ClientRate:10.102.2.19           0
       GreetPause:10.102.2.29           0
 
+#. Change the following lines in ``/etc/mail/sendmail.cf`` as follows with the appropriate values for your envirionment:
+
+   .. code-block:: sh
+
+      # "Smart" relay host (may be null)
+      DSexchange.wrtdesign.com
+
+
+#. Recompile the ``sendmail`` files and restart the MTA
+
+   .. code-block:: sh
+
+      % sendmailconfig
+      % /etc/init.d/sendmail restart
 
 
 Python Installation/Configuration
 *********************************
+
+.. contents::
+   :local:
 
 The default version of Python in Debian Squeeze/Wheezy is 2.7.  This is what we will be installing,
 along with a Python package installer (pip)
@@ -359,6 +356,9 @@ Here is the simple command to install the required modules, except for ``tnefpar
 Optional Software Installation
 ******************************
 
+.. contents::
+   :local:
+
 phpMyAdmin
 ==========
 
@@ -376,6 +376,30 @@ You will see the following question:
 Afterwards, you can access phpMyAdmin by going to ``http://<serverIP>/phpmyadmin/:``
 
 .. image:: images/phpMyAdmin.png
+
+`Webmin`_ Installation
+======================
+
+#. Create a file called ``/etc/apt/sources.list.d/webmin.list``.  Add the following lines, then save:
+
+   .. code-block:: sh
+
+      deb http://download.webmin.com/download/repository sarge contrib
+      deb http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib
+
+#. Download and install the security key, then update and install ``webmin``:
+
+   .. code-block:: sh
+
+      % cd /root
+      % wget http://www.webmin.com/jcameron-key.asc
+      % apt-key add jcameron-key.asc
+      % aptitude update
+      % aptitude install webmin
+
+#. Test the installation by going to ``https://<serverIP>:10000``.  Log in using the system root password.
+
+
 
 
 Accquiring and configuring the Milter
@@ -413,6 +437,7 @@ Accquiring and configuring the Milter
       % ln -s /etc/apache2/sites-available/ears.conf /etc/apache2/sites-enabled/ears.conf
 
    Create a folder called ``/var/www/EARS``.  Copy the files from ``/var/spool/EARS/www`` to this new folder and give Apache full rights to the folder.
+   Restart Apache.
 
    .. code-block:: sh
 
@@ -420,12 +445,77 @@ Accquiring and configuring the Milter
       % cp -R /var/spool/EARS/www/* /var/www/EARS
       % chown -R www-data.www-data  /var/www/EARS
       % chmod -x /var/www/EARS/*.php
+      % /etc/init.d/apache2 restart
 
    .. code-block:: sh
 
-      milter_protocol = 6
-      smtpd_milters = unix:/var/spool/EARS/EARSmilter.sock
-      milter_default_action = accept
+
+#. Open the MySQL command-line utility
+
+   .. code-block:: sh
+
+      % mysql -u 'root' -p
+
+   Create a blank database and associated MySQL user
+
+   .. code-block:: sql
+
+      mysql> CREATE DATABASE ''EARS'';
+      mysql> GRANT ALL PRIVILEGES ON ''EARS''.* TO "''ears''"@"''localhost''" IDENTIFIED BY "''password''";
+      mysql> FLUSH PRIVILEGES;
+      mysql> EXIT
+
+#. Set the appropriate permissions on ``/var/spool/EARS`` and its subdirectories based on the MTA installed.
+
+   Postfix
+
+   .. code-block:: sh
+
+      % chown -R postfix.postfix /var/spool/EARS
+
+
+   Sendmail
+
+   .. code-block:: sh
+
+      % chown -R smmta.smmta /var/spool/EARS
+
+   You will also need to edit ``/etc/init.d/EARS.sh`` and replace **postfix** with **smmta**.
+
+#. Create the log files:
+
+   .. code-block:: sh
+
+         touch /var/log/EARSmilter.log
+         touch /var/log/EARSmilter.err
+         chmod 666 /var/log/EARSmilter.log
+         chmod 666 /var/log/EARSmilter.err
+
+# Add/edit the following lines to the configuration file for the appropriate MTA:
+
+   Postfix - ``/etc/postfix/main.cf``
+
+      .. code-block:: sh
+
+         milter_protocol = 6
+         smtpd_milters = unix:/var/spool/EARS/EARSmilter.sock
+         milter_default_action = accept
+
+      Reload postfix - ``postfix reload``
+
+   Sendmail - ``/etc/mail/sendmail.mc``.  This line **MUST** be added **ABOVE** the ``define`` line!
+
+      .. code-block:: sh
+
+         INPUT_MAIL_FILTER(`EARS', `S=unix:/var/spool/EARS/EARSmilter.sock, F=T, T=S:240s;R:240s;E:5m')dnl
+         define(`_USE_ETC_MAIL_')dnl
+
+      Recompile the ``sendmail`` files and restart the MTA
+
+      .. code-block:: sh
+
+         % sendmailconfig
+         % /etc/init.d/sendmail restart
 
    .. note:: If/when you add additional milters to this sytem, make sure that **EARS** is the last one listed, as milters are processed in order.
 
