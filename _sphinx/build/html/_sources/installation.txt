@@ -283,7 +283,8 @@ Sendmail
       FEATURE(`masquerade_envelope')dnl
       FEATURE(`accept_unresolvable_domains')
       FEATURE(`accept_unqualified_senders')
-      define(`SMART_HOST',`exchange.wrtdesign.com')dnl
+      define(`SMART_HOST',`exchange.domain.com')dnl
+      define(`confDOMAIN_NAME',`milterserver.domain.com')
       dnl #
 
    Change these lines:
@@ -305,14 +306,16 @@ Sendmail
       DAEMON_OPTIONS(`Name=MSP,Family=inet,Port=submission,Modifiers=aE')
 
 
-#. Open the file ``/etc/mail/access``.  Add the following lines:
+#. Open the file ``/etc/mail/access``.  Uncomment the following lines (according to your network):
 
    .. code-block:: sh
 
-      # Allow connect from local SonicWall
-      GreetPause:10.102.2.29           0
-      ClientConn:10.102.2.29             OK
-      ClientRate:10.102.2.29           0
+      Connect:10              RELAY
+      GreetPause:10           0
+      ClientConn:10           OK
+      ClientRate:10           0
+
+   Add additional lines for each FQDN of this IP address
 
 #. Add all internal recipient domains to ``/etc/mail/relay-domains``
 
@@ -415,7 +418,7 @@ phpMyAdmin
 
 .. code-block:: sh
 
-   % aptitude install phpmyadmin
+   % aptitude install phpmyadmin php5-gd
 
 You will see the following question:
 
@@ -461,13 +464,14 @@ Accquiring and configuring the Milter
       % git clone gitolite@git:EARSmilter EARS
       % cd EARS
 
-#. Copy EARS.sh to ``/etc/init.d``.  Make it executable and enable it at boot.
 
-   .. code-block:: sh
+   #. Copy EARS.sh to ``/etc/init.d``.  Make it executable and enable it at boot.
 
-      % cp /var/spool/EARS/EARS.sh /etc/init.d
-      % chmod +x /etc/init.d/EARS.sh
-      % update-rc.d EARS.sh enable defaults
+      .. code-block:: sh
+
+         % cp /var/spool/EARS/EARS.sh /etc/init.d
+         % chmod +x /etc/init.d/EARS.sh
+         % update-rc.d EARS.sh enable defaults
 
 #. Create a virtual host file for Apache in ``/etc/apache2/sites-available/ears.conf`` that contains the following (modify as necessary):
 
@@ -507,10 +511,23 @@ Accquiring and configuring the Milter
 
    .. code-block:: sql
 
-      mysql> CREATE DATABASE ''EARS'';
-      mysql> GRANT ALL PRIVILEGES ON ''EARS''.* TO "''ears''"@"''localhost''" IDENTIFIED BY "''password''";
+      mysql> CREATE DATABASE EARS;
+      mysql> GRANT ALL PRIVILEGES ON EARS.* TO "EARS"@"%" IDENTIFIED BY "password";
       mysql> FLUSH PRIVILEGES;
       mysql> EXIT
+
+    and change this line in ``/etc/mysql/my.cnf``:
+
+    .. code-block:  sh
+
+      bind-address = 127.0.0.1
+
+    to:
+
+    .. code-block: sh
+
+      bind-address = 0.0.0.0
+
 
 #. Set the appropriate permissions on ``/var/spool/EARS`` and its subdirectories based on the MTA installed.
 
@@ -527,11 +544,15 @@ Accquiring and configuring the Milter
 
       % chown -R smmta.smmta /var/spool/EARS
 
+
    You will also need to edit ``/etc/init.d/EARS.sh`` and replace **postfix** with **smmta**.
 
    .. code-block:: sh
 
       % sed -i.bak 's/postfix/smmta/g' /etc/init.d/EARS.sh
+
+
+
 
 #. Create the log files:
 
@@ -554,19 +575,18 @@ Accquiring and configuring the Milter
 
    Reload postfix - ``postfix reload``
 
-  **Sendmail** - ``/etc/mail/sendmail.mc``.  This line **MUST** be added **immediately below** ``divert(0)dnl``
+  **Sendmail** - ``/etc/mail/sendmail.mc``.
 
    .. code-block:: sh
 
-      define(`MILTER`, 1)dnl
       INPUT_MAIL_FILTER(`EARS', `S=unix:/var/spool/EARS/EARSmilter.sock, F=T, T=S:240s;R:240s;E:5m')dnl
 
    Recompile the ``sendmail`` files and restart the MTA
 
    .. code-block:: sh
 
+      % touch /etc/mail/access.new.db
       % sendmailconfig
-      % /etc/init.d/sendmail restart
 
    .. note:: If/when you add additional milters to this sytem, make sure that **EARS** is the last one listed, as milters are processed in order.
 
@@ -578,6 +598,36 @@ Accquiring and configuring the Milter
 
       db = toDB( 'EARS', 'password', 'localhost', 'EARS' )
 
+#. Create a folder called ``/dropdir`` :
+
+   .. code-block:: sh
+
+      % mkdir -p /dropdir
+
+   Mount it to a folder called ``dropdir`` on a FTP server.  This example assumes the folder is on a MS Windows box:
+
+   .. code-block:: sh
+
+      % echo '\\FTPSERVER\FTPSHARE\dropdir  /dropdir  cifs  workgroup=DOMAIN,file_mode=0777,dir_mode=0777,password=PASSWORD,uid=1000,gid=1000,username=USERNAME  0  0' >> /etc/fstab
+      % mount -a
+
+#. Start the EARS milter:
+
+   .. code-block:: sh
+
+#. Add a ``cron`` job to run the ``purgeEARSdb`` script on a weekly basis.
+
+   .. code-block:: sh
+
+      % crontab -e
+
+  Add this line:
+
+  .. code-block:: sh
+
+      /usr/bin/env python /var/spool/EARS/purgeEARSdb.py -s milter.domain.com -d EARS -u EARS -p password -q -x -v#purge EARS database
+
+  For a description of the options, see `How To Use`_ under :py:func:`purgeEARSdb`.
 
 
 .. :rubric:: Footnotes
@@ -596,3 +646,4 @@ Accquiring and configuring the Milter
 .. _Webmin: http://www.webmin.com/deb.html
 .. _PCRE:  http://www.pcre.org
 .. _PyPI: http://pypi.python.org 
+.. _How To Use: codedocs/purgeEARSdb_py.html#how-to-use

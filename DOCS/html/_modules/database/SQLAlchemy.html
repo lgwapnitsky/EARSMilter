@@ -1,0 +1,248 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>database.SQLAlchemy &mdash; EARSmilter 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="top" title="EARSmilter 1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">EARSmilter 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for database.SQLAlchemy</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">SQLAlchemy.py - SQLAlchemy Database Definitions</span>
+<span class="sd">***********************************************</span>
+
+<span class="sd">.. module:: SQLAlchemy.py</span>
+<span class="sd">    :synopsis: EARS database SQLAlchemy Definitions</span>
+<span class="sd">    </span>
+<span class="sd">.. moduleauthor:: Larry G. Wapnitsky &lt;larry@qual-ITsystems.com&gt;</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    from sqlalchemy.dialects.mysql import</span>
+<span class="sd">            BIGINT, BINARY, BIT, BLOB, BOOLEAN, CHAR, DATE,</span>
+<span class="sd">            DATETIME, DECIMAL, DECIMAL, DOUBLE, ENUM, FLOAT, INTEGER,</span>
+<span class="sd">            LONGBLOB, LONGTEXT, MEDIUMBLOB, MEDIUMINT, MEDIUMTEXT, NCHAR,</span>
+<span class="sd">            NUMERIC, NVARCHAR, REAL, SET, SMALLINT, TEXT, TIME, TIMESTAMP,</span>
+<span class="sd">            TINYBLOB, TINYINT, TINYTEXT, VARBINARY, VARCHAR, YEAR</span>
+
+<span class="sd">This import is necessary in order to define the specific field type for a MySQL database</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Table</span><span class="p">,</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">DateTime</span><span class="p">,</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">ForeignKey</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">relationship</span><span class="p">,</span> <span class="n">backref</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy.dialects.mysql</span> <span class="kn">import</span> \
+        <span class="n">BIGINT</span><span class="p">,</span> <span class="n">BINARY</span><span class="p">,</span> <span class="n">BIT</span><span class="p">,</span> <span class="n">BLOB</span><span class="p">,</span> <span class="n">BOOLEAN</span><span class="p">,</span> <span class="n">CHAR</span><span class="p">,</span> <span class="n">DATE</span><span class="p">,</span> \
+        <span class="n">DATETIME</span><span class="p">,</span> <span class="n">DECIMAL</span><span class="p">,</span> <span class="n">DECIMAL</span><span class="p">,</span> <span class="n">DOUBLE</span><span class="p">,</span> <span class="n">ENUM</span><span class="p">,</span> <span class="n">FLOAT</span><span class="p">,</span> <span class="n">INTEGER</span><span class="p">,</span> \
+        <span class="n">LONGBLOB</span><span class="p">,</span> <span class="n">LONGTEXT</span><span class="p">,</span> <span class="n">MEDIUMBLOB</span><span class="p">,</span> <span class="n">MEDIUMINT</span><span class="p">,</span> <span class="n">MEDIUMTEXT</span><span class="p">,</span> <span class="n">NCHAR</span><span class="p">,</span> \
+        <span class="n">NUMERIC</span><span class="p">,</span> <span class="n">NVARCHAR</span><span class="p">,</span> <span class="n">REAL</span><span class="p">,</span> <span class="n">SET</span><span class="p">,</span> <span class="n">SMALLINT</span><span class="p">,</span> <span class="n">TEXT</span><span class="p">,</span> <span class="n">TIME</span><span class="p">,</span> <span class="n">TIMESTAMP</span><span class="p">,</span> \
+        <span class="n">TINYBLOB</span><span class="p">,</span> <span class="n">TINYINT</span><span class="p">,</span> <span class="n">TINYTEXT</span><span class="p">,</span> <span class="n">VARBINARY</span><span class="p">,</span> <span class="n">VARCHAR</span><span class="p">,</span> <span class="n">YEAR</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span>
+
+<span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+
+
+<span class="n">mr_link</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span> <span class="s">&#39;mr_link&#39;</span><span class="p">,</span> <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span>
+                <span class="n">Column</span><span class="p">(</span> <span class="s">&#39;recipient_id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span> <span class="s">&#39;recipient.id&#39;</span> <span class="p">)</span> <span class="p">),</span>
+                <span class="n">Column</span><span class="p">(</span> <span class="s">&#39;msg_id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span> <span class="s">&#39;message.id&#39;</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Special table used to create relationships between messages and recipients/attachments.</span>
+<span class="sd">This table is never referenced specifically in the code other than in the table definition for :py:class:Message.</span>
+<span class="sd">Links are generated automatically.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">ma_link</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span> <span class="s">&#39;att_link&#39;</span><span class="p">,</span> <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span>
+                 <span class="n">Column</span><span class="p">(</span> <span class="s">&#39;file_id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span> <span class="s">&#39;attachment.id&#39;</span> <span class="p">)</span> <span class="p">),</span>
+                 <span class="n">Column</span><span class="p">(</span> <span class="s">&#39;msg_id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span> <span class="s">&#39;message.id&#39;</span> <span class="p">)</span> <span class="p">)</span>
+                 <span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Special table used to create relationships between messages and recipients/attachments.</span>
+<span class="sd">This table is never referenced specifically in the code other than in the table definition for ``Message``.</span>
+<span class="sd">Links are generated automatically.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="Attachment"><a class="viewcode-back" href="../../codedocs/database.html#database.SQLAlchemy.Attachment">[docs]</a><span class="k">class</span> <span class="nc">Attachment</span><span class="p">(</span> <span class="n">Base</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Attachments are stored as binary blobs in the MySQL database for later retrieval</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">&quot;attachment&quot;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span> <span class="o">=</span> <span class="bp">True</span> <span class="p">)</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span> <span class="n">VARCHAR</span><span class="p">(</span> <span class="mi">255</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="n">received</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span> <span class="n">DATETIME</span> <span class="p">)</span>
+    <span class="nb">hash</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span> <span class="n">VARCHAR</span><span class="p">(</span> <span class="mi">255</span> <span class="p">)</span> <span class="p">,</span> <span class="n">unique</span> <span class="o">=</span> <span class="bp">True</span> <span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span> <span class="n">LONGBLOB</span> <span class="p">)</span>
+
+<div class="viewcode-block" id="Attachment.__init__"><a class="viewcode-back" href="../../codedocs/database.html#database.SQLAlchemy.Attachment.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">received</span><span class="p">,</span> <span class="nb">hash</span><span class="p">,</span> <span class="n">data</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Attachment data requires a filename, the date the attachment was received, the filehash and the binary data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">received</span> <span class="o">=</span> <span class="n">received</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hash</span> <span class="o">=</span> <span class="nb">hash</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+</div></div>
+<div class="viewcode-block" id="Message"><a class="viewcode-back" href="../../codedocs/database.html#database.SQLAlchemy.Message">[docs]</a><span class="k">class</span> <span class="nc">Message</span><span class="p">(</span> <span class="n">Base</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Messages contain automatically generated relationships to attachments and recipients via the ``mr_link`` and ``ma_link`` table definitions.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">&quot;message&quot;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span> <span class="o">=</span> <span class="bp">True</span> <span class="p">)</span>
+    <span class="n">subject</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span> <span class="n">TEXT</span> <span class="p">)</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span> <span class="n">TEXT</span> <span class="p">)</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span> <span class="n">LONGTEXT</span> <span class="p">)</span>
+    <span class="n">dateReceived</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span> <span class="n">DateTime</span> <span class="p">)</span>
+    <span class="n">raw_original</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span> <span class="n">LONGTEXT</span> <span class="p">)</span>
+
+    <span class="n">sender_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span> <span class="s">&#39;sender.id&#39;</span> <span class="p">)</span> <span class="p">)</span>
+
+    <span class="n">recipients</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span> <span class="s">&#39;Recipient&#39;</span><span class="p">,</span>
+                              <span class="n">secondary</span> <span class="o">=</span> <span class="n">mr_link</span><span class="p">,</span>
+                              <span class="n">backref</span> <span class="o">=</span> <span class="s">&#39;message&#39;</span><span class="p">,</span>
+                              <span class="n">lazy</span> <span class="o">=</span> <span class="s">&#39;dynamic&#39;</span> <span class="p">)</span>
+
+    <span class="n">attachments</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span> <span class="s">&#39;Attachment&#39;</span><span class="p">,</span>
+                               <span class="n">secondary</span> <span class="o">=</span> <span class="n">ma_link</span><span class="p">,</span>
+                               <span class="n">backref</span> <span class="o">=</span> <span class="s">&#39;message&#39;</span><span class="p">,</span>
+                               <span class="n">lazy</span> <span class="o">=</span> <span class="s">&#39;dynamic&#39;</span> <span class="p">)</span>
+
+<div class="viewcode-block" id="Message.__init__"><a class="viewcode-back" href="../../codedocs/database.html#database.SQLAlchemy.Message.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">dateReceived</span><span class="p">,</span> <span class="n">raw_original</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Message data requires a subject, the headers, message body, the date the message was received and a raw copy of the oricinal message</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject</span> <span class="o">=</span> <span class="n">subject</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">body</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dateReceived</span> <span class="o">=</span> <span class="n">dateReceived</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raw_original</span> <span class="o">=</span> <span class="n">raw_original</span>
+</div></div>
+<div class="viewcode-block" id="Recipient"><a class="viewcode-back" href="../../codedocs/database.html#database.SQLAlchemy.Recipient">[docs]</a><span class="k">class</span> <span class="nc">Recipient</span><span class="p">(</span> <span class="n">Base</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Recipient table</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">&#39;recipient&#39;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span> <span class="o">=</span> <span class="bp">True</span> <span class="p">)</span>
+    <span class="n">email_address</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span> <span class="n">VARCHAR</span><span class="p">(</span> <span class="mi">100</span> <span class="p">)</span> <span class="p">,</span> <span class="n">unique</span> <span class="o">=</span> <span class="bp">True</span> <span class="p">)</span>
+
+<div class="viewcode-block" id="Recipient.__init__"><a class="viewcode-back" href="../../codedocs/database.html#database.SQLAlchemy.Recipient.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">email_address</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A valid email address must be provided for the recipient</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email_address</span> <span class="o">=</span> <span class="n">email_address</span>
+</div></div>
+<div class="viewcode-block" id="Sender"><a class="viewcode-back" href="../../codedocs/database.html#database.SQLAlchemy.Sender">[docs]</a><span class="k">class</span> <span class="nc">Sender</span><span class="p">(</span> <span class="n">Base</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sender table</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">&#39;sender&#39;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span> <span class="o">=</span> <span class="bp">True</span> <span class="p">)</span>
+    <span class="n">email_address</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span> <span class="n">VARCHAR</span><span class="p">(</span> <span class="mi">100</span> <span class="p">)</span> <span class="p">,</span> <span class="n">unique</span> <span class="o">=</span> <span class="bp">True</span> <span class="p">)</span>
+
+    <span class="n">messages</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span> <span class="s">&quot;Message&quot;</span> <span class="p">,</span> <span class="n">backref</span> <span class="o">=</span> <span class="s">&#39;sender&#39;</span> <span class="p">)</span>
+
+<div class="viewcode-block" id="Sender.__init__"><a class="viewcode-back" href="../../codedocs/database.html#database.SQLAlchemy.Sender.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">email_address</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A valid email address must be provided for the recipient</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">email_address</span> <span class="o">=</span> <span class="n">email_address</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">EARSmilter 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Larry G. Wapnitsky.
+      Last updated on Aug 31, 2012.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
