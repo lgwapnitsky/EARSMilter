@@ -27,7 +27,7 @@ it up through **8 Change The Default Shell** on page 3.
    Make sure to edit ``/var/lib/lxc/<machine name>/rootfs/etc/network/interfaces`` and enter the appropriate
    static IP, routing and gateway information.
    
-After logging in, make sure to install ``cifs-utils``, ``telnet``, ``rsyslog`` and ``logrotate``.
+After logging in, make sure to install ``anacron``, ``cifs-utils``, ``telnet``, ``rsyslog`` and ``logrotate``.
 
 .. code-block:: sh
 
