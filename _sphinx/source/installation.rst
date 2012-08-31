@@ -31,7 +31,7 @@ After logging in, make sure to install ``anacron``, ``cifs-utils``, ``telnet``, 
 
 .. code-block:: sh
 
-   aptitude install telnet rsyslog logrotate
+   aptitude install telnet rsyslog logrotate cifs-utils anacron
    
    
    
