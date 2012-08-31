@@ -121,7 +121,7 @@ Git Installation
 
       .. code-block:: sh
 
-         % scp ~/.ssh/id_rsa.pub git
+         % scp ~/.ssh/id_rsa.pub root@git:/root
 
    * Log in to the repository server and authorize the key:
 
@@ -129,15 +129,10 @@ Git Installation
 
          % ssh root@git
          % cd gitolite-admin
-            % cp id_rsa.pub keydir/root\@<milterservername>.pub
-         % emacs keydir/root\@<milterservername>.pub
-
-      | Remove the ``@<servername>`` from the second-to-last line of the file and save
-
-      .. warning:: **DO NOT** delete the last line - a blank line is necessary
-
-      .. code-block:: sh
-
+         % git pull
+         % cp ~/id_rsa.pub keydir/root\@<milterservername>.pub
+         % sed -i 's/\@.*$//g' keydir/root\@ keydir/root\@<milterservername>.pub
+         % git add keydir/root\@<milterservername>.pub
          % git commit -a
          % git push
 
@@ -265,6 +260,8 @@ Postfix
       test
       .
       250 2.0.0 Ok: queued as 4F00049F2A
+      quit
+
 
 Sendmail
 --------
@@ -281,43 +278,85 @@ Sendmail
 
    .. code-block:: sh
 
+      dnl #
       FEATURE(`allmasquerade')dnl
       FEATURE(`masquerade_envelope')dnl
       FEATURE(`accept_unresolvable_domains')
       FEATURE(`accept_unqualified_senders')
+      define(`SMART_HOST',`exchange.wrtdesign.com')dnl
+      dnl #
+
+   Change these lines:
+
+   .. code-block:: sh
+
+      dnl DAEMON_OPTIONS(`Family=inet6, Name=MTA-v6, Port=smtp, Addr=::1')dnl
+      DAEMON_OPTIONS(`Name=MTA-v4,Address=127.0.0.1,Family=inet,Port=smtp')
+      dnl DAEMON_OPTIONS(`Family=inet6, Name=MSP-v6, Port=submission, M=Ea, Addr=::1')dnl
+      DAEMON_OPTIONS(`Name=MSP-v4,Address=127.0.0.1,Family=inet,Port=submission,Modifiers=aE')
+
+   to
+
+   .. code-block:: sh
+
+      dnl DAEMON_OPTIONS(`Family=inet6, Name=MTA-v6, Port=smtp, Addr=::1')dnl
+      DAEMON_OPTIONS(`Name=MTA,Family=inet,Port=smtp')
+      dnl DAEMON_OPTIONS(`Family=inet6, Name=MSP-v6, Port=submission, M=Ea, Addr=::1')dnl
+      DAEMON_OPTIONS(`Name=MSP,Family=inet,Port=submission,Modifiers=aE')
+
 
 #. Open the file ``/etc/mail/access``.  Add the following lines:
 
    .. code-block:: sh
 
       # Allow connect from local SonicWall
-      Connect:10.102.2.29             OK
-      ClientRate:10.102.2.19           0
       GreetPause:10.102.2.29           0
+      ClientConn:10.102.2.29             OK
+      ClientRate:10.102.2.29           0
 
-#. Change the following lines in ``/etc/mail/sendmail.cf`` as follows with the appropriate values for your envirionment:
-
-   .. code-block:: sh
-
-      # "Smart" relay host (may be null)
-      DSexchange.wrtdesign.com
-
-#.  Add all internal recipient domains to ``/etc/mail/databases``
+#. Add all internal recipient domains to ``/etc/mail/relay-domains``
 
    Example:
 
       .. code-block:: sh
 
-         @wrtdesign.com
-         @ph.wrtdesign.com
+         wrtdesign.com
+         ph.wrtdesign.com
 
 
-#. Recompile the ``sendmail`` files and restart the MTA
+#. Recompile the ``sendmail`` files and restart the MTA and send a test message
 
    .. code-block:: sh
 
+      % touch /etc/mail/access.new.db
       % sendmailconfig
-      % /etc/init.d/sendmail restart
+      % telnet localhost 25
+      Connected to localhost.
+      Escape character is '^]'.
+      220 mailproc-test2 ESMTP Sendmail 8.14.4/8.14.4/Debian-2.1; Fri, 31 Aug 2012 09:14:00 -0400; (No UCE/UBE) logging access from: localhost(OK)-localhost [127.0.0.1]
+      ehlo localhost
+      250-mailproc-test2 Hello localhost [127.0.0.1], pleased to meet you
+      250-ENHANCEDSTATUSCODES
+      250-PIPELINING
+      250-EXPN
+      250-VERB
+      250-8BITMIME
+      250-SIZE
+      250-DSN
+      250-ETRN
+      250-DELIVERBY
+      250 HELP
+      mail from: root
+      250 2.1.0 root... Sender ok
+      rcpt to: ph_test@wrtdesign.com
+      250 2.1.5 ph_test@wrtdesign.com... Recipient ok
+      data
+      354 Enter mail, end with "." on a line by itself
+      test
+      .
+      250 2.0.0 q7VDE019017465 Message accepted for delivery
+      quit
+
 
 
 Python Installation/Configuration
@@ -327,11 +366,12 @@ Python Installation/Configuration
    :local:
 
 The default version of Python in Debian Squeeze/Wheezy is 2.7.  This is what we will be installing,
-along with a Python package installer (pip)
+along with a Python package installer (pip) and some development libraries.
 
 .. code-block:: sh
 
-   % aptitude install python python-pip
+   % aptitude install python python-pip python-dev libmilter-dev libmilter1.0.1  libmysqlclient-dev
+   
    
 Next we will need to install a number of Python modules.  There are two ways to do this - the Debian way and the Python way.
 Each one has its advantages and disadvantages, but both are provided for instructional purposes.
@@ -427,7 +467,7 @@ Accquiring and configuring the Milter
 
       % cp /var/spool/EARS/EARS.sh /etc/init.d
       % chmod +x /etc/init.d/EARS.sh
-      % update-rc.d EARS.sh enable 2 3 4 5
+      % update-rc.d EARS.sh enable defaults
 
 #. Create a virtual host file for Apache in ``/etc/apache2/sites-available/ears.conf`` that contains the following (modify as necessary):
 
@@ -455,8 +495,6 @@ Accquiring and configuring the Milter
       % chown -R www-data.www-data  /var/www/EARS
       % chmod -x /var/www/EARS/*.php
       % /etc/init.d/apache2 restart
-
-   .. code-block:: sh
 
 
 #. Open the MySQL command-line utility
@@ -499,38 +537,46 @@ Accquiring and configuring the Milter
 
    .. code-block:: sh
 
-      touch /var/log/EARSmilter.log
-      touch /var/log/EARSmilter.err
-      chmod 666 /var/log/EARSmilter.log
-      chmod 666 /var/log/EARSmilter.err
+      % touch /var/log/EARSmilter.log
+      % touch /var/log/EARSmilter.err
+      % chmod 666 /var/log/EARSmilter.log
+      % chmod 666 /var/log/EARSmilter.err
 
 #. Add/edit the following lines to the configuration file for the appropriate MTA:
 
-   Postfix - ``/etc/postfix/main.cf``
+   **Postfix** - ``/etc/postfix/main.cf``
 
-      .. code-block:: sh
+   .. code-block:: sh
 
-         milter_protocol = 6
-         smtpd_milters = unix:/var/spool/EARS/EARSmilter.sock
-         milter_default_action = accept
+      milter_protocol = 6
+      smtpd_milters = unix:/var/spool/EARS/EARSmilter.sock
+      milter_default_action = accept
 
-      Reload postfix - ``postfix reload``
+   Reload postfix - ``postfix reload``
 
-   Sendmail - ``/etc/mail/sendmail.mc``.  This line **MUST** be added **ABOVE** the ``define`` line!
+  **Sendmail** - ``/etc/mail/sendmail.mc``.  This line **MUST** be added **immediately below** ``divert(0)dnl``
 
-      .. code-block:: sh
+   .. code-block:: sh
 
-         INPUT_MAIL_FILTER(`EARS', `S=unix:/var/spool/EARS/EARSmilter.sock, F=T, T=S:240s;R:240s;E:5m')dnl
-         define(`_USE_ETC_MAIL_')dnl
+      define(`MILTER`, 1)dnl
+      INPUT_MAIL_FILTER(`EARS', `S=unix:/var/spool/EARS/EARSmilter.sock, F=T, T=S:240s;R:240s;E:5m')dnl
 
-      Recompile the ``sendmail`` files and restart the MTA
+   Recompile the ``sendmail`` files and restart the MTA
 
-      .. code-block:: sh
+   .. code-block:: sh
 
-         % sendmailconfig
-         % /etc/init.d/sendmail restart
+      % sendmailconfig
+      % /etc/init.d/sendmail restart
 
    .. note:: If/when you add additional milters to this sytem, make sure that **EARS** is the last one listed, as milters are processed in order.
+
+#. Edit the database information in ``/var/spool/EARS/EARSmilter/EARSmilter.py`` with what is appropriate for your environment.
+
+   This is listed under :py:func:`EARSmilter.EARSmilter.milter.eom`
+
+   .. code-block:: py
+
+      db = toDB( 'EARS', 'password', 'localhost', 'EARS' )
 
 
 
@@ -549,4 +595,4 @@ Accquiring and configuring the Milter
 .. _Pro Git: http://git-scm.com/book
 .. _Webmin: http://www.webmin.com/deb.html
 .. _PCRE:  http://www.pcre.org
-.. _PyPI: http://pypi.python.org
+.. _PyPI: http://pypi.python.org 
