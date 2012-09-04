@@ -85,11 +85,13 @@
 </div>
 <div class="section" id="server-installation">
 <h2><a class="toc-backref" href="#id7">Server Installation</a><a class="headerlink" href="#server-installation" title="Permalink to this headline">¶</a></h2>
-<p>This milter has been tested on Debian Squeeze/Wheezy using a LAMP (Linux/Apache/MySQL/PHP)-based web server <a class="footnote-reference" href="#f1" id="id1">[1]</a>.</p>
+<p>This milter has been tested on Debian Squeeze/Wheezy using a LAMP
+(Linux/Apache/MySQL/PHP)-based web server <a class="footnote-reference" href="#f1" id="id1">[1]</a>.</p>
 <div class="section" id="debian-install">
 <h3><a class="toc-backref" href="#id8">Debian Install</a><a class="headerlink" href="#debian-install" title="Permalink to this headline">¶</a></h3>
-<p>Installing a Debian Squeeze/Wheezy server is a fairly straight-forward procedure.  The best method to use
-can be found via HowtoForge&#8217;s <a class="reference external" href="http://www.howtoforge.com/perfect-server-debian-squeeze-ispconfig-2">The Perfect Server - Debian Squeeze (Debian 6.0) [ISPConfig 2]</a> and following
+<p>Installing a Debian Squeeze/Wheezy server is a fairly straight-forward
+procedure.  The best method to use can be found via HowtoForge&#8217;s
+<a class="reference external" href="http://www.howtoforge.com/perfect-server-debian-squeeze-ispconfig-2">The Perfect Server - Debian Squeeze (Debian 6.0) [ISPConfig 2]</a> and following
 it up through <strong>8 Change The Default Shell</strong> on page 3.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -98,8 +100,9 @@ it up through <strong>8 Change The Default Shell</strong> on page 3.</p>
 <p class="last">Make sure to edit <tt class="docutils literal"><span class="pre">/var/lib/lxc/&lt;machine</span> <span class="pre">name&gt;/rootfs/etc/network/interfaces</span></tt> and enter the appropriate
 static IP, routing and gateway information.</p>
 </div>
-<p>After logging in, make sure to install <tt class="docutils literal"><span class="pre">anacron</span></tt>, <tt class="docutils literal"><span class="pre">cifs-utils</span></tt>, <tt class="docutils literal"><span class="pre">telnet</span></tt>, <tt class="docutils literal"><span class="pre">rsyslog</span></tt> and <tt class="docutils literal"><span class="pre">logrotate</span></tt>.</p>
-<div class="highlight-sh"><div class="highlight"><pre>aptitude install telnet rsyslog logrotate
+<p>After logging in, make sure to install <tt class="docutils literal"><span class="pre">anacron</span></tt>, <tt class="docutils literal"><span class="pre">cifs-utils</span></tt>, <tt class="docutils literal"><span class="pre">telnet</span></tt>,
+<tt class="docutils literal"><span class="pre">rsyslog</span></tt> and <tt class="docutils literal"><span class="pre">logrotate</span></tt>.</p>
+<div class="highlight-sh"><div class="highlight"><pre>aptitude install telnet rsyslog logrotate cifs-utils anacron
 </pre></div>
 </div>
 </div>
@@ -109,7 +112,8 @@ static IP, routing and gateway information.</p>
 <p class="first admonition-title">Note</p>
 <p class="last">Unless otherwise specified, all commands are run as the <tt class="docutils literal"><span class="pre">root</span></tt> user.</p>
 </div>
-<p>The web server needs to be set up in a LAMP configuration (Apache Web Server, MySQL, PHP)</p>
+<p>The web server needs to be set up in a LAMP configuration (Apache Web Server,
+MySQL, PHP)</p>
 <ol class="arabic">
 <li><p class="first">Install MySQL</p>
 <div class="highlight-sh"><div class="highlight"><pre>% aptitude install mysql-server mysql-client
@@ -121,12 +125,14 @@ static IP, routing and gateway information.</p>
 <div class="highlight-sh"><div class="highlight"><pre>% aptitude install apache2
 </pre></div>
 </div>
-<p>Test to see that the web-server is running properly by visiting the IP address of this server in a web browser.
-You should see an image similar to this:</p>
+<p>Test to see that the web-server is running properly by visiting the IP
+address of this server in a web browser. You should see an image similar to
+this:</p>
 <img alt="_images/apache2.png" src="_images/apache2.png" />
 </li>
 <li><p class="first">Install PHP5</p>
-<p>PHP5 and the Apache PHP5 module are required to serve the EARS web-based code.  Install them as follows:</p>
+<p>PHP5 and the Apache PHP5 module are required to serve the EARS web-based
+code.  Install them as follows:</p>
 <div class="highlight-sh"><div class="highlight"><pre>% aptitude install php5 libapache2-mod-php5
 </pre></div>
 </div>
@@ -136,12 +142,16 @@ You should see an image similar to this:</p>
 </div>
 </li>
 <li><p class="first">Install MySQL support in PHP5</p>
-<p>To get MySQL support in PHP, we can install the <em>php5-mysql</em> package. It&#8217;s a good idea to install some other PHP5 modules as well as you might need them for your applications. You can search for available PHP5 modules like this:</p>
+<p>To get MySQL support in PHP, we can install the <em>php5-mysql</em> package. It&#8217;s
+a good idea to install some other PHP5 modules as well as you might need
+them for your applications. You can search for available PHP5 modules like
+this:</p>
 <div class="highlight-sh"><div class="highlight"><pre>% apt-cache search php5
 </pre></div>
 </div>
 <p>Pick the ones you need and install them like this:</p>
-<div class="highlight-sh"><div class="highlight"><pre>% aptitude install php5-mysql php5-curl php-pear php5-imagick php5-mcrypt php5-memcache
+<div class="highlight-sh"><div class="highlight"><pre>% aptitude install php5-mysql php5-curl php-pear php5-imagick
+php5-mcrypt php5-memcache
 </pre></div>
 </div>
 <p>Now restart Apache2:</p>
@@ -153,7 +163,8 @@ You should see an image similar to this:</p>
 </div>
 <div class="section" id="git-installation">
 <h3><a class="toc-backref" href="#id10">Git Installation</a><a class="headerlink" href="#git-installation" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference external" href="http://git-scm.com">Git</a> <a class="footnote-reference" href="#f2" id="id2">[2]</a> is required to download the EARS Milter code from the development repository.</p>
+<p><a class="reference external" href="http://git-scm.com">Git</a> <a class="footnote-reference" href="#f2" id="id2">[2]</a> is required to download the EARS Milter code from the development
+repository.</p>
 <ol class="arabic">
 <li><p class="first">Install Git</p>
 <div class="highlight-sh"><div class="highlight"><pre>% aptitude install git
@@ -162,14 +173,14 @@ You should see an image similar to this:</p>
 </li>
 <li><p class="first">Configure git access</p>
 <ul>
-<li><p class="first">On the EARS Milter server, create a <em>ssh</em> key and copy it to the development repository server:</p>
+<li><p class="first">On the EARS Milter server, create a <em>ssh</em> key and copy it to the
+development repository server:</p>
 <blockquote>
-<div><div class="highlight-sh"><div class="highlight"><pre>% <span class="nb">cd</span> ~/.ssh
-% ssh-keygen -t rsa
-% <span class="nb">cd</span> ~
+<div><div class="highlight-sh"><div class="highlight"><pre>% <span class="nb">cd</span> ~/.ssh % ssh-keygen -t rsa % <span class="nb">cd</span> ~
 </pre></div>
 </div>
-<p>Hit return at the prompts to create the key without passphrase authentication.</p>
+<p>Hit return at the prompts to create the key without passphrase
+authentication.</p>
 <div class="highlight-sh"><div class="highlight"><pre>% scp ~/.ssh/id_rsa.pub root@git:/root
 </pre></div>
 </div>
@@ -191,8 +202,7 @@ You should see an image similar to this:</p>
 </li>
 <li><p class="first">On the EARS Milter server, test access to the repository server:</p>
 <blockquote>
-<div><div class="highlight-sh"><div class="highlight"><pre>% <span class="nb">cd</span> /tmp
-% git clone gitolite@git:gitolite-admin
+<div><div class="highlight-sh"><div class="highlight"><pre>% <span class="nb">cd</span> /tmp % git clone gitolite@git:gitolite-admin
 </pre></div>
 </div>
 <p>If this fails, please verify all the steps in this section</p>
@@ -217,22 +227,28 @@ You should see an image similar to this:</p>
 <div class="highlight-sh"><div class="highlight"><pre>% aptitude install postfix postfix-pcre
 </pre></div>
 </div>
-<p>If prompted to remove packages relating to <tt class="docutils literal"><span class="pre">exim4</span></tt> or <tt class="docutils literal"><span class="pre">sendmail</span></tt>, choose to <em>Accept the solution</em>.</p>
-<p>When prompted for <em>mail server configuration type</em>, choose <em>Satellite System</em>:</p>
+<p>If prompted to remove packages relating to <tt class="docutils literal"><span class="pre">exim4</span></tt> or <tt class="docutils literal"><span class="pre">sendmail</span></tt>,
+choose to <em>Accept the solution</em>.</p>
+<p>When prompted for <em>mail server configuration type</em>, choose
+<em>Satellite System</em>:</p>
 <img alt="_images/postfix1.png" src="_images/postfix1.png" />
-<p>Enter a fully-qualified domain name in the form of <em>servername.wrtdesign.com</em>, where <em>servername</em> is the name of the EARS Milter server.
-Make sure that there is a DNS entry for this server and its corresponding IP address on the DNS server.</p>
+<p>Enter a fully-qualified domain name in the form of
+<em>servername.wrtdesign.com</em>, where <em>servername</em> is the name of the EARS
+Milter server. Make sure that there is a DNS entry for this server and its
+corresponding IP address on the DNS server.</p>
 <img alt="_images/postfix2.png" src="_images/postfix2.png" />
 <p>Enter the FQDN of the MS Exchange server when prompted for a relay host:</p>
 <img alt="_images/postfix3.png" src="_images/postfix3.png" />
-<p>Accept the defaults for <em>Root and postmaster mail recipient</em>, <em>Other destinations to accept mail for</em> and <em>Force synchronous updates...</em>.</p>
-<p>For <em>Local networks</em>, enter <tt class="docutils literal"><span class="pre">10.102.0.0\16,</span> <span class="pre">192.168.0.0\24,</span> <span class="pre">127.0.0.1</span></tt>.  This will handle all of WRT&#8217;s internal networks as well as the localhost.</p>
+<p>Accept the defaults for <em>Root and postmaster mail recipient</em>,
+<em>Other destinations to accept mail for</em> and <em>Force synchronous updates...</em>.</p>
+<p>For <em>Local networks</em>, enter <tt class="docutils literal"><span class="pre">10.102.0.0\16,</span> <span class="pre">192.168.0.0\24,</span> <span class="pre">127.0.0.1</span></tt>.
+This will handle all of WRT&#8217;s internal networks as well as the localhost.</p>
 <p>Accept all the rest of the defaults.</p>
 </li>
 <li><p class="first">Add the following lines to <tt class="docutils literal"><span class="pre">/etc/postfix/main.cf</span></tt>:</p>
-<div class="highlight-sh"><div class="highlight"><pre><span class="nv">disable_vrfy_command</span> <span class="o">=</span> yes
-smtpd_command_filter  pcre:/etc/postfix/bogus_commands
-<span class="nv">smtpd_recipient_restrictions</span> <span class="o">=</span> permit_mynetworks reject_unauth_destination
+<div class="highlight-sh"><div class="highlight"><pre><span class="nv">disable_vrfy_command</span> <span class="o">=</span> yes smtpd_command_filter
+pcre:/etc/postfix/bogus_commands <span class="nv">smtpd_recipient_restrictions</span> <span class="o">=</span>
+permit_mynetworks reject_unauth_destination
 </pre></div>
 </div>
 <p>Remove the following line from the same file:</p>
@@ -250,9 +266,8 @@ smtpd_command_filter  pcre:/etc/postfix/bogus_commands
 </div>
 <p>Add the following lines (with indentation) to the same file:</p>
 <div class="highlight-sh"><div class="highlight"><pre>scan      unix  -       -       n       -       10      smtp
- -o <span class="nv">smtp_send_xforward_command</span><span class="o">=</span>yes
- -o <span class="nv">disable_mime_output_conversion</span><span class="o">=</span>yes
- -o <span class="nv">smtp_generic_maps</span><span class="o">=</span>
+ -o <span class="nv">smtp_send_xforward_command</span><span class="o">=</span>yes -o
+ <span class="nv">disable_mime_output_conversion</span><span class="o">=</span>yes -o <span class="nv">smtp_generic_maps</span><span class="o">=</span>
 </pre></div>
 </div>
 <p>Add the following (indented) after the line marked <tt class="docutils literal"><span class="pre">relay</span></tt>:</p>
@@ -260,9 +275,9 @@ smtpd_command_filter  pcre:/etc/postfix/bogus_commands
 </pre></div>
 </div>
 </li>
-<li><p class="first">Create a file called <tt class="docutils literal"><span class="pre">/etc/postfix/bogus_commands</span></tt> and enter the following two lines:</p>
-<div class="highlight-sh"><div class="highlight"><pre>/^<span class="o">[</span>^ <span class="o">]{</span>3<span class="o">}</span><span class="se">\s</span>.*/  NOOP
-/^https<span class="o">{</span>0,1<span class="o">}</span><span class="se">\:\/\/</span>.*/ NOOP
+<li><p class="first">Create a file called <tt class="docutils literal"><span class="pre">/etc/postfix/bogus_commands</span></tt> and enter the
+following two lines:</p>
+<div class="highlight-sh"><div class="highlight"><pre>/^<span class="o">[</span>^ <span class="o">]{</span>3<span class="o">}</span><span class="se">\s</span>.*/  NOOP /^https<span class="o">{</span>0,1<span class="o">}</span><span class="se">\:\/\/</span>.*/ NOOP
 </pre></div>
 </div>
 </li>
@@ -305,37 +320,40 @@ quit
 <div class="highlight-sh"><div class="highlight"><pre>% aptitude install sendmail
 </pre></div>
 </div>
-<p>If prompted to remove packages relating to <tt class="docutils literal"><span class="pre">exim4</span></tt> or <tt class="docutils literal"><span class="pre">postfix</span></tt>, choose to <em>Accept the solution</em>.</p>
+<p>If prompted to remove packages relating to <tt class="docutils literal"><span class="pre">exim4</span></tt> or <tt class="docutils literal"><span class="pre">postfix</span></tt>,
+choose to <em>Accept the solution</em>.</p>
 </li>
-<li><p class="first">Open the file <tt class="docutils literal"><span class="pre">/etc/mail/sendmail.mc</span></tt> in an editor.  Add the following lines above <tt class="docutils literal"><span class="pre">MAILER</span> <span class="pre">DEFINITIONS</span></tt>:</p>
-<div class="highlight-sh"><div class="highlight"><pre>dnl <span class="c">#</span>
-FEATURE<span class="o">(</span><span class="sb">`</span>allmasquerade<span class="s1">&#39;)dnl</span>
-<span class="s1">FEATURE(`masquerade_envelope&#39;</span><span class="o">)</span>dnl
-FEATURE<span class="o">(</span><span class="sb">`</span>accept_unresolvable_domains<span class="s1">&#39;)</span>
-<span class="s1">FEATURE(`accept_unqualified_senders&#39;</span><span class="o">)</span>
+<li><p class="first">Open the file <tt class="docutils literal"><span class="pre">/etc/mail/sendmail.mc</span></tt> in an editor.  Add the following
+lines above <tt class="docutils literal"><span class="pre">MAILER</span> <span class="pre">DEFINITIONS</span></tt>:</p>
+<div class="highlight-sh"><div class="highlight"><pre>dnl <span class="c"># FEATURE(`allmasquerade&#39;)dnl FEATURE(`masquerade_envelope&#39;)dnl</span>
+FEATURE<span class="o">(</span><span class="sb">`</span>accept_unresolvable_domains<span class="s1">&#39;) FEATURE(`accept_unqualified_senders&#39;</span><span class="o">)</span>
 define<span class="o">(</span><span class="sb">`</span>SMART_HOST<span class="s1">&#39;,`exchange.domain.com&#39;</span><span class="o">)</span>dnl
-define<span class="o">(</span><span class="sb">`</span>confDOMAIN_NAME<span class="s1">&#39;,`milterserver.domain.com&#39;</span><span class="o">)</span>
-dnl <span class="c">#</span>
+define<span class="o">(</span><span class="sb">`</span>confDOMAIN_NAME<span class="s1">&#39;,`milterserver.domain.com&#39;</span><span class="o">)</span> dnl <span class="c">#</span>
 </pre></div>
 </div>
 <p>Change these lines:</p>
-<div class="highlight-sh"><div class="highlight"><pre>dnl DAEMON_OPTIONS<span class="o">(</span><span class="sb">`</span><span class="nv">Family</span><span class="o">=</span>inet6, <span class="nv">Name</span><span class="o">=</span>MTA-v6, <span class="nv">Port</span><span class="o">=</span>smtp, <span class="nv">Addr</span><span class="o">=</span>::1<span class="s1">&#39;)dnl</span>
+<div class="highlight-sh"><div class="highlight"><pre>dnl
+DAEMON_OPTIONS<span class="o">(</span><span class="sb">`</span><span class="nv">Family</span><span class="o">=</span>inet6, <span class="nv">Name</span><span class="o">=</span>MTA-v6, <span class="nv">Port</span><span class="o">=</span>smtp, <span class="nv">Addr</span><span class="o">=</span>::1<span class="s1">&#39;)dnl</span>
 <span class="s1">DAEMON_OPTIONS(`Name=MTA-v4,Address=127.0.0.1,Family=inet,Port=smtp&#39;</span><span class="o">)</span>
-dnl DAEMON_OPTIONS<span class="o">(</span><span class="sb">`</span><span class="nv">Family</span><span class="o">=</span>inet6, <span class="nv">Name</span><span class="o">=</span>MSP-v6, <span class="nv">Port</span><span class="o">=</span>submission, <span class="nv">M</span><span class="o">=</span>Ea, <span class="nv">Addr</span><span class="o">=</span>::1<span class="s1">&#39;)dnl</span>
+dnl
+DAEMON_OPTIONS<span class="o">(</span><span class="sb">`</span><span class="nv">Family</span><span class="o">=</span>inet6, <span class="nv">Name</span><span class="o">=</span>MSP-v6, <span class="nv">Port</span><span class="o">=</span>submission, <span class="nv">M</span><span class="o">=</span>Ea, <span class="nv">Addr</span><span class="o">=</span>::1<span class="s1">&#39;)dnl</span>
 <span class="s1">DAEMON_OPTIONS(`Name=MSP-v4,Address=127.0.0.1,Family=inet,Port=submission,Modifiers=aE&#39;</span><span class="o">)</span>
 </pre></div>
 </div>
 <p>to</p>
-<div class="highlight-sh"><div class="highlight"><pre>dnl DAEMON_OPTIONS<span class="o">(</span><span class="sb">`</span><span class="nv">Family</span><span class="o">=</span>inet6, <span class="nv">Name</span><span class="o">=</span>MTA-v6, <span class="nv">Port</span><span class="o">=</span>smtp, <span class="nv">Addr</span><span class="o">=</span>::1<span class="s1">&#39;)dnl</span>
+<div class="highlight-sh"><div class="highlight"><pre>dnl
+DAEMON_OPTIONS<span class="o">(</span><span class="sb">`</span><span class="nv">Family</span><span class="o">=</span>inet6, <span class="nv">Name</span><span class="o">=</span>MTA-v6, <span class="nv">Port</span><span class="o">=</span>smtp, <span class="nv">Addr</span><span class="o">=</span>::1<span class="s1">&#39;)dnl</span>
 <span class="s1">DAEMON_OPTIONS(`Name=MTA,Family=inet,Port=smtp&#39;</span><span class="o">)</span>
-dnl DAEMON_OPTIONS<span class="o">(</span><span class="sb">`</span><span class="nv">Family</span><span class="o">=</span>inet6, <span class="nv">Name</span><span class="o">=</span>MSP-v6, <span class="nv">Port</span><span class="o">=</span>submission, <span class="nv">M</span><span class="o">=</span>Ea, <span class="nv">Addr</span><span class="o">=</span>::1<span class="s1">&#39;)dnl</span>
+dnl
+DAEMON_OPTIONS<span class="o">(</span><span class="sb">`</span><span class="nv">Family</span><span class="o">=</span>inet6, <span class="nv">Name</span><span class="o">=</span>MSP-v6, <span class="nv">Port</span><span class="o">=</span>submission, <span class="nv">M</span><span class="o">=</span>Ea, <span class="nv">Addr</span><span class="o">=</span>::1<span class="s1">&#39;)dnl</span>
 <span class="s1">DAEMON_OPTIONS(`Name=MSP,Family=inet,Port=submission,Modifiers=aE&#39;</span><span class="o">)</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Open the file <tt class="docutils literal"><span class="pre">/etc/mail/access</span></tt>.  Uncomment the following lines (according to your network):</p>
-<div class="highlight-sh"><div class="highlight"><pre>Connect:10              RELAY
-GreetPause:10           0
+<li><p class="first">Open the file <tt class="docutils literal"><span class="pre">/etc/mail/access</span></tt>.  Uncomment the following lines
+(according to your network):</p>
+<div class="highlight-sh"><div class="highlight"><pre>Connect:10
+RELAY GreetPause:10           0
 ClientConn:10           OK
 ClientRate:10           0
 </pre></div>
@@ -345,19 +363,19 @@ ClientRate:10           0
 <li><p class="first">Add all internal recipient domains to <tt class="docutils literal"><span class="pre">/etc/mail/relay-domains</span></tt></p>
 <p>Example:</p>
 <blockquote>
-<div><div class="highlight-sh"><div class="highlight"><pre>wrtdesign.com
-ph.wrtdesign.com
+<div><div class="highlight-sh"><div class="highlight"><pre>wrtdesign.com ph.wrtdesign.com
 </pre></div>
 </div>
 </div></blockquote>
 </li>
-<li><p class="first">Recompile the <tt class="docutils literal"><span class="pre">sendmail</span></tt> files and restart the MTA and send a test message</p>
+<li><p class="first">Recompile the <tt class="docutils literal"><span class="pre">sendmail</span></tt> files and restart the MTA and send a test
+message</p>
 <div class="highlight-sh"><div class="highlight"><pre>% touch /etc/mail/access.new.db
 % sendmailconfig
 % telnet localhost 25
 Connected to localhost.
 Escape character is <span class="s1">&#39;^]&#39;</span>.
-220 mailproc-test2 ESMTP Sendmail 8.14.4/8.14.4/Debian-2.1; Fri, 31 Aug 2012 09:14:00 -0400; <span class="o">(</span>No UCE/UBE<span class="o">)</span> logging access from: localhost<span class="o">(</span>OK<span class="o">)</span>-localhost <span class="o">[</span>127.0.0.1<span class="o">]</span>
+220 mailproc-test2 ESMTP
 ehlo localhost
 250-mailproc-test2 Hello localhost <span class="o">[</span>127.0.0.1<span class="o">]</span>, pleased to meet you
 250-ENHANCEDSTATUSCODES
@@ -395,28 +413,35 @@ quit
 <li><a class="reference internal" href="#the-debian-method" id="id24">The Debian Method</a></li>
 </ul>
 </div>
-<p>The default version of Python in Debian Squeeze/Wheezy is 2.7.  This is what we will be installing,
-along with a Python package installer (pip) and some development libraries.</p>
+<p>The default version of Python in Debian Squeeze/Wheezy is 2.7.  This is what we
+will be installing, along with a Python package installer (pip) and some
+development libraries.</p>
 <div class="highlight-sh"><div class="highlight"><pre>% aptitude install python python-pip python-dev libmilter-dev libmilter1.0.1  libmysqlclient-dev
 </pre></div>
 </div>
-<p>Next we will need to install a number of Python modules.  There are two ways to do this - the Debian way and the Python way.
-Each one has its advantages and disadvantages, but both are provided for instructional purposes.</p>
+<p>Next we will need to install a number of Python modules.  There are two ways to
+do this - the Debian way and the Python way. Each one has its advantages and
+disadvantages, but both are provided for instructional purposes.</p>
 <p>The recommendation is to stick with one method instead of combining them.</p>
 <div class="section" id="the-python-method-preferred">
 <h3><a class="toc-backref" href="#id23">The Python Method (preferred)</a><a class="headerlink" href="#the-python-method-preferred" title="Permalink to this headline">¶</a></h3>
-<p>The Python Package Index (<a class="reference external" href="http://pypi.python.org">PyPI</a>) is the most up-to-date resource for Python modules.  Bugfixes and updates are regularly
-submitted for a majority of modules.  The downside is that there is currenlty no way to automatically update the modules,
-but this can be considered a benefit as well since there is less chance of your code breaking.</p>
+<p>The Python Package Index (<a class="reference external" href="http://pypi.python.org">PyPI</a>) is the most up-to-date resource for Python
+modules.  Bugfixes and updates are regularly submitted for a majority of
+modules.  The downside is that there is currenlty no way to automatically
+update the modules, but this can be considered a benefit as well since there is
+less chance of your code breaking.</p>
 <div class="highlight-sh"><div class="highlight"><pre>% pip install SQLAlchemy pymilter MySQL-python Mako tnefparse
 </pre></div>
 </div>
 </div>
 <div class="section" id="the-debian-method">
 <h3><a class="toc-backref" href="#id24">The Debian Method</a><a class="headerlink" href="#the-debian-method" title="Permalink to this headline">¶</a></h3>
-<p>Using debian&#8217;s built-in package manager is very easy and convenient.  When you do a full update on a Debian system, installed
-Python modules will be updated as well.  The downside is that sometimes the modules in the Debian repositories can be out-of-date.</p>
-<p>Here is the simple command to install the required modules, except for <tt class="docutils literal"><span class="pre">tnefparse</span></tt> which has to be installed via the Python method:</p>
+<p>Using debian&#8217;s built-in package manager is very easy and convenient.  When you
+do a full update on a Debian system, installed Python modules will be updated
+as well.  The downside is that sometimes the modules in the Debian repositories
+can be out-of-date.</p>
+<p>Here is the simple command to install the required modules, except for
+<tt class="docutils literal"><span class="pre">tnefparse</span></tt> which has to be installed via the Python method:</p>
 <div class="highlight-sh"><div class="highlight"><pre>% aptitude install python-sqlalchemy python-milter python-mysqldb python-mako
 </pre></div>
 </div>
@@ -432,7 +457,8 @@ Python modules will be updated as well.  The downside is that sometimes the modu
 </div>
 <div class="section" id="phpmyadmin">
 <h3><a class="toc-backref" href="#id25">phpMyAdmin</a><a class="headerlink" href="#phpmyadmin" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference external" href="http://www.phpmyadmin.net">phpMyAdmin</a> is a web interface through which you can manage your MySQL databases. It&#8217;s a good idea to install it:</p>
+<p><a class="reference external" href="http://www.phpmyadmin.net">phpMyAdmin</a> is a web interface through which you can manage your MySQL
+databases. It&#8217;s a good idea to install it:</p>
 <div class="highlight-sh"><div class="highlight"><pre>% aptitude install phpmyadmin php5-gd
 </pre></div>
 </div>
@@ -443,15 +469,17 @@ Python modules will be updated as well.  The downside is that sometimes the modu
 <div class="line"><tt class="docutils literal"><span class="pre">Configure</span> <span class="pre">database</span> <span class="pre">for</span> <span class="pre">phpmyadmin</span> <span class="pre">with</span> <span class="pre">dbconfig-common?</span></tt> &lt;&#8211; No</div>
 </div>
 </div></blockquote>
-<p>Afterwards, you can access phpMyAdmin by going to <tt class="docutils literal"><span class="pre">http://&lt;serverIP&gt;/phpmyadmin/:</span></tt></p>
+<p>Afterwards, you can access phpMyAdmin by going to
+<tt class="docutils literal"><span class="pre">http://&lt;serverIP&gt;/phpmyadmin/:</span></tt></p>
 <img alt="_images/phpMyAdmin.png" src="_images/phpMyAdmin.png" />
 </div>
 <div class="section" id="webmin-installation">
 <h3><a class="reference external" href="http://www.webmin.com/deb.html">Webmin</a> Installation<a class="headerlink" href="#webmin-installation" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic">
-<li><p class="first">Create a file called <tt class="docutils literal"><span class="pre">/etc/apt/sources.list.d/webmin.list</span></tt>.  Add the following lines, then save:</p>
-<div class="highlight-sh"><div class="highlight"><pre>deb http://download.webmin.com/download/repository sarge contrib
-deb http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib
+<li><p class="first">Create a file called <tt class="docutils literal"><span class="pre">/etc/apt/sources.list.d/webmin.list</span></tt>.  Add the
+following lines, then save:</p>
+<div class="highlight-sh"><div class="highlight"><pre>deb http://download.webmin.com/download/repository sarge contrib deb
+http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib
 </pre></div>
 </div>
 </li>
@@ -464,7 +492,8 @@ deb http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib
 </pre></div>
 </div>
 </li>
-<li><p class="first">Test the installation by going to <tt class="docutils literal"><span class="pre">https://&lt;serverIP&gt;:10000</span></tt>.  Log in using the system root password.</p>
+<li><p class="first">Test the installation by going to <tt class="docutils literal"><span class="pre">https://&lt;serverIP&gt;:10000</span></tt>.  Log in
+using the system root password.</p>
 </li>
 </ol>
 </div>
@@ -472,38 +501,40 @@ deb http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib
 <div class="section" id="accquiring-and-configuring-the-milter">
 <h2><a class="toc-backref" href="#id20">Accquiring and configuring the Milter</a><a class="headerlink" href="#accquiring-and-configuring-the-milter" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
-<li><p class="first">Using <em>git</em>, clone <strong>EARS</strong> from the repository to the <tt class="docutils literal"><span class="pre">/var/spool</span></tt> folder:</p>
-<div class="highlight-sh"><div class="highlight"><pre>% <span class="nb">cd</span> /var/spool
-% git clone gitolite@git:EARSmilter EARS
-% <span class="nb">cd </span>EARS
+<li><p class="first">Using <em>git</em>, clone <strong>EARS</strong> from the repository to the <tt class="docutils literal"><span class="pre">/var/spool</span></tt>
+folder:</p>
+<div class="highlight-sh"><div class="highlight"><pre>% <span class="nb">cd</span> /var/spool % git clone gitolite@git:EARSmilter EARS % <span class="nb">cd </span>EARS
 </pre></div>
 </div>
 <ol class="arabic">
-<li><p class="first">Copy EARS.sh to <tt class="docutils literal"><span class="pre">/etc/init.d</span></tt>.  Make it executable and enable it at boot.</p>
-<div class="highlight-sh"><div class="highlight"><pre>% cp /var/spool/EARS/EARS.sh /etc/init.d
-% chmod +x /etc/init.d/EARS.sh
-% update-rc.d EARS.sh <span class="nb">enable </span>defaults
+<li><p class="first">Copy EARS.sh to <tt class="docutils literal"><span class="pre">/etc/init.d</span></tt>.  Make it executable and enable it
+at boot.</p>
+<div class="highlight-sh"><div class="highlight"><pre>% cp /var/spool/EARS/EARS.sh /etc/init.d % chmod +x
+/etc/init.d/EARS.sh % update-rc.d EARS.sh <span class="nb">enable </span>defaults
 </pre></div>
 </div>
 </li>
 </ol>
 </li>
-<li><p class="first">Create a virtual host file for Apache in <tt class="docutils literal"><span class="pre">/etc/apache2/sites-available/ears.conf</span></tt> that contains the following (modify as necessary):</p>
+<li><p class="first">Create a virtual host file for Apache in
+<tt class="docutils literal"><span class="pre">/etc/apache2/sites-available/ears.conf</span></tt> that contains the following
+(modify as necessary):</p>
 <div class="highlight-sh"><div class="highlight"><pre>&lt;VirtualHost *:80&gt;
-   ServerName ears.wrtdesign.com
-   DocumentRoot /var/www/EARS
+   ServerName ears.wrtdesign.com DocumentRoot /var/www/EARS
    Options -Indexes
 &lt;/VirtualHost&gt;
 </pre></div>
 </div>
 <p>Create a link to this file to make the site active:</p>
-<div class="highlight-sh"><div class="highlight"><pre>% ln -s /etc/apache2/sites-available/ears.conf /etc/apache2/sites-enabled/ears.conf
+<div class="highlight-sh"><div class="highlight"><pre>% ln -s /etc/apache2/sites-available/ears.conf
+/etc/apache2/sites-enabled/ears.conf
 </pre></div>
 </div>
-<p>Create a folder called <tt class="docutils literal"><span class="pre">/var/www/EARS</span></tt>.  Copy the files from <tt class="docutils literal"><span class="pre">/var/spool/EARS/www</span></tt> to this new folder and give Apache full rights to the folder.
-Restart Apache.</p>
-<div class="highlight-sh"><div class="highlight"><pre>% mkdir -p /var/www/EARS
-% cp -R /var/spool/EARS/www/* /var/www/EARS
+<p>Create a folder called <tt class="docutils literal"><span class="pre">/var/www/EARS</span></tt>.  Copy the files from
+<tt class="docutils literal"><span class="pre">/var/spool/EARS/www</span></tt> to this new folder and give Apache full rights to
+the folder. Restart Apache.</p>
+<div class="highlight-sh"><div class="highlight"><pre>% mkdir -p /var/www/EARS % cp -R
+/var/spool/EARS/www/* /var/www/EARS
 % chown -R www-data.www-data  /var/www/EARS
 % chmod -x /var/www/EARS/*.php
 % /etc/init.d/apache2 restart
@@ -515,26 +546,21 @@ Restart Apache.</p>
 </pre></div>
 </div>
 <p>Create a blank database and associated MySQL user</p>
-<div class="highlight-sql"><div class="highlight"><pre>  <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">EARS</span><span class="p">;</span>
-  <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span> <span class="n">EARS</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="ss">&quot;EARS&quot;</span><span class="o">@</span><span class="ss">&quot;%&quot;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="ss">&quot;password&quot;</span><span class="p">;</span>
-  <span class="n">mysql</span><span class="o">&gt;</span> <span class="n">FLUSH</span> <span class="k">PRIVILEGES</span><span class="p">;</span>
-  <span class="n">mysql</span><span class="o">&gt;</span> <span class="n">EXIT</span>
-
-<span class="k">and</span> <span class="n">change</span> <span class="n">this</span> <span class="n">line</span> <span class="k">in</span> <span class="o">``/</span><span class="n">etc</span><span class="o">/</span><span class="n">mysql</span><span class="o">/</span><span class="n">my</span><span class="p">.</span><span class="n">cnf</span><span class="o">``</span><span class="p">:</span>
-
-<span class="p">..</span> <span class="n">code</span><span class="o">-</span><span class="n">block</span><span class="p">:</span>  <span class="n">sh</span>
-
-  <span class="n">bind</span><span class="o">-</span><span class="n">address</span> <span class="o">=</span> <span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span>
-
-<span class="k">to</span><span class="p">:</span>
-
-<span class="p">..</span> <span class="n">code</span><span class="o">-</span><span class="n">block</span><span class="p">:</span> <span class="n">sh</span>
-
-  <span class="n">bind</span><span class="o">-</span><span class="n">address</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span>
+<div class="highlight-sql"><div class="highlight"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">EARS</span><span class="p">;</span> <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span>
+<span class="n">EARS</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="ss">&quot;EARS&quot;</span><span class="o">@</span><span class="ss">&quot;%&quot;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="ss">&quot;password&quot;</span><span class="p">;</span> <span class="n">mysql</span><span class="o">&gt;</span> <span class="n">FLUSH</span> <span class="k">PRIVILEGES</span><span class="p">;</span> <span class="n">mysql</span><span class="o">&gt;</span> <span class="n">EXIT</span>
+</pre></div>
+</div>
+<p>and change this line in <tt class="docutils literal"><span class="pre">/etc/mysql/my.cnf</span></tt>:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span class="nb">bind</span>-address <span class="o">=</span> 127.0.0.1
+</pre></div>
+</div>
+<p>to:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span class="nb">bind</span>-address <span class="o">=</span> 0.0.0.0
 </pre></div>
 </div>
 </li>
-<li><p class="first">Set the appropriate permissions on <tt class="docutils literal"><span class="pre">/var/spool/EARS</span></tt> and its subdirectories based on the MTA installed.</p>
+<li><p class="first">Set the appropriate permissions on <tt class="docutils literal"><span class="pre">/var/spool/EARS</span></tt> and its
+subdirectories based on the MTA installed.</p>
 <p>Postfix</p>
 <div class="highlight-sh"><div class="highlight"><pre>% chown -R postfix.postfix /var/spool/EARS
 </pre></div>
@@ -543,7 +569,8 @@ Restart Apache.</p>
 <div class="highlight-sh"><div class="highlight"><pre>% chown -R smmta.smmta /var/spool/EARS
 </pre></div>
 </div>
-<p>You will also need to edit <tt class="docutils literal"><span class="pre">/etc/init.d/EARS.sh</span></tt> and replace <strong>postfix</strong> with <strong>smmta</strong>.</p>
+<p>You will also need to edit <tt class="docutils literal"><span class="pre">/etc/init.d/EARS.sh</span></tt> and replace <strong>postfix</strong>
+with <strong>smmta</strong>.</p>
 <div class="highlight-sh"><div class="highlight"><pre>% sed -i.bak <span class="s1">&#39;s/postfix/smmta/g&#39;</span> /etc/init.d/EARS.sh
 </pre></div>
 </div>
@@ -556,11 +583,11 @@ Restart Apache.</p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Add/edit the following lines to the configuration file for the appropriate MTA:</p>
+<li><p class="first">Add/edit the following lines to the configuration file for the appropriate
+MTA:</p>
 <p><strong>Postfix</strong> - <tt class="docutils literal"><span class="pre">/etc/postfix/main.cf</span></tt></p>
 <div class="highlight-sh"><div class="highlight"><pre><span class="nv">milter_protocol</span> <span class="o">=</span> 6
-<span class="nv">smtpd_milters</span> <span class="o">=</span> unix:/var/spool/EARS/EARSmilter.sock
-<span class="nv">milter_default_action</span> <span class="o">=</span> accept
+<span class="nv">smtpd_milters</span> <span class="o">=</span> unix:/var/spool/EARS/EARSmilter.sock <span class="nv">milter_default_action</span> <span class="o">=</span> accept
 </pre></div>
 </div>
 <p>Reload postfix - <tt class="docutils literal"><span class="pre">postfix</span> <span class="pre">reload</span></tt></p>
@@ -573,18 +600,20 @@ Restart Apache.</p>
 </pre></div>
 </div>
 <p>Recompile the <tt class="docutils literal"><span class="pre">sendmail</span></tt> files and restart the MTA</p>
-<div class="highlight-sh"><div class="highlight"><pre>% touch /etc/mail/access.new.db
-% sendmailconfig
+<div class="highlight-sh"><div class="highlight"><pre>% touch /etc/mail/access.new.db % sendmailconfig
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If/when you add additional milters to this sytem, make sure that <strong>EARS</strong> is the last one listed, as milters are processed in order.</p>
+<p class="last">If/when you add additional milters to this sytem, make sure that
+<strong>EARS</strong> is the last one listed, as milters are processed in order.</p>
 </div>
 </div></blockquote>
 </div></blockquote>
 <ol class="arabic">
-<li><p class="first">Edit the database information in <tt class="docutils literal"><span class="pre">/var/spool/EARS/EARSmilter/EARSmilter.py</span></tt> with what is appropriate for your environment.</p>
+<li><p class="first">Edit the database information in
+<tt class="docutils literal"><span class="pre">/var/spool/EARS/EARSmilter/EARSmilter.py</span></tt> with what is appropriate for
+your environment.</p>
 <p>This is listed under <a class="reference internal" href="codedocs/EARSmilter.html#EARSmilter.EARSmilter.milter.eom" title="EARSmilter.EARSmilter.milter.eom"><tt class="xref py py-func docutils literal"><span class="pre">EARSmilter.EARSmilter.milter.eom()</span></tt></a></p>
 <div class="highlight-py"><div class="highlight"><pre><span class="n">db</span> <span class="o">=</span> <span class="n">toDB</span><span class="p">(</span> <span class="s">&#39;EARS&#39;</span><span class="p">,</span> <span class="s">&#39;password&#39;</span><span class="p">,</span> <span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="s">&#39;EARS&#39;</span> <span class="p">)</span>
 </pre></div>
@@ -594,14 +623,17 @@ Restart Apache.</p>
 <div class="highlight-sh"><div class="highlight"><pre>% mkdir -p /dropdir
 </pre></div>
 </div>
-<p>Mount it to a folder called <tt class="docutils literal"><span class="pre">dropdir</span></tt> on a FTP server.  This example assumes the folder is on a MS Windows box:</p>
-<div class="highlight-sh"><div class="highlight"><pre>% <span class="nb">echo</span> <span class="s1">&#39;\\FTPSERVER\FTPSHARE\dropdir  /dropdir  cifs  workgroup=DOMAIN,file_mode=0777,dir_mode=0777,password=PASSWORD,uid=1000,gid=1000,username=USERNAME  0  0&#39;</span> &gt;&gt; /etc/fstab
+<p>Mount it to a folder called <tt class="docutils literal"><span class="pre">dropdir</span></tt> on a FTP server.  This example
+assumes the folder is on a MS Windows box:</p>
+<div class="highlight-sh"><div class="highlight"><pre>% <span class="nb">echo</span> <span class="s1">&#39;\\FTPSERVER\FTPSHARE\dropdir  /dropdir  cifs  workgroup=DOMAIN, \</span>
+<span class="s1">   file_mode=0777,dir_mode=0777,password=PASSWORD,uid=1000,gid=1000, \</span>
+<span class="s1">   username=USERNAME 0  0&#39;</span> &gt;&gt; /etc/fstab % mount -a
 % mount -a
 </pre></div>
 </div>
 </li>
 <li><p class="first">Start the EARS milter:</p>
-<div class="highlight-sh"><div class="highlight"><pre>
+<div class="highlight-sh"><div class="highlight"><pre>/etc/init.d/EARS.sh start
 </pre></div>
 </div>
 </li>
@@ -613,11 +645,21 @@ Restart Apache.</p>
 </ol>
 <blockquote>
 <div><p>Add this line:</p>
-<div class="highlight-sh"><div class="highlight"><pre>/usr/bin/env python /var/spool/EARS/purgeEARSdb.py -s milter.domain.com -d EARS -u EARS -p password -q -x -v#purge EARS database
+<div class="highlight-sh"><div class="highlight"><pre>/usr/bin/env python /var/spool/EARS/purgeEARSdb/purgeEARSdb.py -s <span class="se">\</span>
+   milter.domain.com -d EARS -u EARS -p password -q -x -v#purge EARS database
 </pre></div>
 </div>
-<p>For a description of the options, see <a class="reference external" href="codedocs/purgeEARSdb_py.html#how-to-use">How To Use</a> under <a class="reference internal" href="codedocs/purgeEARSdb_py.html#module-purgeEARSdb" title="purgeEARSdb"><tt class="xref py py-func docutils literal"><span class="pre">purgeEARSdb()</span></tt></a>.</p>
+<p>For a description of the options, see <strong>How To Use</strong> under <a class="reference internal" href="codedocs/purgeEARSdb_py.html#module-purgeEARSdb" title="purgeEARSdb"><tt class="xref py py-func docutils literal"><span class="pre">purgeEARSdb()</span></tt></a>.</p>
 </div></blockquote>
+<ol class="arabic">
+<li><p class="first">Add the following lines to <tt class="docutils literal"><span class="pre">/etc/logrotate.conf</span></tt>:</p>
+<div class="highlight-sh"><div class="highlight"><pre>/var/log/EARSmilter.* <span class="o">{</span>
+  compress copytruncate
+<span class="o">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
 <table class="docutils footnote" frame="void" id="f1" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
@@ -716,7 +758,7 @@ Restart Apache.</p>
     </div>
     <div class="footer">
         &copy; Copyright 2012, Larry G. Wapnitsky.
-      Last updated on Aug 31, 2012.
+      Last updated on Sep 04, 2012.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>

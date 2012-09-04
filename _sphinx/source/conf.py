@@ -13,6 +13,19 @@
 
 import sys, os
 
+# 
+# http://stackoverflow.com/questions/9899283/how-do-you-change-the-code-example-font-size-in-latex-pdf-output-with-sphinx
+from sphinx.highlighting import PygmentsBridge
+from pygments.formatters.latex import LatexFormatter
+
+class CustomLatexFormatter( LatexFormatter ):
+    def __init__( self, **options ):
+        super( CustomLatexFormatter, self ).__init__( **options )
+        self.verboptions = r"formatcom=\footnotesize"
+
+PygmentsBridge.latex_formatter = CustomLatexFormatter
+#
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -185,7 +198,7 @@ htmlhelp_basename = 'EARSmilterdoc'
 # -- Options for LaTeX output --------------------------------------------------
 
 # The paper size ('letter' or 'a4').
-latex_paper_size = u'a4'
+latex_paper_size = u'letter'
 
 
 # The font size ('10pt', '11pt' or '12pt').
@@ -224,7 +237,7 @@ latex_use_parts = False
 #latex_appendices = []
 
 # If false, no module index is generated.
-#latex_domain_indices = True
+latex_domain_indices = False
 
 
 # -- Options for manual page output --------------------------------------------
