@@ -1,18 +1,10 @@
 #!/usr/bin/env python
 
-"""The main startup file for the EARS milter
-
-.. module:: EARS.py
-    :synopsis: The startup file for the EARS milter
-    
-.. moduleauthor:: Larry G. Wapnitsky <larry@qual-ITsystems.com>
-
-"""
-
 import Milter
 import time
 
 from EARSmilter import EARSmilter as EARS
+
 
 
 ## === Define multiprocessing == ##
@@ -25,12 +17,21 @@ else:
 
 logq = Queue( maxsize = 4 )
 
+#===============================================================================
+# from optparse import OptionParser
+# parser = OptionParser()
+# #parser.add_option("-v", "--verbose",
+# #                  action="store_true", dest="verbose", default=False,
+# #                  help="Enables debug logging to %s" % EARSlog.DEBUG_LOG_FILENAME)
+# #(opts, args) = parser.parse_args()
+# 
+# 
+# #rgxSubject = re.compile('^(subject)', re.IGNORECASE | re.DOTALL)
+# #rgxMessageID = re.compile('^(message-id)', re.IGNORECASE | re.DOTALL)
+#===============================================================================
+
 
 def background():
-    """
-    This function starts the background threading of EARS so that multiple processes can handle incoming messages.
-    """
-
     while True:
         t = logq.get()
         if not t: break
@@ -43,15 +44,6 @@ def background():
 ## === End Define Multiprocesing === ##
 
 def main():
-    """
-    The main startup for the EARS milter.
-    
-    Milter factory flags are set so that the milter can:
-        * Change the body of the message
-        * Change the headers of the message
-        * Add headers to the message
-        * Add/Delete recipients
-    """
     bt = Thread( target = background )
     bt.start()
     socketname = "/var/spool/EARS/EARSmilter.sock"

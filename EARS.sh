@@ -24,7 +24,7 @@ DAEMON=/var/spool/EARS/EARS.py
 #DAEMON_OPTS=" serve --log-file <my logfile> --server-name=main production.ini"
 
 # script name
-NAME=EARS.sh
+NAME=EARS_milter.sh
 
 # app name
 DESC='WRT E-mail Attachment Retrieval System milter'
@@ -32,7 +32,7 @@ DESC='WRT E-mail Attachment Retrieval System milter'
 # pylons user
 RUN_AS=postfix
 
-PID_FILE=/var/run/EARSmilter.pid
+PID_FILE=/var/run/milter.pid
 
 ############### END EDIT ME ##################
 
