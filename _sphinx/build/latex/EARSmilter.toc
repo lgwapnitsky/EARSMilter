@@ -1,0 +1,38 @@
+\select@language {english}
+\contentsline {chapter}{\numberline {1}What is the EARS Milter?}{1}{chapter.1}
+\contentsline {chapter}{\numberline {2}EARS Milter Requirements}{3}{chapter.2}
+\contentsline {section}{\numberline {2.1}Server Requirements}{3}{section.2.1}
+\contentsline {section}{\numberline {2.2}Python Requirements}{3}{section.2.2}
+\contentsline {section}{\numberline {2.3}Recommended Software}{4}{section.2.3}
+\contentsline {section}{\numberline {2.4}Optional Software}{4}{section.2.4}
+\contentsline {chapter}{\numberline {3}EARS Milter Installation}{5}{chapter.3}
+\contentsline {section}{\numberline {3.1}Server Installation}{5}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Debian Install}{5}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Web Server Installation}{6}{subsection.3.1.2}
+\contentsline {subsection}{\numberline {3.1.3}Git Installation}{7}{subsection.3.1.3}
+\contentsline {subsection}{\numberline {3.1.4}Mail Server Installation}{8}{subsection.3.1.4}
+\contentsline {subsubsection}{Postfix}{8}{subsubsection*.3}
+\contentsline {subsubsection}{Sendmail}{11}{subsubsection*.4}
+\contentsline {section}{\numberline {3.2}Python Installation/Configuration}{12}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}The Python Method (preferred)}{13}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}The Debian Method}{13}{subsection.3.2.2}
+\contentsline {section}{\numberline {3.3}Optional Software Installation}{13}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}phpMyAdmin}{13}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.2}Webmin Installation}{14}{subsection.3.3.2}
+\contentsline {section}{\numberline {3.4}Accquiring and configuring the Milter}{14}{section.3.4}
+\contentsline {chapter}{\numberline {4}EARS Code}{17}{chapter.4}
+\contentsline {section}{\numberline {4.1}EARS.py}{17}{section.4.1}
+\contentsline {section}{\numberline {4.2}EARS Milter main class/functions}{17}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}EARSlog}{17}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}milter}{18}{subsection.4.2.2}
+\contentsline {subsection}{\numberline {4.2.3}ProcessMessage}{18}{subsection.4.2.3}
+\contentsline {subsection}{\numberline {4.2.4}FileSys}{19}{subsection.4.2.4}
+\contentsline {section}{\numberline {4.3}purgeEARSdb.py}{20}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}How to use}{20}{subsection.4.3.1}
+\contentsline {section}{\numberline {4.4}Database Definitions and Functions}{21}{section.4.4}
+\contentsline {subsection}{\numberline {4.4.1}SQLAlchemy.py - SQLAlchemy Database Definitions}{21}{subsection.4.4.1}
+\contentsline {subsection}{\numberline {4.4.2}toDB.py - EARS Milter Database Population}{22}{subsection.4.4.2}
+\contentsline {section}{\numberline {4.5}Customized Python Logging}{22}{section.4.5}
+\contentsline {subsection}{\numberline {4.5.1}logger.py}{22}{subsection.4.5.1}
+\contentsline {chapter}{\numberline {5}Indices and tables}{25}{chapter.5}
+\contentsline {chapter}{Index}{27}{section*.54}
