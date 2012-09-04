@@ -1,3 +1,12 @@
+"""EARS Milter definitions and functions
+
+.. :module:: EARSmilter.py
+    :synopsis: EARS Milter definitions and functions
+    
+.. moduleauthor:: Larry G. Wapnitsky <larry@qual-ITsystems.com>
+
+"""
+
 import Milter
 import codecs
 import datetime
@@ -19,6 +28,7 @@ import types
 
 from Milter.utils import parse_addr
 
+
 from StringIO import StringIO
 
 from datetime import date, datetime, timedelta
@@ -39,6 +49,9 @@ from database.toDB import *
 sys.stdout = codecs.getwriter( 'utf-8' )( sys.stdout )
 
 class EARSlog():
+    """
+    Establishes logging for different error statuses:  INFO, WARN, DEBUG, ERR
+    """
     def __init__( self ):
         self.log = logger( 'EARSmilter' )
 
@@ -60,18 +73,33 @@ logfile.log.start()
 ## === === ##
 
 class milter( Milter.Base ):
+    """
+    Milter processing derived from pymilter.
+    
+    **Only functions that have been heavily modified from standard Milter processing
+    have been documented**
+    
+    """
     def __init__( self ):
+        """
+        Connects to the established log and sets a unique ID for the Milter process
+        """
         self.log = logfile
         self.id = Milter.uniqueID()
 
     def close( self ):
         return Milter.CONTINUE
 
-    def abort( self ):
-        self.log.warn( '!!! client disconnected prematurely !!!' )
+    #===========================================================================
+    # def abort( self ):
+    #    self.log.warn( '!!! client disconnected prematurely !!!' )
+    #===========================================================================
 
     @Milter.noreply
     def connect( self, IPname, family, hostaddr ):
+        """
+        Initializes when a new connection to the Milter is made via SMTP
+        """
         self.IP = hostaddr[0]
         self.port = hostaddr[1]
         if family == AF_INET6:
@@ -93,6 +121,9 @@ class milter( Milter.Base ):
 
     @Milter.noreply
     def header( self, name, hval ):
+        """
+        Processes headers from the incoming message and writes them to a new variable for database storage.
+        """
         rgxSubject = re.compile( '^(subject)', re.IGNORECASE | re.DOTALL )
         rgxMessageID = re.compile( '^(message-id)', re.IGNORECASE | re.DOTALL )
 
@@ -135,6 +166,29 @@ class milter( Milter.Base ):
         return Milter.CONTINUE
 
     def eom( self ):
+        """
+        End-Of-Message milter function
+        
+        Connection to the database is established here via the toDB class:
+        
+        .. code-block:: py
+        
+            db = toDB( 'root', 'python', 'python.dev.wrtdesign.com', 'EARS' )
+            
+        The variables above can be changed accordingly.
+        
+        New messages are initialized in the database via:
+        
+        .. code-block:: py
+        
+            db.newMessage( self.canon_from, self.Subject, self.headers, self._msg, self.R )        
+
+        and are subsequently shipped to the ProcessMessage class to parse/remove attachments,
+        then add the EARS link page to the message before being sent to the recipient(s)
+        
+        If an error occurs, an Exception is thrown and logged to the <logname>.err file
+        """
+
         self.fp.seek( 0 )
         msg = mime.message_from_file( self.fp )
         self._msg = msg
@@ -182,8 +236,24 @@ class milter( Milter.Base ):
 ## === === ##
 
 class ProcessMessage():
-#    def __init__( self, _msgID, _msg, _R, _from, _db, _log ):
+    """
+    All message processing is done via this class.
+    
+    * Attachments are parsed/removed
+    * Winmail.DAT files are extracted
+    * Retreive_Attachments.html file is added to original message
+    * Message information is stored in the MySQL database
+    """
+
     def __init__( self, _db, _log, _from ):
+        """
+        * **_db** - toDB class
+        * **_log** - EARSlog class
+        * **_from** - sender's e-mail address
+        
+        **subChange** is set to *False*.  If no attachments are removed, **subChange**
+        will be set to *True* and "Removed Attachments" will be removed from the subject line
+        """
 
         self.db = _db
         self.message = self.db.message
@@ -192,7 +262,6 @@ class ProcessMessage():
 
         self.fhandling = FileSys( self.message.raw_original )
         self.attachDir = self.fhandling.attachDir
-        print self.attachDir
 
         self.subjChange = False
 
@@ -200,6 +269,20 @@ class ProcessMessage():
 
 
     def ParseAttachments( self ):
+        """
+        The message is passed through this function in order to analyze and potentially remove attachments
+        
+        If the attached file is WINMAIL.DAT, it is sent for further processing so that the files it contains
+        can be extracted and provided to the recipient(s)
+        
+        Attachments are then analyzed for size and, if are above the set threshold, are detached.
+        
+        If no attachments are extracted, the folder created in the **dropDir** is removed.
+        
+        Otherwise, the "Retrieve_Attachments.html" notice is created and appended to the original message along
+        with any attachments that remained below the threshold
+        """
+
         msg = self.message.raw_original
         sender = self.message.sender
         recipients = self.message.recipients
@@ -290,6 +373,11 @@ class ProcessMessage():
         return ( msg, self.subjChange )
 
     def extract_attachment( self, data, fname ):
+        """
+        Used to extract attachments that are NOT in a WINMAIL.DAT file.
+        
+        Filenames are unicode-corrected.
+        """
         file_counter = 1
         file_created = False
         fname_to_write = fname
@@ -303,9 +391,7 @@ class ProcessMessage():
             if os.path.exists( exdir_file ):
                 fileName, fileExtension = os.path.splitext( fname_to_write )
                 fileName = re.sub( '\(\d*\)$', '', fileName )
-                print fileName
                 fname_to_write = u"".join( [unicode( fileName ), u'(', unicode( file_counter ), u')', unicode( fileExtension )] )
-                print fname_to_write
                 file_counter += 1
             else:
                 extracted = open( exdir_file, "wb" )
@@ -324,6 +410,11 @@ class ProcessMessage():
         return ( fname_to_write, exdir_file_size )
 
     def winmail_parse( self, fname ):
+        """
+        If a WINMAIL.DAT file is attached to this message, parse and attempt to extract the files it contains.
+        
+        For more information on WINMAIL.DAT and TNEF files, please see `Transport Neutral Encapsulation Format <http://en.wikipedia.org/wiki/Transport_Neutral_Encapsulation_Format>`_
+        """
         wparts = []
         body_types = ( {'body':'txt', 'htmlbody':'html'} )
         body = None
@@ -355,6 +446,12 @@ class ProcessMessage():
         return wparts
 
     def delete_attachments( self, part, notice ):
+        """
+        For each attachment that needs to be removed from the message,
+        edit the headers of the message and add in the "Retrieve_Attachments.html" file.
+        
+        This only needs to be run once to avoid multiple copies of the HTML file being attached
+        """
         for key, value in part.get_params():
             part.del_param( key )
 
@@ -369,6 +466,16 @@ class ProcessMessage():
         return part
 
     def mako_notice( self, fnames ):
+        """
+        The "Retrieve_Attachments.html" file is generated.using the `Mako Template Engine for Python <http://www.makotemplates.org/>`_.
+        
+        The template is stored in the *www* subfolder of the main EARS milter folder.  The CSS and image files should be stored on
+        an externally-accessible web server.
+        
+        Each filename is encoded in Unicode and parsed to be valid for URLs (hence, special characters like ampersands and percent signs
+        can be part of valid filenames and still downloaded properly).
+        
+        """
         attach = []
         path = '';
 
@@ -402,6 +509,16 @@ class ProcessMessage():
 
 class FileSys():
     def __init__( self, msg ):
+        """
+        **msg** - Message passed directly from the Milter
+        
+        Variables that are established for this class are:
+        
+        * **dropDir** - Base folder where attachment files will be stored
+        * **min_attach_size** - Minimum attachment size to detach from the message
+        * **remfile** - Name of the file with links to removed attachments
+        
+        """
         self.msg = msg
 
         self.dropDir = "/dropdir/"
@@ -411,6 +528,9 @@ class FileSys():
         self.attachDir = self.Dir()
 
     def Dir( self ):
+        """
+        Creates a unique folder in the **dropDir** based on the hash of the whole incoming message
+        """
         out = tempfile.TemporaryFile()
         self.msg.dump( out )
         out.seek( 0 )
@@ -424,12 +544,18 @@ class FileSys():
         return attachDir
 
     def hashit( self, data ):
+        """
+        Generates a hash for **dropDir** folders and individual files
+        """
         sha1 = hashlib.sha1()
         sha1.update( data )
 
         return sha1.hexdigest()
 
     def filesize_notation( self, filesize ):
+        """
+        Determines proper filesize notation (K, M, G) based on mathematical calculation loop
+        """
         f_num = float( filesize )
         notation = ['', 'K', 'M', 'G']
         magnitude = 0
@@ -441,6 +567,12 @@ class FileSys():
 
 
     def unicodeConvert( self, fname ):
+        """
+        Convert text to unicode.
+        
+        This was designed to address issues with Latin-1 (iso-8859-1) encoding
+        in addition to other foreign characters.
+        """
         normalized = False
 
 #        if '8859-1' in fname:

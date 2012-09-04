@@ -1,0 +1,149 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>What is the EARS Milter? &mdash; EARSmilter 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="#" />
+    <link rel="top" title="EARSmilter 1.0 documentation" href="index.html" />
+    <link rel="next" title="EARS Milter Requirements" href="requirements.html" />
+    <link rel="prev" title="WRT E-mail Attachment Removal/Retrieval System (EARS) Milter" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="requirements.html" title="EARS Milter Requirements"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="WRT E-mail Attachment Removal/Retrieval System (EARS) Milter"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">EARSmilter 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="what-is-the-ears-milter">
+<h1>What is the EARS Milter?<a class="headerlink" href="#what-is-the-ears-milter" title="Permalink to this headline">¶</a></h1>
+<p>While wonderfully convenient, receiving files from clients and consultants through email has its drawbacks.</p>
+<p>First there’s the mailbox bloat. One 8MB email and wham!, your mailbox is full and you can’t send.
+Then there’s the PST file size limit to contend with.
+And if you need bigger files? Forgetaboutit!
+FTP? SendIT? There are ways around using email to receive files but the best of them aren’t half as simple.
+Can’t we just….? Now, we can!</p>
+<p>Introducing the <em>Email Attachment Removal/Retrieval System (EARS)</em>. Email
+attachment magic – automatically. Now, if someone outside the office sends you
+an email that exceeds a set threshold in size (currently 8MB), instead of being
+rejected, the message is passed to the Email Attachment Removal/Retrieval
+System. EARS saves any attachments larger than 160K to a temporary storage
+location, removes them from the email message and creates a new attachment
+named ‘Retrieve_Attachments.html’ before passing it on to your mailbox. The
+result is that you receive a nice small email with links to the original
+attachments that you can download and save to the location of your choice. You
+can even retrieve the attachments using your iPhone/iPad <a class="footnote-reference" href="#f1" id="id1">[1]</a> or Outlook Web
+Access!</p>
+<p>Incoming Email attachment size is no longer limited by WRT, only by the sender’s email system.</p>
+<p>Here’s what it looks like:</p>
+<img alt="_images/EARSmilter.png" src="_images/EARSmilter.png" />
+<p>Notice the subject line has been appended with “[Attachments Processed]”. This tells you that the message was passed to the EARS system and attachments have been saved and removed. Also notice the ‘Retrieve_Attachments.html’ attachment – this is where you get your files back when you open it.</p>
+<p>Open the ‘Retrieve_Attachments.html’ by double-clicking in Outlook and the page will open in your browser. Use the links to save your files to the location of your choice. But do it right away because the files will be deleted permanently (and un-retrievably) from the temporary location 30 days after the message was received whether you’ve saved them or not!</p>
+<p>EARS was conceived of by your IT team in response to direct feedback from you and was created by our one and only Larry Wapnitsky using FREE open-source software. No dollars were harmed during its development.</p>
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>iPhone/iPad compatibility is limited to files that are readable on your device based on installed apps.</td></tr>
+</tbody>
+</table>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">WRT E-mail Attachment Removal/Retrieval System (EARS) Milter</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="requirements.html"
+                        title="next chapter">EARS Milter Requirements</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/about.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="requirements.html" title="EARS Milter Requirements"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="WRT E-mail Attachment Removal/Retrieval System (EARS) Milter"
+             >previous</a> |</li>
+        <li><a href="index.html">EARSmilter 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Larry G. Wapnitsky.
+      Last updated on Aug 29, 2012.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

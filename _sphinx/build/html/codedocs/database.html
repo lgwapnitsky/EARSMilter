@@ -1,0 +1,248 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Database Definitions and Functions &mdash; EARSmilter 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="EARSmilter 1.0 documentation" href="../index.html" />
+    <link rel="up" title="EARS Code" href="../codedocs.html" />
+    <link rel="next" title="Customized Python Logging" href="logs.html" />
+    <link rel="prev" title="purgeEARSdb.py" href="purgeEARSdb_py.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="logs.html" title="Customized Python Logging"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="purgeEARSdb_py.html" title="purgeEARSdb.py"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">EARSmilter 1.0 documentation</a> &raquo;</li>
+          <li><a href="../codedocs.html" accesskey="U">EARS Code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="database-definitions-and-functions">
+<h1>Database Definitions and Functions<a class="headerlink" href="#database-definitions-and-functions" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-database.SQLAlchemy"><span id="sqlalchemy"></span></span><div class="section" id="module-SQLAlchemy.py">
+<span id="sqlalchemy-py-sqlalchemy-database-definitions"></span><h2>SQLAlchemy.py - SQLAlchemy Database Definitions<a class="headerlink" href="#module-SQLAlchemy.py" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sqlalchemy.dialects.mysql</span> <span class="kn">import</span>
+        <span class="n">BIGINT</span><span class="p">,</span> <span class="n">BINARY</span><span class="p">,</span> <span class="n">BIT</span><span class="p">,</span> <span class="n">BLOB</span><span class="p">,</span> <span class="n">BOOLEAN</span><span class="p">,</span> <span class="n">CHAR</span><span class="p">,</span> <span class="n">DATE</span><span class="p">,</span>
+        <span class="n">DATETIME</span><span class="p">,</span> <span class="n">DECIMAL</span><span class="p">,</span> <span class="n">DECIMAL</span><span class="p">,</span> <span class="n">DOUBLE</span><span class="p">,</span> <span class="n">ENUM</span><span class="p">,</span> <span class="n">FLOAT</span><span class="p">,</span> <span class="n">INTEGER</span><span class="p">,</span>
+        <span class="n">LONGBLOB</span><span class="p">,</span> <span class="n">LONGTEXT</span><span class="p">,</span> <span class="n">MEDIUMBLOB</span><span class="p">,</span> <span class="n">MEDIUMINT</span><span class="p">,</span> <span class="n">MEDIUMTEXT</span><span class="p">,</span> <span class="n">NCHAR</span><span class="p">,</span>
+        <span class="n">NUMERIC</span><span class="p">,</span> <span class="n">NVARCHAR</span><span class="p">,</span> <span class="n">REAL</span><span class="p">,</span> <span class="n">SET</span><span class="p">,</span> <span class="n">SMALLINT</span><span class="p">,</span> <span class="n">TEXT</span><span class="p">,</span> <span class="n">TIME</span><span class="p">,</span> <span class="n">TIMESTAMP</span><span class="p">,</span>
+        <span class="n">TINYBLOB</span><span class="p">,</span> <span class="n">TINYINT</span><span class="p">,</span> <span class="n">TINYTEXT</span><span class="p">,</span> <span class="n">VARBINARY</span><span class="p">,</span> <span class="n">VARCHAR</span><span class="p">,</span> <span class="n">YEAR</span>
+</pre></div>
+</div>
+<p>This import is necessary in order to define the specific field type for a MySQL database</p>
+<dl class="data">
+<dt id="database.SQLAlchemy.mr_link">
+<tt class="descclassname">database.SQLAlchemy.</tt><tt class="descname">mr_link</tt><em class="property"> = Table('mr_link', MetaData(bind=None), Column('recipient_id', Integer(), ForeignKey('recipient.id'), table=&lt;mr_link&gt;), Column('msg_id', Integer(), ForeignKey('message.id'), table=&lt;mr_link&gt;), schema=None)</em><a class="headerlink" href="#database.SQLAlchemy.mr_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Special table used to create relationships between messages and recipients/attachments.
+This table is never referenced specifically in the code other than in the table definition for :py:class:Message.
+Links are generated automatically.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="database.SQLAlchemy.ma_link">
+<tt class="descclassname">database.SQLAlchemy.</tt><tt class="descname">ma_link</tt><em class="property"> = Table('att_link', MetaData(bind=None), Column('file_id', Integer(), ForeignKey('attachment.id'), table=&lt;att_link&gt;), Column('msg_id', Integer(), ForeignKey('message.id'), table=&lt;att_link&gt;), schema=None)</em><a class="headerlink" href="#database.SQLAlchemy.ma_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Special table used to create relationships between messages and recipients/attachments.
+This table is never referenced specifically in the code other than in the table definition for <tt class="docutils literal"><span class="pre">Message</span></tt>.
+Links are generated automatically.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="database.SQLAlchemy.Attachment">
+<em class="property">class </em><tt class="descclassname">database.SQLAlchemy.</tt><tt class="descname">Attachment</tt><big>(</big><em>filename</em>, <em>received</em>, <em>hash</em>, <em>data</em><big>)</big><a class="reference internal" href="../_modules/database/SQLAlchemy.html#Attachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.SQLAlchemy.Attachment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attachments are stored as binary blobs in the MySQL database for later retrieval</p>
+<dl class="method">
+<dt id="database.SQLAlchemy.Attachment.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>filename</em>, <em>received</em>, <em>hash</em>, <em>data</em><big>)</big><a class="reference internal" href="../_modules/database/SQLAlchemy.html#Attachment.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.SQLAlchemy.Attachment.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attachment data requires a filename, the date the attachment was received, the filehash and the binary data</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="database.SQLAlchemy.Message">
+<em class="property">class </em><tt class="descclassname">database.SQLAlchemy.</tt><tt class="descname">Message</tt><big>(</big><em>subject</em>, <em>headers</em>, <em>body</em>, <em>dateReceived</em>, <em>raw_original</em><big>)</big><a class="reference internal" href="../_modules/database/SQLAlchemy.html#Message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.SQLAlchemy.Message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Messages contain automatically generated relationships to attachments and recipients via the <tt class="docutils literal"><span class="pre">mr_link</span></tt> and <tt class="docutils literal"><span class="pre">ma_link</span></tt> table definitions.</p>
+<dl class="method">
+<dt id="database.SQLAlchemy.Message.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>subject</em>, <em>headers</em>, <em>body</em>, <em>dateReceived</em>, <em>raw_original</em><big>)</big><a class="reference internal" href="../_modules/database/SQLAlchemy.html#Message.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.SQLAlchemy.Message.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Message data requires a subject, the headers, message body, the date the message was received and a raw copy of the oricinal message</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="database.SQLAlchemy.Recipient">
+<em class="property">class </em><tt class="descclassname">database.SQLAlchemy.</tt><tt class="descname">Recipient</tt><big>(</big><em>email_address</em><big>)</big><a class="reference internal" href="../_modules/database/SQLAlchemy.html#Recipient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.SQLAlchemy.Recipient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recipient table</p>
+<dl class="method">
+<dt id="database.SQLAlchemy.Recipient.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>email_address</em><big>)</big><a class="reference internal" href="../_modules/database/SQLAlchemy.html#Recipient.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.SQLAlchemy.Recipient.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>A valid email address must be provided for the recipient</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="database.SQLAlchemy.Sender">
+<em class="property">class </em><tt class="descclassname">database.SQLAlchemy.</tt><tt class="descname">Sender</tt><big>(</big><em>email_address</em><big>)</big><a class="reference internal" href="../_modules/database/SQLAlchemy.html#Sender"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.SQLAlchemy.Sender" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sender table</p>
+<dl class="method">
+<dt id="database.SQLAlchemy.Sender.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>email_address</em><big>)</big><a class="reference internal" href="../_modules/database/SQLAlchemy.html#Sender.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.SQLAlchemy.Sender.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>A valid email address must be provided for the recipient</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-database.toDB"></span><div class="section" id="module-toDB.py">
+<span id="todb-py-ears-milter-database-population"></span><h2>toDB.py - EARS Milter Database Population<a class="headerlink" href="#module-toDB.py" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="database.toDB.toDB">
+<em class="property">class </em><tt class="descclassname">database.toDB.</tt><tt class="descname">toDB</tt><big>(</big><em>username</em>, <em>password</em>, <em>server</em>, <em>database</em><big>)</big><a class="reference internal" href="../_modules/database/toDB.html#toDB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.toDB.toDB" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class holds all the functions to add/update new messages and attachments to the EARS database.</p>
+<dl class="method">
+<dt id="database.toDB.toDB.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>username</em>, <em>password</em>, <em>server</em>, <em>database</em><big>)</big><a class="reference internal" href="../_modules/database/toDB.html#toDB.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.toDB.toDB.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>To initialize the EARS database population class,  you must provide a valid
+username, password, server and database names.</p>
+<p>The database itself must exist prior to the first execution of EARS, but this class
+will automatically generate the necessary tables.</p>
+<p>Currently, EARS is configured only to work with MySQL databases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="database.toDB.toDB.newMessage">
+<tt class="descname">newMessage</tt><big>(</big><em>sender</em>, <em>subject</em>, <em>headers</em>, <em>raw_original</em>, <em>recipients</em><big>)</big><a class="reference internal" href="../_modules/database/toDB.html#toDB.newMessage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.toDB.toDB.newMessage" title="Permalink to this definition">¶</a></dt>
+<dd><p>When a message is submitted to EARS, existing sender and recipient e-mail addresses are checked for
+in the databse.  If they do not exist, they are added automatically.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="database.toDB.toDB.addAttachment">
+<tt class="descname">addAttachment</tt><big>(</big><em>filename</em>, <em>filehash</em>, <em>data</em><big>)</big><a class="reference internal" href="../_modules/database/toDB.html#toDB.addAttachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.toDB.toDB.addAttachment" title="Permalink to this definition">¶</a></dt>
+<dd><p>When attachments are submitted to EARS, the filehash is compared with existing files in the database.
+If the file already exists, the datetime stamp is updated so that the attachment does not get deleted
+sooner than it should be when <strong class="program">purgeEARSdb.py</strong> is run.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="database.toDB.toDB.close">
+<tt class="descname">close</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/database/toDB.html#toDB.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.toDB.toDB.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Commits the message and its attachment(s) to the database</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Database Definitions and Functions</a><ul>
+<li><a class="reference internal" href="#module-SQLAlchemy.py">SQLAlchemy.py - SQLAlchemy Database Definitions</a></li>
+<li><a class="reference internal" href="#module-toDB.py">toDB.py - EARS Milter Database Population</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="purgeEARSdb_py.html"
+                        title="previous chapter">purgeEARSdb.py</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="logs.html"
+                        title="next chapter">Customized Python Logging</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/codedocs/database.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="logs.html" title="Customized Python Logging"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="purgeEARSdb_py.html" title="purgeEARSdb.py"
+             >previous</a> |</li>
+        <li><a href="../index.html">EARSmilter 1.0 documentation</a> &raquo;</li>
+          <li><a href="../codedocs.html" >EARS Code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Larry G. Wapnitsky.
+      Last updated on Aug 29, 2012.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,3 +1,12 @@
+"""Purge EARS database
+
+.. module:: purgeEARSdb.py
+    :synopsis: Purge EARS database
+    
+.. moduleauthor:: Larry G. Wapnitsky <larry@qual-ITsystems.com>
+
+"""
+
 #!/usr/bin/env python
 
 import database.SQLAlchemy as EARS_db
@@ -14,6 +23,9 @@ from argparse import ArgumentParser
 import sys
 
 class Options:
+    """
+    Establish the command-line options for purgeEARSdb.py
+    """
     def __init__( self ):
         self.setOptions()
         self.ageAdjust()
@@ -108,6 +120,24 @@ class Purge:
             self.purgeSenders()
 
     def purgeAttachmentsMessages( self ):
+        """
+        .. code-block:: python
+        
+            query = session.query( Attachment ).filter( Attachment.received <= delta ).all()
+        
+        Searches attachments based on provided delta time (default of 7 days)
+        
+        .. code-block:: python
+        
+            for q in query:
+                for message in q.message:
+                    if message.dateReceived <= delta:
+                    
+        Only deletes messages older than the specified delta.
+
+        
+        """
+
         session = self.session
         delta = self.delta
         verbose = self.args.verbose
@@ -149,6 +179,10 @@ class Purge:
                 session.commit()
 
     def purgeSenders( self ):
+        """
+        Designed to remove senders with no assocated messages from the database
+        """
+
         session = self.session
         verbose = self.args.verbose
         quiet = self.args.quiet
