@@ -85,20 +85,23 @@ MySQL, PHP)
 
    To get MySQL support in PHP, we can install the *php5-mysql* package. It's
    a good idea to install some other PHP5 modules as well as you might need
-   them for your applications. You can search for available PHP5 modules like
-   this:
+   them for your applications.
 
    .. code-block:: sh
 
-      % apt-cache search php5
+      % aptitude install php5-mysql php5-curl php-pear php5-imagick \
+         php5-mcrypt php5-memcache
 
-   Pick the ones you need and install them like this:
+   .. note::
+   
+      You can search for available PHP5 modules like
+      this:
+   
+      .. code-block:: sh
+   
+         % apt-cache search php5
 
-   .. code-block:: sh
-
-      % aptitude install php5-mysql php5-curl php-pear php5-imagick
-      php5-mcrypt php5-memcache
-
+   
    Now restart Apache2:
 
    .. code-block:: sh
@@ -125,7 +128,7 @@ repository.
 
       .. code-block:: sh
 
-         % cd ~/.ssh % ssh-keygen -t rsa % cd ~
+         ssh-keygen -t rsa
 
       Hit return at the prompts to create the key without passphrase
       authentication.
@@ -142,10 +145,11 @@ repository.
          % cd gitolite-admin
          % git pull
          % cp ~/id_rsa.pub keydir/root\@<milterservername>.pub
-         % sed -i 's/\@.*$//g' keydir/root\@ keydir/root\@<milterservername>.pub
+         % sed -i 's/\@.*$//g' keydir/root\@<milterservername>.pub
          % git add keydir/root\@<milterservername>.pub
          % git commit -a
          % git push
+         % exit
 
    * On the EARS Milter server, test access to the repository server:
 
@@ -158,6 +162,8 @@ repository.
 
 Mail Server Installation
 ========================
+
+EARS requires an MTA.  Please choose **either** postfix or sendmail.
 
 .. contents::
    :local:
@@ -193,7 +199,7 @@ Postfix
    Accept the defaults for *Root and postmaster mail recipient*,
    *Other destinations to accept mail for* and *Force synchronous updates...*.
 
-   For *Local networks*, enter ``10.102.0.0\16, 192.168.0.0\24, 127.0.0.1``.
+   For *Local networks*, enter ``10.102.0.0/16, 192.168.0.0/24, 127.0.0.1``.
    This will handle all of WRT's internal networks as well as the localhost.
 
    Accept all the rest of the defaults.
@@ -202,9 +208,9 @@ Postfix
 
    .. code-block:: sh
 
-      disable_vrfy_command = yes smtpd_command_filter
-      pcre:/etc/postfix/bogus_commands smtpd_recipient_restrictions =
-      permit_mynetworks reject_unauth_destination
+      disable_vrfy_command = yes 
+      smtpd_command_filter = pcre:/etc/postfix/bogus_commands 
+      smtpd_recipient_restrictions = permit_mynetworks reject_unauth_destination
 
    Remove the following line from the same file:
 
@@ -230,8 +236,9 @@ Postfix
    .. code-block:: sh
 
       scan      unix  -       -       n       -       10      smtp
-       -o smtp_send_xforward_command=yes -o
-       disable_mime_output_conversion=yes -o smtp_generic_maps=
+       -o smtp_send_xforward_command=yes 
+       -o disable_mime_output_conversion=yes 
+       -o smtp_generic_maps=
 
    Add the following (indented) after the line marked ``relay``:
 
@@ -244,7 +251,8 @@ Postfix
 
    .. code-block:: sh
 
-      /^[^ ]{3}\s.*/  NOOP /^https{0,1}\:\/\/.*/ NOOP
+      /^[^ ]{3}\s.*/  NOOP 
+      /^https{0,1}\:\/\/.*/ NOOP
 
 #. Reload the configuration and send a test message:
 
@@ -496,8 +504,9 @@ Accquiring and configuring the Milter
 
       .. code-block:: sh
 
-         % cp /var/spool/EARS/EARS.sh /etc/init.d % chmod +x
-         /etc/init.d/EARS.sh % update-rc.d EARS.sh enable defaults
+         % cp /var/spool/EARS/EARS.sh /etc/init.d 
+         % chmod +x /etc/init.d/EARS.sh 
+         % update-rc.d EARS.sh enable defaults
 
 #. Create a virtual host file for Apache in
    ``/etc/apache2/sites-available/ears.conf`` that contains the following
@@ -514,7 +523,7 @@ Accquiring and configuring the Milter
 
    .. code-block:: sh
 
-      % ln -s /etc/apache2/sites-available/ears.conf
+      % ln -s /etc/apache2/sites-available/ears.conf \
       /etc/apache2/sites-enabled/ears.conf
 
    Create a folder called ``/var/www/EARS``.  Copy the files from
@@ -523,8 +532,7 @@ Accquiring and configuring the Milter
 
    .. code-block:: sh
 
-      % mkdir -p /var/www/EARS % cp -R
-      /var/spool/EARS/www/* /var/www/EARS
+      % mkdir -p /var/www/EARS % cp -R /var/spool/EARS/www/* /var/www/EARS
       % chown -R www-data.www-data  /var/www/EARS
       % chmod -x /var/www/EARS/*.php
       % /etc/init.d/apache2 restart

@@ -56,7 +56,8 @@ The following software is optional, but is useful for diagnostics
 * `phpMyAdmin`_
 
 
-.. _mail-filter: http://www.milter.orghttp://www.webmin.com/deb.html
+.. _mail-filter: http://www.milter.org
+.. _Webmin: http://www.webmin.com/deb.html
 .. _postfix: http://www.postfix.org
 .. _sendmail: http://www.sendmail.com/sm/open_source/docs/
 .. _Python 2.7: http://python.org

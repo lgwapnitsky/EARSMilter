@@ -10,7 +10,7 @@
     
     <title>Database Definitions and Functions &mdash; EARSmilter 1.0 documentation</title>
     
-    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -32,35 +32,48 @@
     <link rel="prev" title="purgeEARSdb.py" href="purgeEARSdb_py.html" /> 
   </head>
   <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="logs.html" title="Customized Python Logging"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
+    <div class="header-wrapper">
+      <div class="header">
+          <p class="logo"><a href="../index.html">
+            <img class="logo" src="../_static/earslogo.png" alt="Logo"/>
+          </a></p>
+        <div class="headertitle"><a
+          href="../index.html">EARSmilter 1.0 documentation</a></div>
+        <div class="rel">
           <a href="purgeEARSdb_py.html" title="purgeEARSdb.py"
-             accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">EARSmilter 1.0 documentation</a> &raquo;</li>
-          <li><a href="../codedocs.html" accesskey="U">EARS Code</a> &raquo;</li> 
-      </ul>
-    </div>  
+             accesskey="P">previous</a> |
+          <a href="logs.html" title="Customized Python Logging"
+             accesskey="N">next</a> |
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
 
-    <div class="document">
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body">
             
   <div class="section" id="database-definitions-and-functions">
-<h1>Database Definitions and Functions<a class="headerlink" href="#database-definitions-and-functions" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-database.SQLAlchemy"><span id="sqlalchemy"></span></span><div class="section" id="module-SQLAlchemy.py">
-<span id="sqlalchemy-py-sqlalchemy-database-definitions"></span><h2>SQLAlchemy.py - SQLAlchemy Database Definitions<a class="headerlink" href="#module-SQLAlchemy.py" title="Permalink to this headline">¶</a></h2>
+<h1><a class="toc-backref" href="#id1">Database Definitions and Functions</a><a class="headerlink" href="#database-definitions-and-functions" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<span id="sqlalchemy"></span><p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#database-definitions-and-functions" id="id1">Database Definitions and Functions</a><ul>
+<li><a class="reference internal" href="#module-SQLAlchemy.py" id="id2">SQLAlchemy.py - SQLAlchemy Database Definitions</a></li>
+<li><a class="reference internal" href="#module-toDB.py" id="id3">toDB.py - EARS Milter Database Population</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<span class="target" id="module-database.SQLAlchemy"></span><div class="section" id="module-SQLAlchemy.py">
+<span id="sqlalchemy-py-sqlalchemy-database-definitions"></span><h2><a class="toc-backref" href="#id2">SQLAlchemy.py - SQLAlchemy Database Definitions</a><a class="headerlink" href="#module-SQLAlchemy.py" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sqlalchemy.dialects.mysql</span> <span class="kn">import</span>
         <span class="n">BIGINT</span><span class="p">,</span> <span class="n">BINARY</span><span class="p">,</span> <span class="n">BIT</span><span class="p">,</span> <span class="n">BLOB</span><span class="p">,</span> <span class="n">BOOLEAN</span><span class="p">,</span> <span class="n">CHAR</span><span class="p">,</span> <span class="n">DATE</span><span class="p">,</span>
         <span class="n">DATETIME</span><span class="p">,</span> <span class="n">DECIMAL</span><span class="p">,</span> <span class="n">DECIMAL</span><span class="p">,</span> <span class="n">DOUBLE</span><span class="p">,</span> <span class="n">ENUM</span><span class="p">,</span> <span class="n">FLOAT</span><span class="p">,</span> <span class="n">INTEGER</span><span class="p">,</span>
@@ -135,8 +148,11 @@ Links are generated automatically.</p>
 </dd></dl>
 
 </div>
+<p class="sadisplay">
+<img src="../_images/sadisplay-6eaf309bd450fd536a3de386f2bd1c402f775f00.png" alt="[u'database.SQLAlchemy']" />
+</p>
 <span class="target" id="module-database.toDB"></span><div class="section" id="module-toDB.py">
-<span id="todb-py-ears-milter-database-population"></span><h2>toDB.py - EARS Milter Database Population<a class="headerlink" href="#module-toDB.py" title="Permalink to this headline">¶</a></h2>
+<span id="todb-py-ears-milter-database-population"></span><h2><a class="toc-backref" href="#id3">toDB.py - EARS Milter Database Population</a><a class="headerlink" href="#module-toDB.py" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="database.toDB.toDB">
 <em class="property">class </em><tt class="descclassname">database.toDB.</tt><tt class="descname">toDB</tt><big>(</big><em>username</em>, <em>password</em>, <em>server</em>, <em>database</em><big>)</big><a class="reference internal" href="../_modules/database/toDB.html#toDB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.toDB.toDB" title="Permalink to this definition">¶</a></dt>
@@ -181,68 +197,69 @@ sooner than it should be when <strong class="program">purgeEARSdb.py</strong> is
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Database Definitions and Functions</a><ul>
-<li><a class="reference internal" href="#module-SQLAlchemy.py">SQLAlchemy.py - SQLAlchemy Database Definitions</a></li>
-<li><a class="reference internal" href="#module-toDB.py">toDB.py - EARS Milter Database Population</a></li>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about.html">What is the EARS Milter?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../requirements.html">EARS Milter Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">EARS Milter Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../codedocs.html">EARS Code</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="EARS_py.html">EARS.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EARSmilter.html">EARS Milter main class/functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="purgeEARSdb_py.html">purgeEARSdb.py</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Database Definitions and Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-SQLAlchemy.py">SQLAlchemy.py - SQLAlchemy Database Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-toDB.py">toDB.py - EARS Milter Database Population</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="logs.html">Customized Python Logging</a></li>
 </ul>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="purgeEARSdb_py.html"
-                        title="previous chapter">purgeEARSdb.py</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="logs.html"
-                        title="next chapter">Customized Python Logging</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../_sources/codedocs/database.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
         </div>
+        <div class="clearer"></div>
       </div>
-      <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="logs.html" title="Customized Python Logging"
-             >next</a> |</li>
-        <li class="right" >
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
           <a href="purgeEARSdb_py.html" title="purgeEARSdb.py"
-             >previous</a> |</li>
-        <li><a href="../index.html">EARSmilter 1.0 documentation</a> &raquo;</li>
-          <li><a href="../codedocs.html" >EARS Code</a> &raquo;</li> 
-      </ul>
-    </div>
+             >previous</a> |
+          <a href="logs.html" title="Customized Python Logging"
+             >next</a> |
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="../_sources/codedocs/database.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
     <div class="footer">
         &copy; Copyright 2012, Larry G. Wapnitsky.
-      Last updated on Aug 29, 2012.
+      Last updated on Sep 05, 2012.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
   </body>
 </html>

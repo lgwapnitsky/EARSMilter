@@ -42,7 +42,7 @@ sys.path.insert( 3, os.path.abspath( '../../EARSmilter' ) )
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.todo', 'sphinx.ext.autodoc', 'sphinx.ext.viewcode']
+extensions = ['sphinx.ext.todo', 'sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'sphinxcontrib.sadisp']
 
 
 # Add any paths that contain templates here, relative to this directory.
@@ -71,7 +71,7 @@ copyright = u'2012, Larry G. Wapnitsky'
 # built documents.
 #
 # The short X.Y version.
-version = u'1.0'
+version = u'2.0'
 
 # The full version, including alpha/beta/rc tags.
 release = u'1.0'
@@ -117,13 +117,19 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = u'default'
-
+#html_theme = u'default'
+html_theme = u'agogo'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #html_theme_options = {}
+html_theme_options = {
+                      "pagewidth":"80em",
+                      "documentwidth":"60em",
+                      "linkcolor":"#A6CE3B",
+                      "headerlinkcolor":"#A6CE3B"
+                      }
 
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
@@ -138,6 +144,7 @@ html_theme = u'default'
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
 #html_logo = None
+html_logo = 'images/earslogo.png'
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -175,7 +182,7 @@ html_last_updated_fmt = '%b %d, %Y'
 #html_split_index = False
 
 # If true, links to the reST sources are added to the pages.
-#html_show_sourcelink = True
+html_show_sourcelink = True
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
 #html_show_sphinx = True
@@ -218,6 +225,7 @@ latex_elements = { 'babel': '\\usepackage[english]{babel}' }
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
 #latex_logo = None
+latex_logo = 'images/earslogo.png'
 
 # For "manual" documents, if this is true, then toplevel headings are parts,
 # not chapters.
@@ -252,3 +260,8 @@ man_pages = [( 'index', 'EARSmilter', u'EARSmilter Documentation', [u'Larry G. W
 todo_include_todos = True
 
 autodoc_member_order = 'bysource'
+
+plantuml = 'java -jar /usr/share/plantuml/plantuml.jar'.split()
+graphviz = 'dot -Tpng'.split()
+#sadisplay_default_render = 'plantuml'
+sadisplay_default_render = 'graphviz'

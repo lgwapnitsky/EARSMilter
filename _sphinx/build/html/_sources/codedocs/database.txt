@@ -6,9 +6,17 @@ Database Definitions and Functions
 
 .. _SQLAlchemy:
 
+.. contents::
+   
+
 .. automodule:: database.SQLAlchemy
    :members:
    :special-members:
+   
+.. sadisplay::
+   :module: database.SQLAlchemy
+
+   
    
 .. automodule:: database.toDB
    :members:
