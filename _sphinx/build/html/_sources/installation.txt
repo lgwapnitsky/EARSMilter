@@ -513,14 +513,14 @@ Accquiring and configuring the Milter
       % cd /var/spool % git clone gitolite@git:EARSmilter EARS % cd EARS
 
 
-   #. Copy EARS.sh to ``/etc/init.d``.  Make it executable and enable it
-      at boot.
+#. Copy EARS.sh to ``/etc/init.d``.  Make it executable and enable it
+   at boot.
 
-      .. code-block:: sh
+   .. code-block:: sh
 
-         % cp /var/spool/EARS/EARS.sh /etc/init.d 
-         % chmod +x /etc/init.d/EARS.sh 
-         % update-rc.d EARS.sh enable defaults
+      % cp /var/spool/EARS/EARS.sh /etc/init.d 
+      % chmod +x /etc/init.d/EARS.sh 
+      % update-rc.d EARS.sh enable defaults
 
 #. Create a virtual host file for Apache in
    ``/etc/apache2/sites-available/ears.conf`` that contains the following
@@ -547,7 +547,8 @@ Accquiring and configuring the Milter
 
    .. code-block:: sh
 
-      % mkdir -p /var/www/EARS % cp -R /var/spool/EARS/www/* /var/www/EARS
+      % mkdir -p /var/www/EARS 
+      % cp -R /var/spool/EARS/www/* /var/www/EARS
       % chown -R www-data.www-data  /var/www/EARS
       % chmod -x /var/www/EARS/*.php
       % /etc/init.d/apache2 restart
@@ -623,7 +624,8 @@ Accquiring and configuring the Milter
    .. code-block:: sh
 
       milter_protocol = 6
-      smtpd_milters = unix:/var/spool/EARS/EARSmilter.sock milter_default_action = accept
+      smtpd_milters = unix:/var/spool/EARS/EARSmilter.sock 
+      milter_default_action = accept
 
    Reload postfix - ``postfix reload``
 
@@ -665,7 +667,7 @@ Accquiring and configuring the Milter
 
       % echo '\\FTPSERVER\FTPSHARE\dropdir  /dropdir  cifs  workgroup=DOMAIN, \
          file_mode=0777,dir_mode=0777,password=PASSWORD,uid=1000,gid=1000, \
-         username=USERNAME 0  0' >> /etc/fstab % mount -a
+         username=USERNAME 0  0' >> /etc/fstab
       % mount -a
 
 #. Start the EARS milter:
@@ -684,7 +686,7 @@ Accquiring and configuring the Milter
 
   .. code-block:: sh
 
-      /usr/bin/env python /var/spool/EARS/purgeEARSdb/purgeEARSdb.py -s \
+      @daily /usr/bin/env python /var/spool/EARS/purgeEARSdb/purgeEARSdb.py -s \
          milter.domain.com -d EARS -u EARS -p password -q -x -v#purge EARS database
 
   For a description of the options, see **How To Use** under :py:func:`purgeEARSdb`.

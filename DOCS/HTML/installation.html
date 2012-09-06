@@ -527,7 +527,7 @@ folder:</p>
 <div class="highlight-sh"><div class="highlight"><pre>% <span class="nb">cd</span> /var/spool % git clone gitolite@git:EARSmilter EARS % <span class="nb">cd </span>EARS
 </pre></div>
 </div>
-<ol class="arabic">
+</li>
 <li><p class="first">Copy EARS.sh to <tt class="docutils literal"><span class="pre">/etc/init.d</span></tt>.  Make it executable and enable it
 at boot.</p>
 <div class="highlight-sh"><div class="highlight"><pre>% cp /var/spool/EARS/EARS.sh /etc/init.d
@@ -535,8 +535,6 @@ at boot.</p>
 % update-rc.d EARS.sh <span class="nb">enable </span>defaults
 </pre></div>
 </div>
-</li>
-</ol>
 </li>
 <li><p class="first">Create a virtual host file for Apache in
 <tt class="docutils literal"><span class="pre">/etc/apache2/sites-available/ears.conf</span></tt> that contains the following
@@ -556,7 +554,8 @@ at boot.</p>
 <p>Create a folder called <tt class="docutils literal"><span class="pre">/var/www/EARS</span></tt>.  Copy the files from
 <tt class="docutils literal"><span class="pre">/var/spool/EARS/www</span></tt> to this new folder and give Apache full rights to
 the folder. Restart Apache.</p>
-<div class="highlight-sh"><div class="highlight"><pre>% mkdir -p /var/www/EARS % cp -R /var/spool/EARS/www/* /var/www/EARS
+<div class="highlight-sh"><div class="highlight"><pre>% mkdir -p /var/www/EARS
+% cp -R /var/spool/EARS/www/* /var/www/EARS
 % chown -R www-data.www-data  /var/www/EARS
 % chmod -x /var/www/EARS/*.php
 % /etc/init.d/apache2 restart
@@ -609,7 +608,8 @@ with <strong>smmta</strong>.</p>
 MTA:</p>
 <p><strong>Postfix</strong> - <tt class="docutils literal"><span class="pre">/etc/postfix/main.cf</span></tt></p>
 <div class="highlight-sh"><div class="highlight"><pre><span class="nv">milter_protocol</span> <span class="o">=</span> 6
-<span class="nv">smtpd_milters</span> <span class="o">=</span> unix:/var/spool/EARS/EARSmilter.sock <span class="nv">milter_default_action</span> <span class="o">=</span> accept
+<span class="nv">smtpd_milters</span> <span class="o">=</span> unix:/var/spool/EARS/EARSmilter.sock
+<span class="nv">milter_default_action</span> <span class="o">=</span> accept
 </pre></div>
 </div>
 <p>Reload postfix - <tt class="docutils literal"><span class="pre">postfix</span> <span class="pre">reload</span></tt></p>
@@ -649,7 +649,7 @@ your environment.</p>
 assumes the folder is on a MS Windows box:</p>
 <div class="highlight-sh"><div class="highlight"><pre>% <span class="nb">echo</span> <span class="s1">&#39;\\FTPSERVER\FTPSHARE\dropdir  /dropdir  cifs  workgroup=DOMAIN, \</span>
 <span class="s1">   file_mode=0777,dir_mode=0777,password=PASSWORD,uid=1000,gid=1000, \</span>
-<span class="s1">   username=USERNAME 0  0&#39;</span> &gt;&gt; /etc/fstab % mount -a
+<span class="s1">   username=USERNAME 0  0&#39;</span> &gt;&gt; /etc/fstab
 % mount -a
 </pre></div>
 </div>
@@ -667,7 +667,7 @@ assumes the folder is on a MS Windows box:</p>
 </ol>
 <blockquote>
 <div><p>Add this line:</p>
-<div class="highlight-sh"><div class="highlight"><pre>/usr/bin/env python /var/spool/EARS/purgeEARSdb/purgeEARSdb.py -s <span class="se">\</span>
+<div class="highlight-sh"><div class="highlight"><pre>@daily /usr/bin/env python /var/spool/EARS/purgeEARSdb/purgeEARSdb.py -s <span class="se">\</span>
    milter.domain.com -d EARS -u EARS -p password -q -x -v#purge EARS database
 </pre></div>
 </div>

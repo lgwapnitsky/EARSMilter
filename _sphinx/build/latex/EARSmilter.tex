@@ -881,7 +881,7 @@ folder:
 \begin{Verbatim}[commandchars=\\\{\},formatcom=\footnotesize]
 \PYGZpc{} \PYG{n+nb}{cd} /var/spool \PYGZpc{} git clone gitolite@git:EARSmilter EARS \PYGZpc{} \PYG{n+nb}{cd }EARS
 \end{Verbatim}
-\begin{enumerate}
+
 \item {} 
 Copy EARS.sh to \code{/etc/init.d}.  Make it executable and enable it
 at boot.
@@ -891,8 +891,6 @@ at boot.
 \PYGZpc{} chmod +x /etc/init.d/EARS.sh
 \PYGZpc{} update-rc.d EARS.sh \PYG{n+nb}{enable }defaults
 \end{Verbatim}
-
-\end{enumerate}
 
 \item {} 
 Create a virtual host file for Apache in
@@ -919,7 +917,8 @@ Create a folder called \code{/var/www/EARS}.  Copy the files from
 the folder. Restart Apache.
 
 \begin{Verbatim}[commandchars=\\\{\},formatcom=\footnotesize]
-\PYGZpc{} mkdir -p /var/www/EARS \PYGZpc{} cp -R /var/spool/EARS/www/* /var/www/EARS
+\PYGZpc{} mkdir -p /var/www/EARS
+\PYGZpc{} cp -R /var/spool/EARS/www/* /var/www/EARS
 \PYGZpc{} chown -R www-data.www-data  /var/www/EARS
 \PYGZpc{} chmod -x /var/www/EARS/*.php
 \PYGZpc{} /etc/init.d/apache2 restart
@@ -992,7 +991,8 @@ MTA:
 
 \begin{Verbatim}[commandchars=\\\{\},formatcom=\footnotesize]
 \PYG{n+nv}{milter\PYGZus{}protocol} \PYG{o}{=} 6
-\PYG{n+nv}{smtpd\PYGZus{}milters} \PYG{o}{=} unix:/var/spool/EARS/EARSmilter.sock \PYG{n+nv}{milter\PYGZus{}default\PYGZus{}action} \PYG{o}{=} accept
+\PYG{n+nv}{smtpd\PYGZus{}milters} \PYG{o}{=} unix:/var/spool/EARS/EARSmilter.sock
+\PYG{n+nv}{milter\PYGZus{}default\PYGZus{}action} \PYG{o}{=} accept
 \end{Verbatim}
 
 Reload postfix - \code{postfix reload}
@@ -1044,7 +1044,7 @@ assumes the folder is on a MS Windows box:
 \begin{Verbatim}[commandchars=\\\{\},formatcom=\footnotesize]
 \PYGZpc{} \PYG{n+nb}{echo} \PYG{l+s+s1}{'\PYGZbs{}\PYGZbs{}FTPSERVER\PYGZbs{}FTPSHARE\PYGZbs{}dropdir  /dropdir  cifs  workgroup=DOMAIN, \PYGZbs{}}
 \PYG{l+s+s1}{   file\PYGZus{}mode=0777,dir\PYGZus{}mode=0777,password=PASSWORD,uid=1000,gid=1000, \PYGZbs{}}
-\PYG{l+s+s1}{   username=USERNAME 0  0'} \PYGZgt{}\PYGZgt{} /etc/fstab \PYGZpc{} mount -a
+\PYG{l+s+s1}{   username=USERNAME 0  0'} \PYGZgt{}\PYGZgt{} /etc/fstab
 \PYGZpc{} mount -a
 \end{Verbatim}
 
@@ -1068,7 +1068,7 @@ Add a \code{cron} job to run the \code{purgeEARSdb} script on a weekly basis.
 Add this line:
 
 \begin{Verbatim}[commandchars=\\\{\},formatcom=\footnotesize]
-/usr/bin/env python /var/spool/EARS/purgeEARSdb/purgeEARSdb.py -s \PYG{l+s+se}{\PYGZbs{}}
+@daily /usr/bin/env python /var/spool/EARS/purgeEARSdb/purgeEARSdb.py -s \PYG{l+s+se}{\PYGZbs{}}
    milter.domain.com -d EARS -u EARS -p password -q -x -v\PYGZsh{}purge EARS database
 \end{Verbatim}
 

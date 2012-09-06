@@ -2,3 +2,5 @@
 .*~$
 # ignore compiled python files
 .*pyc$
+# ignore _sphinx/build folder
+/_sphinx/build/
