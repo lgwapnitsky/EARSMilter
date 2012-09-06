@@ -59,38 +59,8 @@
             
   <div class="section" id="module-logs">
 <span id="customized-python-logging"></span><h1>Customized Python Logging<a class="headerlink" href="#module-logs" title="Permalink to this headline">¶</a></h1>
-<p>Logger.py is a customized Python logging script that can be used in other applications</p>
-<span class="target" id="module-logs.logger"></span><div class="section" id="module-logger">
-<span id="logger-py"></span><h2>logger.py<a class="headerlink" href="#module-logger" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="logs.logger.logger">
-<em class="property">class </em><tt class="descclassname">logs.logger.</tt><tt class="descname">logger</tt><big>(</big><em>lname</em><big>)</big><a class="reference internal" href="../_modules/logs/logger.html#logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#logs.logger.logger" title="Permalink to this definition">¶</a></dt>
-<dd><p>logger class</p>
-<dl class="method">
-<dt id="logs.logger.logger.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>lname</em><big>)</big><a class="reference internal" href="../_modules/logs/logger.html#logger.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#logs.logger.logger.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constructor - requires a filename prefix.</p>
-<p>Logs are stored in /var/log.  If the log files do not exist, or the permissions are incorrect for the
-executing user, you will receive the following message:</p>
-<div class="highlight-sh"><div class="highlight"><pre>Please make sure that the log files exist by running the following commands as root:
-
-    touch /var/log/EARSmilter.log
-    touch /var/log/EARSmilter.err
-    chmod 666 /var/log/EARSmilter.log
-    chmod 666 /var/log/EARSmilter.err
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="logs.logger.logger.start">
-<tt class="descname">start</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/logs/logger.html#logger.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#logs.logger.logger.start" title="Permalink to this definition">¶</a></dt>
-<dd><p>Starts the logger</p>
-</dd></dl>
-
-</dd></dl>
-
-</div>
+<span class="target" id="module-logs.logger"></span><p>Created on Apr 23, 2012</p>
+<p>&#64;author: lwapnitsky</p>
 </div>
 
 
@@ -109,10 +79,7 @@ executing user, you will receive the following message:</p>
 <li class="toctree-l2"><a class="reference internal" href="EARSmilter.html">EARS Milter main class/functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="purgeEARSdb_py.html">purgeEARSdb.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database.html">Database Definitions and Functions</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Customized Python Logging</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#module-logger">logger.py</a></li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Customized Python Logging</a></li>
 </ul>
 </li>
 </ul>
@@ -150,7 +117,7 @@ executing user, you will receive the following message:</p>
           
     <div class="footer">
         &copy; Copyright 2012, Larry G. Wapnitsky.
-      Last updated on Sep 05, 2012.
+      Last updated on Sep 06, 2012.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
         </div>

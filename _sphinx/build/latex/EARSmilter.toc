@@ -24,15 +24,12 @@
 \contentsline {section}{\numberline {4.1}EARS.py}{17}{section.4.1}
 \contentsline {section}{\numberline {4.2}EARS Milter main class/functions}{17}{section.4.2}
 \contentsline {subsection}{\numberline {4.2.1}EARSlog}{17}{subsection.4.2.1}
-\contentsline {subsection}{\numberline {4.2.2}milter}{18}{subsection.4.2.2}
+\contentsline {subsection}{\numberline {4.2.2}milter}{17}{subsection.4.2.2}
 \contentsline {subsection}{\numberline {4.2.3}ProcessMessage}{18}{subsection.4.2.3}
-\contentsline {subsection}{\numberline {4.2.4}FileSys}{19}{subsection.4.2.4}
-\contentsline {section}{\numberline {4.3}purgeEARSdb.py}{20}{section.4.3}
-\contentsline {subsection}{\numberline {4.3.1}How to use}{20}{subsection.4.3.1}
-\contentsline {section}{\numberline {4.4}Database Definitions and Functions}{21}{section.4.4}
-\contentsline {subsection}{\numberline {4.4.1}SQLAlchemy.py - SQLAlchemy Database Definitions}{21}{subsection.4.4.1}
-\contentsline {subsection}{\numberline {4.4.2}toDB.py - EARS Milter Database Population}{23}{subsection.4.4.2}
-\contentsline {section}{\numberline {4.5}Customized Python Logging}{23}{section.4.5}
-\contentsline {subsection}{\numberline {4.5.1}logger.py}{23}{subsection.4.5.1}
-\contentsline {chapter}{\numberline {5}Indices and tables}{25}{chapter.5}
-\contentsline {chapter}{Index}{27}{section*.54}
+\contentsline {subsection}{\numberline {4.2.4}FileSys}{18}{subsection.4.2.4}
+\contentsline {section}{\numberline {4.3}purgeEARSdb.py}{18}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}How to use}{18}{subsection.4.3.1}
+\contentsline {section}{\numberline {4.4}Database Definitions and Functions}{20}{section.4.4}
+\contentsline {section}{\numberline {4.5}Customized Python Logging}{20}{section.4.5}
+\contentsline {chapter}{\numberline {5}Indices and tables}{21}{chapter.5}
+\contentsline {chapter}{Index}{23}{section*.21}
