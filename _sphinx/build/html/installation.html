@@ -284,6 +284,16 @@ This will handle all of WRT&#8217;s internal networks as well as the localhost.<
 <div class="highlight-sh"><div class="highlight"><pre>-o <span class="nv">smtp_fallback_relay</span><span class="o">=</span>
 </pre></div>
 </div>
+<p>Change the follwing lines:</p>
+<div class="highlight-sh"><div class="highlight"><pre>-smtp      inet  n       -       -       -       -       smtpd
+-cleanup   unix  n       -       -       -       0       cleanup
+</pre></div>
+</div>
+<p>to read:</p>
+<div class="highlight-sh"><div class="highlight"><pre>-smtp      inet  n       -       n      -       -       smtpd
+-cleanup   unix  n       -       n       -       0       cleanup
+</pre></div>
+</div>
 </li>
 <li><p class="first">Create a file called <tt class="docutils literal"><span class="pre">/etc/postfix/bogus_commands</span></tt> and enter the
 following two lines:</p>
@@ -441,7 +451,7 @@ modules.  Bugfixes and updates are regularly submitted for a majority of
 modules.  The downside is that there is currenlty no way to automatically
 update the modules, but this can be considered a benefit as well since there is
 less chance of your code breaking.</p>
-<div class="highlight-sh"><div class="highlight"><pre>% pip install SQLAlchemy pymilter MySQL-python Mako tnefparse
+<div class="highlight-sh"><div class="highlight"><pre>% pip install SQLAlchemy pymilter MySQL-python Mako tnefparse dnspython
 </pre></div>
 </div>
 </div>
@@ -532,7 +542,8 @@ at boot.</p>
 <tt class="docutils literal"><span class="pre">/etc/apache2/sites-available/ears.conf</span></tt> that contains the following
 (modify as necessary):</p>
 <div class="highlight-sh"><div class="highlight"><pre>&lt;VirtualHost *:80&gt;
-   ServerName ears.wrtdesign.com DocumentRoot /var/www/EARS
+   ServerName ears.wrtdesign.com
+   DocumentRoot /var/www/EARS
    Options -Indexes
 &lt;/VirtualHost&gt;
 </pre></div>

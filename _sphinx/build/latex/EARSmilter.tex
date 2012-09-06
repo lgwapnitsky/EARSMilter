@@ -582,6 +582,20 @@ Add the following (indented) after the line marked \code{relay}:
 -o \PYG{n+nv}{smtp\PYGZus{}fallback\PYGZus{}relay}\PYG{o}{=}
 \end{Verbatim}
 
+Change the follwing lines:
+
+\begin{Verbatim}[commandchars=\\\{\},formatcom=\footnotesize]
+-smtp      inet  n       -       -       -       -       smtpd
+-cleanup   unix  n       -       -       -       0       cleanup
+\end{Verbatim}
+
+to read:
+
+\begin{Verbatim}[commandchars=\\\{\},formatcom=\footnotesize]
+-smtp      inet  n       -       n      -       -       smtpd
+-cleanup   unix  n       -       n       -       0       cleanup
+\end{Verbatim}
+
 \item {} 
 Create a file called \code{/etc/postfix/bogus\_commands} and enter the
 following two lines:
@@ -771,7 +785,7 @@ update the modules, but this can be considered a benefit as well since there is
 less chance of your code breaking.
 
 \begin{Verbatim}[commandchars=\\\{\},formatcom=\footnotesize]
-\PYGZpc{} pip install SQLAlchemy pymilter MySQL-python Mako tnefparse
+\PYGZpc{} pip install SQLAlchemy pymilter MySQL-python Mako tnefparse dnspython
 \end{Verbatim}
 
 
@@ -887,7 +901,8 @@ Create a virtual host file for Apache in
 
 \begin{Verbatim}[commandchars=\\\{\},formatcom=\footnotesize]
 \PYGZlt{}VirtualHost *:80\PYGZgt{}
-   ServerName ears.wrtdesign.com DocumentRoot /var/www/EARS
+   ServerName ears.wrtdesign.com
+   DocumentRoot /var/www/EARS
    Options -Indexes
 \PYGZlt{}/VirtualHost\PYGZgt{}
 \end{Verbatim}

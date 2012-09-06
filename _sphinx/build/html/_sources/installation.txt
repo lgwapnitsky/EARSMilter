@@ -245,6 +245,20 @@ Postfix
    .. code-block:: sh
 
         -o smtp_fallback_relay=
+        
+   Change the follwing lines:
+    
+   .. code-block:: sh
+    
+      -smtp      inet  n       -       -       -       -       smtpd 
+      -cleanup   unix  n       -       -       -       0       cleanup    
+    
+   to read:
+    
+   .. code-block:: sh
+    
+      -smtp      inet  n       -       n      -       -       smtpd 
+      -cleanup   unix  n       -       n       -       0       cleanup    
 
 #. Create a file called ``/etc/postfix/bogus_commands`` and enter the
    following two lines:
@@ -418,7 +432,7 @@ less chance of your code breaking.
 
 .. code-block:: sh
    
-   % pip install SQLAlchemy pymilter MySQL-python Mako tnefparse
+   % pip install SQLAlchemy pymilter MySQL-python Mako tnefparse dnspython
 
 The Debian Method
 =================
@@ -515,7 +529,8 @@ Accquiring and configuring the Milter
    .. code-block:: sh
 
       <VirtualHost *:80>
-         ServerName ears.wrtdesign.com DocumentRoot /var/www/EARS
+         ServerName ears.wrtdesign.com 
+         DocumentRoot /var/www/EARS
          Options -Indexes
       </VirtualHost>
 
