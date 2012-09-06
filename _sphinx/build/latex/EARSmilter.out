@@ -1,0 +1,19 @@
+\BOOKMARK [0][-]{chapter.1}{What is the EARS Milter?}{}% 1
+\BOOKMARK [0][-]{chapter.2}{EARS Milter Requirements}{}% 2
+\BOOKMARK [1][-]{section.2.1}{Server Requirements}{chapter.2}% 3
+\BOOKMARK [1][-]{section.2.2}{Python Requirements}{chapter.2}% 4
+\BOOKMARK [1][-]{section.2.3}{Recommended Software}{chapter.2}% 5
+\BOOKMARK [1][-]{section.2.4}{Optional Software}{chapter.2}% 6
+\BOOKMARK [0][-]{chapter.3}{EARS Milter Installation}{}% 7
+\BOOKMARK [1][-]{section.3.1}{Server Installation}{chapter.3}% 8
+\BOOKMARK [1][-]{section.3.2}{Python Installation/Configuration}{chapter.3}% 9
+\BOOKMARK [1][-]{section.3.3}{Optional Software Installation}{chapter.3}% 10
+\BOOKMARK [1][-]{section.3.4}{Accquiring and configuring the Milter}{chapter.3}% 11
+\BOOKMARK [0][-]{chapter.4}{EARS Code}{}% 12
+\BOOKMARK [1][-]{section.4.1}{EARS.py}{chapter.4}% 13
+\BOOKMARK [1][-]{section.4.2}{EARS Milter main class/functions}{chapter.4}% 14
+\BOOKMARK [1][-]{section.4.3}{purgeEARSdb.py}{chapter.4}% 15
+\BOOKMARK [1][-]{section.4.4}{Database Definitions and Functions}{chapter.4}% 16
+\BOOKMARK [1][-]{section.4.5}{Customized Python Logging}{chapter.4}% 17
+\BOOKMARK [0][-]{chapter.5}{Indices and tables}{}% 18
+\BOOKMARK [0][-]{section*.54}{Index}{}% 19
