@@ -128,7 +128,7 @@ repository.
 
       .. code-block:: sh
 
-         ssh-keygen -t rsa
+        % ssh-keygen -t rsa
 
       Hit return at the prompts to create the key without passphrase
       authentication.
@@ -155,7 +155,8 @@ repository.
 
       .. code-block:: sh
 
-         % cd /tmp % git clone gitolite@git:gitolite-admin
+         % cd /tmp 
+         % git clone gitolite@git:gitolite-admin
 
       If this fails, please verify all the steps in this section
 
@@ -168,8 +169,8 @@ EARS requires an MTA.  Please choose **either** postfix or sendmail.
 .. contents::
    :local:
 
-Postfix
--------
+Postfix (Option 1)
+------------------
 
 #. Install postfix with `PCRE`_ support:
 
@@ -299,8 +300,8 @@ Postfix
       250 2.0.0 Ok: queued as 4F00049F2A
       quit
 
-Sendmail
---------
+Sendmail (Option 2)
+-------------------
 
 #. Install sendmail:
 
@@ -484,8 +485,8 @@ Afterwards, you can access phpMyAdmin by going to
 
    .. code-block:: sh
 
-      deb http://download.webmin.com/download/repository sarge contrib deb
-      http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib
+      deb http://download.webmin.com/download/repository sarge contrib 
+      deb http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib
 
 #. Download and install the security key, then update and install ``webmin``:
 
@@ -510,7 +511,9 @@ Accquiring and configuring the Milter
 
    .. code-block:: sh
 
-      % cd /var/spool % git clone gitolite@git:EARSmilter EARS % cd EARS
+      % cd /var/spool 
+      % git clone gitolite@git:EARSmilter EARS
+      % cd EARS
 
 
 #. Copy EARS.sh to ``/etc/init.d``.  Make it executable and enable it
@@ -564,8 +567,9 @@ Accquiring and configuring the Milter
 
    .. code-block:: sql
 
-      mysql> CREATE DATABASE EARS; mysql> GRANT ALL PRIVILEGES ON
-      EARS.* TO "EARS"@"%" IDENTIFIED BY "password"; mysql> FLUSH PRIVILEGES; mysql> EXIT
+      mysql> CREATE DATABASE EARS;
+      mysql> GRANT ALL PRIVILEGES ON EARS.* TO "EARS"@"%" IDENTIFIED BY "password"; 
+      mysql> FLUSH PRIVILEGES; mysql> EXIT
 
    and change this line in ``/etc/mysql/my.cnf``:
 
@@ -627,7 +631,11 @@ Accquiring and configuring the Milter
       smtpd_milters = unix:/var/spool/EARS/EARSmilter.sock 
       milter_default_action = accept
 
-   Reload postfix - ``postfix reload``
+   Reload postfix
+   
+   .. code-block:: sh
+   
+      % postfix reload
 
   **Sendmail** - ``/etc/mail/sendmail.mc``.
 
@@ -639,7 +647,8 @@ Accquiring and configuring the Milter
 
    .. code-block:: sh
 
-      % touch /etc/mail/access.new.db % sendmailconfig
+      % touch /etc/mail/access.new.db 
+      % sendmailconfig
 
    .. note:: If/when you add additional milters to this sytem, make sure that
       **EARS** is the last one listed, as milters are processed in order.
@@ -652,7 +661,7 @@ Accquiring and configuring the Milter
 
    .. code-block:: py
 
-      db = toDB( 'EARS', 'password', 'localhost', 'EARS' )
+      db = toDB( 'username', 'password', 'MySQLServer', 'EARSDataBase' )
 
 #. Create a folder called ``/dropdir`` :
 

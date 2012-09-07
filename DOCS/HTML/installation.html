@@ -68,8 +68,8 @@
 <li><a class="reference internal" href="#web-server-installation" id="id9">Web Server Installation</a></li>
 <li><a class="reference internal" href="#git-installation" id="id10">Git Installation</a></li>
 <li><a class="reference internal" href="#mail-server-installation" id="id11">Mail Server Installation</a><ul>
-<li><a class="reference internal" href="#postfix" id="id12">Postfix</a></li>
-<li><a class="reference internal" href="#sendmail" id="id13">Sendmail</a></li>
+<li><a class="reference internal" href="#postfix-option-1" id="id12">Postfix (Option 1)</a></li>
+<li><a class="reference internal" href="#sendmail-option-2" id="id13">Sendmail (Option 2)</a></li>
 </ul>
 </li>
 </ul>
@@ -183,7 +183,7 @@ repository.</p>
 <li><p class="first">On the EARS Milter server, create a <em>ssh</em> key and copy it to the
 development repository server:</p>
 <blockquote>
-<div><div class="highlight-sh"><div class="highlight"><pre>ssh-keygen -t rsa
+<div><div class="highlight-sh"><div class="highlight"><pre>% ssh-keygen -t rsa
 </pre></div>
 </div>
 <p>Hit return at the prompts to create the key without passphrase
@@ -210,7 +210,8 @@ authentication.</p>
 </li>
 <li><p class="first">On the EARS Milter server, test access to the repository server:</p>
 <blockquote>
-<div><div class="highlight-sh"><div class="highlight"><pre>% <span class="nb">cd</span> /tmp % git clone gitolite@git:gitolite-admin
+<div><div class="highlight-sh"><div class="highlight"><pre>% <span class="nb">cd</span> /tmp
+% git clone gitolite@git:gitolite-admin
 </pre></div>
 </div>
 <p>If this fails, please verify all the steps in this section</p>
@@ -225,12 +226,12 @@ authentication.</p>
 <p>EARS requires an MTA.  Please choose <strong>either</strong> postfix or sendmail.</p>
 <div class="contents local topic" id="id3">
 <ul class="simple">
-<li><a class="reference internal" href="#postfix" id="id21">Postfix</a></li>
-<li><a class="reference internal" href="#sendmail" id="id22">Sendmail</a></li>
+<li><a class="reference internal" href="#postfix-option-1" id="id21">Postfix (Option 1)</a></li>
+<li><a class="reference internal" href="#sendmail-option-2" id="id22">Sendmail (Option 2)</a></li>
 </ul>
 </div>
-<div class="section" id="postfix">
-<h4><a class="toc-backref" href="#id21">Postfix</a><a class="headerlink" href="#postfix" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="postfix-option-1">
+<h4><a class="toc-backref" href="#id21">Postfix (Option 1)</a><a class="headerlink" href="#postfix-option-1" title="Permalink to this headline">¶</a></h4>
 <ol class="arabic">
 <li><p class="first">Install postfix with <a class="reference external" href="http://www.pcre.org">PCRE</a> support:</p>
 <div class="highlight-sh"><div class="highlight"><pre>% aptitude install postfix postfix-pcre
@@ -334,8 +335,8 @@ quit
 </li>
 </ol>
 </div>
-<div class="section" id="sendmail">
-<h4><a class="toc-backref" href="#id22">Sendmail</a><a class="headerlink" href="#sendmail" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="sendmail-option-2">
+<h4><a class="toc-backref" href="#id22">Sendmail (Option 2)</a><a class="headerlink" href="#sendmail-option-2" title="Permalink to this headline">¶</a></h4>
 <ol class="arabic">
 <li><p class="first">Install sendmail:</p>
 <div class="highlight-sh"><div class="highlight"><pre>% aptitude install sendmail
@@ -499,8 +500,8 @@ databases. It&#8217;s a good idea to install it:</p>
 <ol class="arabic">
 <li><p class="first">Create a file called <tt class="docutils literal"><span class="pre">/etc/apt/sources.list.d/webmin.list</span></tt>.  Add the
 following lines, then save:</p>
-<div class="highlight-sh"><div class="highlight"><pre>deb http://download.webmin.com/download/repository sarge contrib deb
-http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib
+<div class="highlight-sh"><div class="highlight"><pre>deb http://download.webmin.com/download/repository sarge contrib
+deb http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib
 </pre></div>
 </div>
 </li>
@@ -524,7 +525,9 @@ using the system root password.</p>
 <ol class="arabic">
 <li><p class="first">Using <em>git</em>, clone <strong>EARS</strong> from the repository to the <tt class="docutils literal"><span class="pre">/var/spool</span></tt>
 folder:</p>
-<div class="highlight-sh"><div class="highlight"><pre>% <span class="nb">cd</span> /var/spool % git clone gitolite@git:EARSmilter EARS % <span class="nb">cd </span>EARS
+<div class="highlight-sh"><div class="highlight"><pre>% <span class="nb">cd</span> /var/spool
+% git clone gitolite@git:EARSmilter EARS
+% <span class="nb">cd </span>EARS
 </pre></div>
 </div>
 </li>
@@ -567,8 +570,9 @@ the folder. Restart Apache.</p>
 </pre></div>
 </div>
 <p>Create a blank database and associated MySQL user</p>
-<div class="highlight-sql"><div class="highlight"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">EARS</span><span class="p">;</span> <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span>
-<span class="n">EARS</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="ss">&quot;EARS&quot;</span><span class="o">@</span><span class="ss">&quot;%&quot;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="ss">&quot;password&quot;</span><span class="p">;</span> <span class="n">mysql</span><span class="o">&gt;</span> <span class="n">FLUSH</span> <span class="k">PRIVILEGES</span><span class="p">;</span> <span class="n">mysql</span><span class="o">&gt;</span> <span class="n">EXIT</span>
+<div class="highlight-sql"><div class="highlight"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">EARS</span><span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span> <span class="n">EARS</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="ss">&quot;EARS&quot;</span><span class="o">@</span><span class="ss">&quot;%&quot;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="ss">&quot;password&quot;</span><span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="n">FLUSH</span> <span class="k">PRIVILEGES</span><span class="p">;</span> <span class="n">mysql</span><span class="o">&gt;</span> <span class="n">EXIT</span>
 </pre></div>
 </div>
 <p>and change this line in <tt class="docutils literal"><span class="pre">/etc/mysql/my.cnf</span></tt>:</p>
@@ -612,7 +616,10 @@ MTA:</p>
 <span class="nv">milter_default_action</span> <span class="o">=</span> accept
 </pre></div>
 </div>
-<p>Reload postfix - <tt class="docutils literal"><span class="pre">postfix</span> <span class="pre">reload</span></tt></p>
+<p>Reload postfix</p>
+<div class="highlight-sh"><div class="highlight"><pre>% postfix reload
+</pre></div>
+</div>
 </li>
 </ol>
 <blockquote>
@@ -622,7 +629,8 @@ MTA:</p>
 </pre></div>
 </div>
 <p>Recompile the <tt class="docutils literal"><span class="pre">sendmail</span></tt> files and restart the MTA</p>
-<div class="highlight-sh"><div class="highlight"><pre>% touch /etc/mail/access.new.db % sendmailconfig
+<div class="highlight-sh"><div class="highlight"><pre>% touch /etc/mail/access.new.db
+% sendmailconfig
 </pre></div>
 </div>
 <div class="admonition note">
@@ -637,7 +645,7 @@ MTA:</p>
 <tt class="docutils literal"><span class="pre">/var/spool/EARS/EARSmilter/EARSmilter.py</span></tt> with what is appropriate for
 your environment.</p>
 <p>This is listed under <tt class="xref py py-func docutils literal"><span class="pre">EARSmilter.EARSmilter.milter.eom()</span></tt></p>
-<div class="highlight-py"><div class="highlight"><pre><span class="n">db</span> <span class="o">=</span> <span class="n">toDB</span><span class="p">(</span> <span class="s">&#39;EARS&#39;</span><span class="p">,</span> <span class="s">&#39;password&#39;</span><span class="p">,</span> <span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="s">&#39;EARS&#39;</span> <span class="p">)</span>
+<div class="highlight-py"><div class="highlight"><pre><span class="n">db</span> <span class="o">=</span> <span class="n">toDB</span><span class="p">(</span> <span class="s">&#39;username&#39;</span><span class="p">,</span> <span class="s">&#39;password&#39;</span><span class="p">,</span> <span class="s">&#39;MySQLServer&#39;</span><span class="p">,</span> <span class="s">&#39;EARSDataBase&#39;</span> <span class="p">)</span>
 </pre></div>
 </div>
 </li>
@@ -766,7 +774,7 @@ assumes the folder is on a MS Windows box:</p>
           
     <div class="footer">
         &copy; Copyright 2012, Larry G. Wapnitsky.
-      Last updated on Sep 06, 2012.
+      Last updated on Sep 07, 2012.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
         </div>

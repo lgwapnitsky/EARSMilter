@@ -13,7 +13,7 @@
 
 
 \title{EARSmilter Documentation}
-\date{September 06, 2012}
+\date{September 07, 2012}
 \release{1.0}
 \author{Larry G. Wapnitsky}
 \newcommand{\sphinxlogo}{\includegraphics{earslogo.png}\par}
@@ -271,10 +271,10 @@ The following software is optional, but is useful for diagnostics
 {\hyperref[installation:mail-server-installation]{Mail Server Installation}}
 \begin{itemize}
 \item {} 
-{\hyperref[installation:postfix]{Postfix}}
+{\hyperref[installation:postfix-option-1]{Postfix (Option 1)}}
 
 \item {} 
-{\hyperref[installation:sendmail]{Sendmail}}
+{\hyperref[installation:sendmail-option-2]{Sendmail (Option 2)}}
 
 \end{itemize}
 
@@ -442,7 +442,7 @@ development repository server:
 \begin{quote}
 
 \begin{Verbatim}[commandchars=\\\{\},formatcom=\footnotesize]
-ssh-keygen -t rsa
+\PYGZpc{} ssh-keygen -t rsa
 \end{Verbatim}
 
 Hit return at the prompts to create the key without passphrase
@@ -475,7 +475,8 @@ On the EARS Milter server, test access to the repository server:
 \begin{quote}
 
 \begin{Verbatim}[commandchars=\\\{\},formatcom=\footnotesize]
-\PYGZpc{} \PYG{n+nb}{cd} /tmp \PYGZpc{} git clone gitolite@git:gitolite-admin
+\PYGZpc{} \PYG{n+nb}{cd} /tmp
+\PYGZpc{} git clone gitolite@git:gitolite-admin
 \end{Verbatim}
 
 If this fails, please verify all the steps in this section
@@ -493,18 +494,18 @@ EARS requires an MTA.  Please choose \textbf{either} postfix or sendmail.
 \begin{minipage}{0.95\linewidth}
 \begin{itemize}
 \item {} 
-{\hyperref[installation:postfix]{Postfix}}
+{\hyperref[installation:postfix-option-1]{Postfix (Option 1)}}
 
 \item {} 
-{\hyperref[installation:sendmail]{Sendmail}}
+{\hyperref[installation:sendmail-option-2]{Sendmail (Option 2)}}
 
 \end{itemize}
 \end{minipage}}
 \begin{center}\setlength{\fboxsep}{5pt}\shadowbox{\box0}\end{center}
 
 
-\subsubsection{Postfix}
-\label{installation:postfix}\begin{enumerate}
+\subsubsection{Postfix (Option 1)}
+\label{installation:postfix-option-1}\begin{enumerate}
 \item {} 
 Install postfix with \href{http://www.pcre.org}{PCRE} support:
 
@@ -640,8 +641,8 @@ quit
 \end{enumerate}
 
 
-\subsubsection{Sendmail}
-\label{installation:sendmail}\begin{enumerate}
+\subsubsection{Sendmail (Option 2)}
+\label{installation:sendmail-option-2}\begin{enumerate}
 \item {} 
 Install sendmail:
 
@@ -850,8 +851,8 @@ Create a file called \code{/etc/apt/sources.list.d/webmin.list}.  Add the
 following lines, then save:
 
 \begin{Verbatim}[commandchars=\\\{\},formatcom=\footnotesize]
-deb http://download.webmin.com/download/repository sarge contrib deb
-http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib
+deb http://download.webmin.com/download/repository sarge contrib
+deb http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib
 \end{Verbatim}
 
 \item {} 
@@ -879,7 +880,9 @@ Using \emph{git}, clone \textbf{EARS} from the repository to the \code{/var/spoo
 folder:
 
 \begin{Verbatim}[commandchars=\\\{\},formatcom=\footnotesize]
-\PYGZpc{} \PYG{n+nb}{cd} /var/spool \PYGZpc{} git clone gitolite@git:EARSmilter EARS \PYGZpc{} \PYG{n+nb}{cd }EARS
+\PYGZpc{} \PYG{n+nb}{cd} /var/spool
+\PYGZpc{} git clone gitolite@git:EARSmilter EARS
+\PYGZpc{} \PYG{n+nb}{cd }EARS
 \end{Verbatim}
 
 \item {} 
@@ -934,8 +937,9 @@ Open the MySQL command-line utility
 Create a blank database and associated MySQL user
 
 \begin{Verbatim}[commandchars=\\\{\},formatcom=\footnotesize]
-\PYG{n}{mysql}\PYG{o}{\PYGZgt{}} \PYG{k}{CREATE} \PYG{k}{DATABASE} \PYG{n}{EARS}\PYG{p}{;} \PYG{n}{mysql}\PYG{o}{\PYGZgt{}} \PYG{k}{GRANT} \PYG{k}{ALL} \PYG{k}{PRIVILEGES} \PYG{k}{ON}
-\PYG{n}{EARS}\PYG{p}{.}\PYG{o}{*} \PYG{k}{TO} \PYG{l+s+ss}{"EARS"}\PYG{o}{@}\PYG{l+s+ss}{"\PYGZpc{}"} \PYG{n}{IDENTIFIED} \PYG{k}{BY} \PYG{l+s+ss}{"password"}\PYG{p}{;} \PYG{n}{mysql}\PYG{o}{\PYGZgt{}} \PYG{n}{FLUSH} \PYG{k}{PRIVILEGES}\PYG{p}{;} \PYG{n}{mysql}\PYG{o}{\PYGZgt{}} \PYG{n}{EXIT}
+\PYG{n}{mysql}\PYG{o}{\PYGZgt{}} \PYG{k}{CREATE} \PYG{k}{DATABASE} \PYG{n}{EARS}\PYG{p}{;}
+\PYG{n}{mysql}\PYG{o}{\PYGZgt{}} \PYG{k}{GRANT} \PYG{k}{ALL} \PYG{k}{PRIVILEGES} \PYG{k}{ON} \PYG{n}{EARS}\PYG{p}{.}\PYG{o}{*} \PYG{k}{TO} \PYG{l+s+ss}{"EARS"}\PYG{o}{@}\PYG{l+s+ss}{"\PYGZpc{}"} \PYG{n}{IDENTIFIED} \PYG{k}{BY} \PYG{l+s+ss}{"password"}\PYG{p}{;}
+\PYG{n}{mysql}\PYG{o}{\PYGZgt{}} \PYG{n}{FLUSH} \PYG{k}{PRIVILEGES}\PYG{p}{;} \PYG{n}{mysql}\PYG{o}{\PYGZgt{}} \PYG{n}{EXIT}
 \end{Verbatim}
 
 and change this line in \code{/etc/mysql/my.cnf}:
@@ -995,7 +999,11 @@ MTA:
 \PYG{n+nv}{milter\PYGZus{}default\PYGZus{}action} \PYG{o}{=} accept
 \end{Verbatim}
 
-Reload postfix - \code{postfix reload}
+Reload postfix
+
+\begin{Verbatim}[commandchars=\\\{\},formatcom=\footnotesize]
+\PYGZpc{} postfix reload
+\end{Verbatim}
 
 \end{enumerate}
 \begin{quote}
@@ -1010,7 +1018,8 @@ INPUT\PYGZus{}MAIL\PYGZus{}FILTER\PYG{o}{(}\PYG{l+s+sb}{{}`}EARS\PYG{l+s+s1}{', 
 Recompile the \code{sendmail} files and restart the MTA
 
 \begin{Verbatim}[commandchars=\\\{\},formatcom=\footnotesize]
-\PYGZpc{} touch /etc/mail/access.new.db \PYGZpc{} sendmailconfig
+\PYGZpc{} touch /etc/mail/access.new.db
+\PYGZpc{} sendmailconfig
 \end{Verbatim}
 
 \begin{notice}{note}{Note:}
@@ -1028,7 +1037,7 @@ your environment.
 This is listed under \code{EARSmilter.EARSmilter.milter.eom()}
 
 \begin{Verbatim}[commandchars=\\\{\},formatcom=\footnotesize]
-\PYG{n}{db} \PYG{o}{=} \PYG{n}{toDB}\PYG{p}{(} \PYG{l+s}{'}\PYG{l+s}{EARS}\PYG{l+s}{'}\PYG{p}{,} \PYG{l+s}{'}\PYG{l+s}{password}\PYG{l+s}{'}\PYG{p}{,} \PYG{l+s}{'}\PYG{l+s}{localhost}\PYG{l+s}{'}\PYG{p}{,} \PYG{l+s}{'}\PYG{l+s}{EARS}\PYG{l+s}{'} \PYG{p}{)}
+\PYG{n}{db} \PYG{o}{=} \PYG{n}{toDB}\PYG{p}{(} \PYG{l+s}{'}\PYG{l+s}{username}\PYG{l+s}{'}\PYG{p}{,} \PYG{l+s}{'}\PYG{l+s}{password}\PYG{l+s}{'}\PYG{p}{,} \PYG{l+s}{'}\PYG{l+s}{MySQLServer}\PYG{l+s}{'}\PYG{p}{,} \PYG{l+s}{'}\PYG{l+s}{EARSDataBase}\PYG{l+s}{'} \PYG{p}{)}
 \end{Verbatim}
 
 \item {} 
