@@ -22,6 +22,7 @@ The following software is required for the Milter to run:
 * `postfix`_ or `sendmail`_
 * `Git`_ - required to download the Milter from the development repository
 * cifs-utils
+* FTP Server (see WRT Linux Documentation)
 
 
 

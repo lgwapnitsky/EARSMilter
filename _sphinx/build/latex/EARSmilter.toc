@@ -25,11 +25,11 @@
 \contentsline {section}{\numberline {4.2}EARS Milter main class/functions}{19}{section.4.2}
 \contentsline {subsection}{\numberline {4.2.1}EARSlog}{19}{subsection.4.2.1}
 \contentsline {subsection}{\numberline {4.2.2}milter}{19}{subsection.4.2.2}
-\contentsline {subsection}{\numberline {4.2.3}ProcessMessage}{20}{subsection.4.2.3}
-\contentsline {subsection}{\numberline {4.2.4}FileSys}{20}{subsection.4.2.4}
-\contentsline {section}{\numberline {4.3}purgeEARSdb.py}{20}{section.4.3}
+\contentsline {subsection}{\numberline {4.2.3}ProcessMessage}{19}{subsection.4.2.3}
+\contentsline {subsection}{\numberline {4.2.4}FileSys}{19}{subsection.4.2.4}
+\contentsline {section}{\numberline {4.3}purgeEARSdb.py}{19}{section.4.3}
 \contentsline {subsection}{\numberline {4.3.1}How to use}{20}{subsection.4.3.1}
-\contentsline {section}{\numberline {4.4}Database Definitions and Functions}{22}{section.4.4}
-\contentsline {section}{\numberline {4.5}Customized Python Logging}{22}{section.4.5}
+\contentsline {section}{\numberline {4.4}Database Definitions and Functions}{21}{section.4.4}
+\contentsline {section}{\numberline {4.5}Customized Python Logging}{21}{section.4.5}
 \contentsline {chapter}{\numberline {5}Indices and tables}{23}{chapter.5}
-\contentsline {chapter}{Index}{25}{section*.21}
+\contentsline {chapter}{Index}{25}{section*.15}

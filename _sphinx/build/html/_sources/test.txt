@@ -1,4 +1,0 @@
-.. EARSmilter_documentation Documentation master file.
-
-WRT E-mail Attachment Removal/Retrieval System (EARS) Milter
-############################################################

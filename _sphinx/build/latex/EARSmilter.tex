@@ -13,7 +13,7 @@
 
 
 \title{EARSmilter Documentation}
-\date{September 07, 2012}
+\date{September 12, 2012}
 \release{1.0}
 \author{Larry G. Wapnitsky}
 \newcommand{\sphinxlogo}{\includegraphics{earslogo.png}\par}
@@ -193,6 +193,9 @@ The following software is required for the Milter to run:
 
 \item {} 
 cifs-utils
+
+\item {} 
+FTP Server (see WRT Linux Documentation)
 
 \end{itemize}
 
@@ -1100,7 +1103,7 @@ Add the following lines to \code{/etc/logrotate.conf}:
 \label{codedocs:how-to-use}\label{codedocs:ears-code}\label{codedocs::doc}
 
 \section{EARS.py}
-\label{codedocs/EARS_py:ears-py}\label{codedocs/EARS_py::doc}\label{codedocs/EARS_py:module-EARS}\index{EARS (module)}
+\label{codedocs/EARS_py:ears-py}\label{codedocs/EARS_py::doc}
 
 \section{EARS Milter main class/functions}
 \label{codedocs/EARSmilter:module-EARSmilter}\label{codedocs/EARSmilter:ears-milter-main-class-functions}\label{codedocs/EARSmilter::doc}\index{EARSmilter (module)}\begin{itemize}
@@ -1120,63 +1123,16 @@ Add the following lines to \code{/etc/logrotate.conf}:
 
 
 \subsection{EARSlog}
-\label{codedocs/EARSmilter:earslog}\label{codedocs/EARSmilter:id1}\index{EARSlog (class in EARSmilter.EARSmilter)}
-
-\begin{fulllineitems}
-\phantomsection\label{codedocs/EARSmilter:EARSmilter.EARSmilter.EARSlog}\pysigline{\strong{class }\code{EARSmilter.EARSmilter.}\bfcode{EARSlog}}
-\end{fulllineitems}
-
-
+\label{codedocs/EARSmilter:earslog}\label{codedocs/EARSmilter:id1}
 
 \subsection{milter}
-\label{codedocs/EARSmilter:milter}\label{codedocs/EARSmilter:id2}\index{milter (class in EARSmilter.EARSmilter)}
-
-\begin{fulllineitems}
-\phantomsection\label{codedocs/EARSmilter:EARSmilter.EARSmilter.milter}\pysiglinewithargsret{\strong{class }\code{EARSmilter.EARSmilter.}\bfcode{milter}}{\emph{Milter.Base}}{}~\index{milter.connect() (in module EARSmilter)}
-
-\begin{fulllineitems}
-\pysigline{\bfcode{@Milter.noreply}}\phantomsection\label{codedocs/EARSmilter:EARSmilter.milter.connect}\pysiglinewithargsret{\bfcode{connect}}{\emph{IPname}, \emph{family}, \emph{hostaddr}}{}
-Initializes when a new connection to the Milter is made via SMTP
-
-\end{fulllineitems}
-
-\index{milter.header() (in module EARSmilter)}
-
-\begin{fulllineitems}
-\pysigline{\bfcode{@Milter.noreply}}\phantomsection\label{codedocs/EARSmilter:EARSmilter.milter.header}\pysiglinewithargsret{\bfcode{header}}{\emph{name}, \emph{hval}}{}
-Processes headers from the incoming message and writes them to a variable for database storage
-
-\begin{Verbatim}[commandchars=\\\{\},formatcom=\footnotesize]
-\PYG{n}{rgxSubject} \PYG{o}{=} \PYG{n}{re}\PYG{o}{.}\PYG{n}{compile}\PYG{p}{(} \PYG{l+s}{'}\PYG{l+s}{\PYGZca{}(subject)}\PYG{l+s}{'}\PYG{p}{,} \PYG{n}{re}\PYG{o}{.}\PYG{n}{IGNORECASE} \PYG{o}{\textbar{}} \PYG{n}{re}\PYG{o}{.}\PYG{n}{DOTALL} \PYG{p}{)}
-\PYG{n}{rgxMessageID} \PYG{o}{=} \PYG{n}{re}\PYG{o}{.}\PYG{n}{compile}\PYG{p}{(} \PYG{l+s}{'}\PYG{l+s}{\PYGZca{}(message-id)}\PYG{l+s}{'}\PYG{p}{,} \PYG{n}{re}\PYG{o}{.}\PYG{n}{IGNORECASE} \PYG{o}{\textbar{}} \PYG{n}{re}\PYG{o}{.}\PYG{n}{DOTALL} \PYG{p}{)}
-\end{Verbatim}
-
-Regular Expression searches used to extract and log the Subject and Message ID of incoming messages
-
-\end{fulllineitems}
-
-
-\end{fulllineitems}
-
-
+\label{codedocs/EARSmilter:milter}\label{codedocs/EARSmilter:id2}
 
 \subsection{ProcessMessage}
-\label{codedocs/EARSmilter:processmessage}\label{codedocs/EARSmilter:id3}\index{ProcessMessage (class in EARSmilter.EARSmilter)}
-
-\begin{fulllineitems}
-\phantomsection\label{codedocs/EARSmilter:EARSmilter.EARSmilter.ProcessMessage}\pysiglinewithargsret{\strong{class }\code{EARSmilter.EARSmilter.}\bfcode{ProcessMessage}}{\emph{\_db}, \emph{\_log}, \emph{\_from}}{}
-\end{fulllineitems}
-
-
+\label{codedocs/EARSmilter:processmessage}\label{codedocs/EARSmilter:id3}
 
 \subsection{FileSys}
-\label{codedocs/EARSmilter:id4}\label{codedocs/EARSmilter:filesys}\index{FileSys (class in EARSmilter.EARSmilter)}
-
-\begin{fulllineitems}
-\phantomsection\label{codedocs/EARSmilter:EARSmilter.EARSmilter.FileSys}\pysiglinewithargsret{\strong{class }\code{EARSmilter.EARSmilter.}\bfcode{FileSys}}{\emph{msg}}{}
-\end{fulllineitems}
-
-
+\label{codedocs/EARSmilter:id4}\label{codedocs/EARSmilter:filesys}
 
 \section{purgeEARSdb.py}
 \label{codedocs/purgeEARSdb_py:purgeearsdb-py}\label{codedocs/purgeEARSdb_py::doc}\label{codedocs/purgeEARSdb_py:module-purgeEARSdb}\index{purgeEARSdb (module)}
@@ -1295,7 +1251,7 @@ This setups a daily job to run the script and remove non-associated senders from
 
 
 \section{Database Definitions and Functions}
-\label{codedocs/database:database-definitions-and-functions}\label{codedocs/database::doc}\phantomsection\label{codedocs/database:sqlalchemy}\phantomsection\label{codedocs/database:module-database.SQLAlchemy}\phantomsection\label{codedocs/database:sqlalchemy}\index{database.SQLAlchemy (module)}\includegraphics{sadisplay-6eaf309bd450fd536a3de386f2bd1c402f775f00.png}\phantomsection\label{codedocs/database:module-database.toDB}\index{database.toDB (module)}
+\label{codedocs/database:database-definitions-and-functions}\label{codedocs/database::doc}\phantomsection\label{codedocs/database:sqlalchemy}\phantomsection\label{codedocs/database:module-database.SQLAlchemy}\phantomsection\label{codedocs/database:sqlalchemy}\index{database.SQLAlchemy (module)}\phantomsection\label{codedocs/database:module-database.toDB}\index{database.toDB (module)}
 
 \section{Customized Python Logging}
 \label{codedocs/logs:customized-python-logging}\label{codedocs/logs::doc}\label{codedocs/logs:module-logs}\index{logs (module)}\phantomsection\label{codedocs/logs:module-logs.logger}\index{logs.logger (module)}

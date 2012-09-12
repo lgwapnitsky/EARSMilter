@@ -1,18 +1,11 @@
-\indexentry{EARS (module)|hyperpage}{19}
 \indexentry{EARSmilter (module)|hyperpage}{19}
-\indexentry{EARSlog (class in EARSmilter.EARSmilter)|hyperpage}{19}
-\indexentry{milter (class in EARSmilter.EARSmilter)|hyperpage}{19}
-\indexentry{milter.connect() (in module EARSmilter)|hyperpage}{19}
-\indexentry{milter.header() (in module EARSmilter)|hyperpage}{19}
-\indexentry{ProcessMessage (class in EARSmilter.EARSmilter)|hyperpage}{20}
-\indexentry{FileSys (class in EARSmilter.EARSmilter)|hyperpage}{20}
-\indexentry{purgeEARSdb (module)|hyperpage}{20}
-\indexentry{Options (class in purgeEARSdb.purgeEARSdb)|hyperpage}{20}
-\indexentry{Purge (class in purgeEARSdb.purgeEARSdb)|hyperpage}{20}
-\indexentry{purgeAttachmentsMessages() (purgeEARSdb.purgeEARSdb.Purge method)|hyperpage}{20}
+\indexentry{purgeEARSdb (module)|hyperpage}{19}
+\indexentry{Options (class in purgeEARSdb.purgeEARSdb)|hyperpage}{19}
+\indexentry{Purge (class in purgeEARSdb.purgeEARSdb)|hyperpage}{19}
+\indexentry{purgeAttachmentsMessages() (purgeEARSdb.purgeEARSdb.Purge method)|hyperpage}{19}
 \indexentry{purgeSenders() (purgeEARSdb.purgeEARSdb.Purge method)|hyperpage}{20}
 \indexentry{query\_yes\_no() (purgeEARSdb.purgeEARSdb.Purge method)|hyperpage}{20}
-\indexentry{database.SQLAlchemy (module)|hyperpage}{22}
-\indexentry{database.toDB (module)|hyperpage}{22}
-\indexentry{logs (module)|hyperpage}{22}
-\indexentry{logs.logger (module)|hyperpage}{22}
+\indexentry{database.SQLAlchemy (module)|hyperpage}{21}
+\indexentry{database.toDB (module)|hyperpage}{21}
+\indexentry{logs (module)|hyperpage}{21}
+\indexentry{logs.logger (module)|hyperpage}{21}

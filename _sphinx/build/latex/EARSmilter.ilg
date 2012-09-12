@@ -1,7 +1,7 @@
-This is makeindex, version 2.15 [TeX Live 2012] (kpathsea + Thai support).
-Scanning style file ./python.ist......done (6 attributes redefined, 0 ignored).
-Scanning input file EARSmilter.idx....done (18 entries accepted, 0 rejected).
-Sorting entries....done (78 comparisons).
-Generating output file EARSmilter.ind....done (45 lines written, 0 warnings).
+This is makeindex, version 2.15 [MiKTeX 2.9] (kpathsea + Thai support).
+Scanning style file E:/EARSmilter/_sphinx/build/latex/python.ist......done (6 attributes redefined, 0 ignored).
+Scanning input file EARSmilter.idx....done (11 entries accepted, 0 rejected).
+Sorting entries....done (39 comparisons).
+Generating output file EARSmilter.ind....done (32 lines written, 0 warnings).
 Output written in EARSmilter.ind.
 Transcript written in EARSmilter.ilg.
