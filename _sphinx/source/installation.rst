@@ -569,7 +569,8 @@ Accquiring and configuring the Milter
 
       mysql> CREATE DATABASE EARS;
       mysql> GRANT ALL PRIVILEGES ON EARS.* TO "EARS"@"%" IDENTIFIED BY "password"; 
-      mysql> FLUSH PRIVILEGES; mysql> EXIT
+      mysql> FLUSH PRIVILEGES; 
+      mysql> EXIT
 
    and change this line in ``/etc/mysql/my.cnf``:
 
